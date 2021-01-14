@@ -16,6 +16,8 @@
 		2DFD102A25AF8B1B0041E21B /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD102925AF8B1B0041E21B /* WelcomeView.swift */; };
 		2DFD102E25AF8E940041E21B /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD102D25AF8E940041E21B /* GameView.swift */; };
 		2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD103025AF8FD60041E21B /* GameViewController.swift */; };
+		2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD103E25AFA9690041E21B /* MessageViewController.swift */; };
+		2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD104125AFA96F0041E21B /* MessageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		2DFD102925AF8B1B0041E21B /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		2DFD102D25AF8E940041E21B /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		2DFD103025AF8FD60041E21B /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		2DFD103E25AFA9690041E21B /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		2DFD104125AFA96F0041E21B /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +72,8 @@
 				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
 				2DFD101725AF8AA40041E21B /* WelcomeViewController.swift */,
 				2DFD102925AF8B1B0041E21B /* WelcomeView.swift */,
+				2DFD104125AFA96F0041E21B /* MessageView.swift */,
+				2DFD103E25AFA9690041E21B /* MessageViewController.swift */,
 				2DFD101925AF8AA40041E21B /* Main.storyboard */,
 				2DFD101E25AF8AA40041E21B /* LaunchScreen.storyboard */,
 				2DFD102125AF8AA40041E21B /* Info.plist */,
@@ -148,6 +154,8 @@
 			files = (
 				2DFD101825AF8AA40041E21B /* WelcomeViewController.swift in Sources */,
 				2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */,
+				2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */,
+				2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */,
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
 				2DFD102A25AF8B1B0041E21B /* WelcomeView.swift in Sources */,
 				2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */,
@@ -301,6 +309,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3GQ28S3332;
 				INFOPLIST_FILE = "projet-ppm/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -320,6 +329,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3GQ28S3332;
 				INFOPLIST_FILE = "projet-ppm/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

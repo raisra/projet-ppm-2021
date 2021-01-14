@@ -24,7 +24,7 @@ class WelcomeView : UIView{
         playButton.setTitle("Play", for: .normal)
         playButton.setTitleColor(.black, for: .normal)
         playButton.addTarget(self.superview, action: #selector(WelcomeViewController.startGame), for: .touchUpInside)
-        
+
         
         addSubview(title)
         addSubview(playButton)

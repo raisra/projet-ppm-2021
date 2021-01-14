@@ -9,20 +9,39 @@ import Foundation
 import UIKit
 
 
-class GameViewController : UIViewController {
+class GameViewController : UIViewController, UISplitViewControllerDelegate {
+    
+    var mvc : MessageViewController
+    
+    let blurView : UIVisualEffectView = {
+        let a = UIVisualEffectView(effect: UIBlurEffect(style:.dark) )
+        a.frame = UIScreen.main.bounds
+        return a
+    }()
     
     
-    override func viewDidLoad() {
-        self.modalTransitionStyle = .crossDissolve
-        view = GameView(frame: UIScreen.main.bounds)
+    init(mvc: MessageViewController) {
+        self.mvc = mvc
+        super.init(nibName: nil, bundle: nil)
+        
+        
         
     }
     
-    
-    @objc func backAction(){
-        self.dismiss(animated: true, completion: nil)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
+    
+    override func viewDidLoad() {
+       
+        view.addSubview(GameView(frame: UIScreen.main.bounds))
+        view.addSubview(blurView)
+        blurView.isHidden=true
+    }
+    
+    
+
     
     
 }

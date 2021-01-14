@@ -24,12 +24,37 @@ class WelcomeViewController: UIViewController{
     @objc func startGame() {
         
         print("Start Game")
-        let gameView = GameView()
+       
         
        // self.navigationController?.pushViewController(GameViewController(), animated: true)
-        self.isModalInPresentation = true
-        self.modalTransitionStyle = .crossDissolve
-        self.present(GameViewController(), animated: false, completion: nil)
+        
+        
+        
+        let svc : UISplitViewController
+        if #available(iOS 14.0, *) {
+             svc = UISplitViewController(style: .doubleColumn)
+        } else {
+             svc = UISplitViewController()
+        }
+        let mvc = MessageViewController()
+        let gvc = GameViewController(mvc: mvc)
+        
+        
+       
+        svc.preferredDisplayMode = .secondaryOnly
+        
+        svc.viewControllers = [ mvc, gvc]
+        if #available(iOS 14.0, *) {
+            svc.hide(.secondary)
+        } else {
+            // Fallback on earlier versions
+        }
+        svc.delegate = gvc
+        svc.modalTransitionStyle = .flipHorizontal
+        svc.modalPresentationStyle = .fullScreen
+        self.present(svc, animated: true, completion: nil)
+        
+        //self.view = GameView(frame: UIScreen.main.bounds)
     }
 
 }
