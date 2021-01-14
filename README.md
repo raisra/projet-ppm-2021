@@ -17,7 +17,7 @@
 - 1: Images, gestions de l'interface et du changements des images dans le jeu (Gestion du personnage et de ce qui l'entoure)  ==> Ramzi et ?
 - 2: Son, gestes et capteurs (sauter, glisser, left/right, son ...)                                                           ==> Jihane
 - 3: Gestion de l'orientation du jeu (landscape, portrait) --> multiples terminaux possibles                                  ==>
-- 4: Score, pouvoirs (accélération, décélération, OU AUTRES --> A CHOISIR)                                                    ==>
+- 4: Score, pouvoirs (accélération, décélération, OU AUTRES --> A CHOISIR)                                                    ==> Joao
 - 5: Utilisation du serveur, chat entre les différents joueurs.                                                               ==>
 
 ### Améliorations possibles : 
