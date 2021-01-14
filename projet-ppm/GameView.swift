@@ -16,8 +16,7 @@ class GameView: UIView {
     let test : UILabel = UILabel(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
     
     
-    var timer : Timer?
-    var incTime = TimeInterval(0.1)
+  
     
     
     let personnage = UIImageView()
@@ -45,15 +44,12 @@ class GameView: UIView {
         
        // let i = UIImage(named: "run-1")
        // personnage.image = i
-        
-        
-        
- 
-        pauseButton.setTitle("Pause", for: .normal)
-        pauseButton.backgroundColor = .blue
-        
        
-       
+        pauseButton.isHidden = true
+        pauseButton.setImage(UIImage(named: "pauseButton"), for: .normal)
+        pauseButton.addTarget(self.superview,
+                              action: #selector(GameViewController.startGame),
+                              for: .touchUpInside)
         
         
         
@@ -65,10 +61,9 @@ class GameView: UIView {
         
         addSubview(grassLeftCopy)
         addSubview(grassRightCopy)
-        timer?.invalidate()
-        timer=nil
         
-        timer = Timer.scheduledTimer(timeInterval: incTime, target: self, selector: #selector(updateView), userInfo: nil, repeats: true)
+        addSubview(pauseButton)
+       
     }
     
     
@@ -100,9 +95,11 @@ class GameView: UIView {
         initGrassImage(grassImage: grassRightCopy, origin: CGPoint(x: w-widthGrass, y: h))
         personnage.frame = CGRect(x: 100, y:100, width: 100, height: 100)
         
+        
+        pauseButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
     }
     
-    
+   
     @objc func updateView() {
         
         i = i%5+1
@@ -117,26 +114,15 @@ class GameView: UIView {
         var y2 : Int = Int(grassRightCopy.frame.origin.y)
         grassRightCopy.frame.origin.y = CGFloat( (y2 + h + 10)%(2*h) - h )
         grassLeftCopy.frame.origin.y = grassRightCopy.frame.origin.y
-        
-        
-        
-        
-      
-        
+    }
+   
+    func showPauseButton() {
+        pauseButton.isHidden = false
     }
     
-    
-    func animateBackground() {
-
-        // Animate background
-        // cityImage is the visible image
-        // cityImage2 is the hidden image
-
-        UIView.animate(withDuration: 12.0, delay: 0.0, options: [.repeat, .curveLinear], animations: {
-            self.grassLeft.frame = self.grassLeft.frame.offsetBy(dx: -1 * self.grassLeft.frame.size.width, dy: 0.0)
-            self.grassLeft.frame = self.grassLeft.frame.offsetBy(dx: -1 * self.grassLeft.frame.size.width, dy: 0.0)
-        }, completion: nil)
-
+    func hidePauseButton() {
+        pauseButton.isHidden = true
     }
+    
     
 }

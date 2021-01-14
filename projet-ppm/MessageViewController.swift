@@ -10,14 +10,23 @@ import UIKit
 
 
 class MessageViewController: UIViewController {
-     
-   
-    
-  
-   
     
     
-   
+    
+    
+    var gvc : GameViewController
+    var messageView : MessageView?
+    
+    
+    init(gvc : GameViewController) {
+        self.gvc = gvc
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func viewDidLoad() {
@@ -33,45 +42,52 @@ class MessageViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillHide), name: UIWindow.keyboardWillHideNotification, object: nil)
         
+        messageView = (self.view) as! MessageView
     }
     
-
     
-   
-
-
+    
+    
+    
+    
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        
-        
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
         
+        let a = messageView?.frame
+        messageView?.frame.origin.y -= keyboardFrame.cgRectValue.height
+        let c = keyboardFrame.cgRectValue.height
+        let b = messageView?.frame
         
-            let messageView = (self.view) as! MessageView
-        
-            messageView.newMessage.frame.origin.y -= keyboardFrame.cgRectValue.height
-        
-        
-        
+        messageView?.setNeedsDisplay()
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
-
         
-        
-       
-            let messageView = (self.view) as! MessageView
-            messageView.newMessage.frame.origin.y += keyboardFrame.cgRectValue.height
-        
-        
+        messageView?.frame.origin.y += keyboardFrame.cgRectValue.height
+        messageView?.setNeedsDisplay()
     }
-
+    
     @objc func backToGameView()  {
-        
         let a = self.navigationController?.viewControllers
-     //   splitVC?.showDetailViewController(detailVC!.navigationController!, sender: self)
+        //   splitVC?.showDetailViewController(detailVC!.navigationController!, sender: self)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("message view will appear")
+        gvc.blurrGameView()
+        gvc.pauseGame()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("message view will desappear")
+        gvc.unblurrGameView()
+        
+        gvc.showPauseButton()
+    }
+    
     
 }
 

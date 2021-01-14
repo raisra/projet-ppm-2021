@@ -12,17 +12,14 @@ import UIKit
 
 class MessageView: UIView, UITextFieldDelegate {
     
-    
-    
     let messages: UITextView = UITextView()
     let newMessage : UITextField = UITextField()
     
     
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .blue
+        self.backgroundColor = .black
+        self.alpha = 0.5
         messages.backgroundColor = .white
         messages.isEditable = false
         messages.textColor = .black
@@ -34,7 +31,16 @@ class MessageView: UIView, UITextFieldDelegate {
         newMessage.delegate = self
         newMessage.placeholder = "type your message here"
    
-        
+
+        newMessage.layer.cornerRadius = 5
+        newMessage.layer.borderColor = UIColor.lightGray.cgColor
+        newMessage.layer.borderWidth = 1
+        newMessage.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: newMessage.frame.height))
+        newMessage.leftViewMode = .always
+        newMessage.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: newMessage.frame.height))
+        newMessage.rightViewMode = .always
+        newMessage.clearButtonMode = .whileEditing
+       
         
         
         addSubview(messages)

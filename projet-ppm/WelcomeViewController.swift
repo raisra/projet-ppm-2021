@@ -36,8 +36,9 @@ class WelcomeViewController: UIViewController{
         } else {
              svc = UISplitViewController()
         }
-        let mvc = MessageViewController()
-        let gvc = GameViewController(mvc: mvc)
+        let gvc = GameViewController()
+        let mvc = MessageViewController(gvc:gvc)
+        
         
         
        
