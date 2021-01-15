@@ -30,16 +30,37 @@ class GameViewController : UIViewController{
     //
     //    }
     
+    var gameIsStoped : Bool = true
   
+    @objc func startGameForTheFistTime(){
+        startGame(isFirstStart: true)
+    }
     
-    @objc func startGame(){
+     func startGame(isFirstStart: Bool ){
         print("start the game")
-        //pauseGame()
-        gv?.pauseButton.isHidden = true
-        gv?.personnage?.isHidden = false
-        timer = Timer.scheduledTimer(timeInterval: incTime, target: self.view, selector: #selector(GameView.updateView), userInfo: nil, repeats: true)
         
-        gv?.startAnimation()
+        self.gv?.startButton.isHidden = true
+        
+       
+        let cb : ()->() = {
+            //pauseGame()
+            
+            self.gv?.pauseButton.isHidden = false
+            self.gv?.personnage?.isHidden = false
+            self.gv?.messageButton.isHidden = false
+            self.timer = Timer.scheduledTimer(timeInterval: self.incTime, target: self.view, selector: #selector(GameView.updateView), userInfo: nil, repeats: true)
+            
+            self.gv?.startAnimation()
+            
+        }
+        if(isFirstStart) {
+            animationForNumber(imageName: 1, callback: cb)
+        }
+        else{
+            cb()
+        }
+        
+        gameIsStoped = false
     }
    
     
@@ -54,10 +75,8 @@ class GameViewController : UIViewController{
         
         let counterView: UIImageView = gv!.counterView
         
-
         let h = UIScreen.main.bounds.height
         let w = UIScreen.main.bounds.width
-        
         
         counterView.image = UIImage(named: String(imageName))
         counterView.alpha = 1
@@ -68,11 +87,10 @@ class GameViewController : UIViewController{
         UIView.animate(withDuration: 1,
                        animations: {
                         print("animation \(imageName)")
-                        let   a = counterView.frame
-                        
+                 
                         counterView.alpha = 0
-                        counterView.frame.origin = CGPoint(x: w/2-10, y: h/2-10)
-                        counterView.frame.size = CGSize(width: 20, height: 20)
+                        counterView.frame.origin = CGPoint(x: w/2-100, y: h/2-100)
+                        counterView.frame.size = CGSize(width: 200, height: 200)
                        
                        }, completion: {(true) in
                         
@@ -83,7 +101,6 @@ class GameViewController : UIViewController{
     
 
     
-    
     override func viewDidLoad() {
         view = GameView(frame: UIScreen.main.bounds)
         gv = self.view as! GameView
@@ -91,13 +108,15 @@ class GameViewController : UIViewController{
         view.addSubview(blurView)
         blurView.isHidden=true
         
-        let a = self.navigationController?.navigationBar.isHidden=true
+   //     let a = self.navigationController?.navigationBar.isHidden=true
         print("view did load game")
+        
+        self.navigationController?.navigationItem.backBarButtonItem?.image = UIImage(named: "message")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-        animationForNumber(imageName: 1, callback: startGame )
+        
         print("view did appear game")
     }
     
@@ -111,11 +130,21 @@ class GameViewController : UIViewController{
     }
     
     
-    func pauseGame() {
-        gv?.stopAnimation()
-        gv?.pauseButton.isHidden = false
-        timer?.invalidate()
-        timer=nil
+    @objc func pauseGame() {
+        if(!gameIsStoped){
+            gv?.stopAnimation()
+            timer?.invalidate()
+            timer=nil
+            gameIsStoped = true
+            gv?.viewHandlingCoins.isHidden = true
+        }
+        else {
+            //restart the game
+            startGame(isFirstStart: false)
+            gameIsStoped = false
+            gv?.viewHandlingCoins.isHidden = false
+        }
+       
     }
     
     func showPauseButton(){
@@ -124,12 +153,10 @@ class GameViewController : UIViewController{
     
     
 
-  
-    
     //display the message view
     @objc func seeMessage(){
-        
         print("click on message button")
+  
         if (UIDevice.current.userInterfaceIdiom == .pad) {
             self.splitViewController?.preferredDisplayMode = .oneBesideSecondary
         } else {

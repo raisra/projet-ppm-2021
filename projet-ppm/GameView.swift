@@ -12,8 +12,6 @@ import UIKit
 
 
 class GameView: UIView {
-
-    
     var personnage :UIImageView?
    
     let messageButton = UIButton()
@@ -31,6 +29,7 @@ class GameView: UIView {
     
     let widthGrass: CGFloat = 100.0
     
+    let startButton = UIButton()
     
     //nombre de pieces réscoltées
     var score : Int = 0
@@ -42,12 +41,12 @@ class GameView: UIView {
    
     var deltaY : Int = 10
     
+    
+    let viewHandlingCoins : UIView = UIView()
+    
     override init(frame: CGRect) {
-        
-        
-        
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.backgroundColor = .gray
        
     
        // let i = UIImage(named: "run-1")
@@ -56,9 +55,15 @@ class GameView: UIView {
         pauseButton.isHidden = true
         pauseButton.setImage(UIImage(named: "pauseButton"), for: .normal)
         pauseButton.addTarget(self.superview,
-                              action: #selector(GameViewController.startGame),
+                              action: #selector(GameViewController.pauseGame),
                               for: .touchUpInside)
      
+        startButton.isHidden = false
+        startButton.setImage(UIImage(named: "startButton"), for: .normal)
+        startButton.addTarget(self.superview,
+                              action: #selector(GameViewController.startGameForTheFistTime),
+                              for: .touchUpInside)
+        
         
         personnage = createAnimatedView("personnage", position: nil, size: nil)
         personnage?.isHidden = true
@@ -68,16 +73,21 @@ class GameView: UIView {
         scoreLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
         scoreLabel.textColor = .black
         
-        
         messageButton.setImage(UIImage(named: "message"), for: .normal)
         messageButton.addTarget(self.superview, action: #selector(GameViewController.seeMessage), for: .touchUpInside)
+        messageButton.isHidden = true
         
-        addSubview(personnage!)
+        
+        viewHandlingCoins.isHidden = false
+        
+        addSubview(viewHandlingCoins)
+        
         addSubview(grassLeft)
         addSubview(grassRight)
-        
         addSubview(grassLeftCopy)
         addSubview(grassRightCopy)
+        addSubview(personnage!)
+        
         
         addSubview(pauseButton)
         
@@ -85,12 +95,13 @@ class GameView: UIView {
         addSubview(scoreLabel)
        
         addSubview(messageButton)
+        addSubview(startButton)
+       
     }
     
     
     
     func initGrassImage(grassImage: UIImageView,  origin: CGPoint)  {
-        
         grassImage.frame =  CGRect(origin: origin, size: CGSize(width: widthGrass, height: UIScreen.main.bounds.height))
         
         grassImage.contentMode = .scaleToFill
@@ -105,7 +116,6 @@ class GameView: UIView {
     
     
     override func draw(_ rect: CGRect) {
-        
         let h = rect.height
         let w = rect.width
         
@@ -116,7 +126,8 @@ class GameView: UIView {
         initGrassImage(grassImage: grassRightCopy, origin: CGPoint(x: w-widthGrass, y: h))
         
         
-        pauseButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
+        pauseButton.frame = CGRect(x: w-50, y: h-50, width: 50, height: 50)
+        startButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
         counterView.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
         
         
@@ -125,6 +136,8 @@ class GameView: UIView {
         
         scoreLabel.frame = CGRect(x: w-100, y: 30, width: 100, height: 100)
         messageButton.frame = CGRect(x: 100, y: 30, width: 100, height: 100)
+        
+        viewHandlingCoins.frame = UIScreen.main.bounds
         print("draw")
     }
     
@@ -151,7 +164,7 @@ class GameView: UIView {
         var newCoin =  createAnimatedView("coin", position: CGPoint(x: r, y: -50), size: CGSize(width: 50, height: 50))
         coins.append(newCoin)
         newCoin.startAnimating()
-        addSubview(newCoin)
+        viewHandlingCoins.addSubview(newCoin)
     }
     
     func animatedImages(for name: String) -> [UIImage] {
@@ -203,7 +216,7 @@ class GameView: UIView {
                 
                 coins.remove(at: i)
                
-                print("score est: \(score)")
+               // print("score est: \(score)")
                 
                 scoreLabel.text = String(score)
                 moveCoinToCorner(coin, point: scoreLabel.frame.origin)

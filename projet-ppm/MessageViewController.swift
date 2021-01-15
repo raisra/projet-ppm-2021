@@ -18,7 +18,6 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
     init(gvc : GameViewController) {
         self.gvc = gvc
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -29,8 +28,7 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        let a = self.navigationItem
-        self.navigationItem.title = "Messages"
+        self.navigationItem.title = "Messag"
      
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(MessageViewController.backToGameView))
         self.navigationItem.backBarButtonItem?.tintColor = .blue
@@ -42,7 +40,7 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillHide), name: UIWindow.keyboardWillHideNotification, object: nil)
         
         messageView = (self.view) as! MessageView
-        
+    
         splitViewController?.delegate = self
     }
     
@@ -50,12 +48,7 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
     @objc func keyboardWillShow(notification: NSNotification) {
         print("keyboardwillshow")
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
-        
-        let a = messageView?.frame
         messageView?.frame.origin.y -= keyboardFrame.cgRectValue.height
-        let c = keyboardFrame.cgRectValue.height
-        let b = messageView?.frame
-        
         messageView?.setNeedsDisplay()
     }
     
@@ -69,15 +62,18 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
     
     @objc func backToGameView()  {
         print("move from primary to secondary")
-        let a = self.navigationController?.viewControllers
-        splitViewController?.preferredDisplayMode = .secondaryOnly
-
+        
+        if(UIDevice.current.userInterfaceIdiom == .pad){
+            splitViewController?.preferredDisplayMode = .secondaryOnly
+        }
+        else {
+             splitViewController?.showDetailViewController(gvc, sender: self)
+        }
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("message view will appear")
-        
-        
         gvc.blurrGameView()
         gvc.pauseGame()
     }
@@ -87,7 +83,6 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
         print("message view will desappear")
         gvc.unblurrGameView()
         gvc.showPauseButton()
-    
     }
     
     func splitViewController(
@@ -96,9 +91,14 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
                  onto primaryViewController: UIViewController) -> Bool {
             // Return true to prevent UIKit from applying its default behavior
         
-        print("split view delegate")
-            return true
+        print("******split view delegate******")
+        let a = splitViewController.viewControllers
+            return false
         }
+    
+   
+     
+    
     
 }
 

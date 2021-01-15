@@ -28,19 +28,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let nvcmaster = UINavigationController(rootViewController: mvc)
         let gvcslave = UINavigationController(rootViewController: gvc!)
         
-        if #available(iOS 14.0, *) {
-             svc = UISplitViewController(style: .doubleColumn)
-        } else {
-             svc = UISplitViewController()
-        }
+     
+        svc = UISplitViewController()
         
         
         svc?.preferredDisplayMode = .secondaryOnly
         svc?.viewControllers = [nvcmaster, gvcslave]
+ 
         //svc?.SplitBehavior = .overlay
-     
-        
-        svc?.modalTransitionStyle = .flipHorizontal
+
+        svc?.modalTransitionStyle = .partialCurl
         svc?.modalPresentationStyle = .fullScreen
         
         svc?.presentsWithGesture = false
@@ -53,7 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.windowScene = windowScene
         window?.makeKeyAndVisible()
-    
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -71,7 +67,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
-       
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {

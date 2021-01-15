@@ -32,9 +32,8 @@ class WelcomeViewController: UIViewController{
     @objc func startGame() {
         
         print("Start Game")
-
        // self.navigationController?.pushViewController(GameViewController(), animated: true)
-        self.present(nvc, animated: true, completion: nil)
+        self.present(nvc  as! UISplitViewController, animated: true, completion: nil)
         
         //self.view = GameView(frame: UIScreen.main.bounds)
     }

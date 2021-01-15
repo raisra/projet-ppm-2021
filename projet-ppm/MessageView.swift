@@ -31,7 +31,6 @@ class MessageView: UIView, UITextFieldDelegate {
         newMessage.delegate = self
         newMessage.placeholder = "type your message here"
    
-
         newMessage.layer.cornerRadius = 5
         newMessage.layer.borderColor = UIColor.lightGray.cgColor
         newMessage.layer.borderWidth = 1
@@ -41,11 +40,8 @@ class MessageView: UIView, UITextFieldDelegate {
         newMessage.rightViewMode = .always
         newMessage.clearButtonMode = .whileEditing
        
-        
-        
         addSubview(messages)
         addSubview(newMessage)
-        
     }
     
     required init?(coder: NSCoder) {
