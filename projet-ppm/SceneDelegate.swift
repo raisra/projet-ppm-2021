@@ -25,8 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         gvc = GameViewController()
         let mvc = MessageViewController(gvc:gvc!)
+        let nvcmaster = UINavigationController(rootViewController: mvc)
+        let gvcslave = UINavigationController(rootViewController: gvc!)
         
-       
         if #available(iOS 14.0, *) {
              svc = UISplitViewController(style: .doubleColumn)
         } else {
@@ -35,20 +36,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         svc?.preferredDisplayMode = .secondaryOnly
-        svc?.viewControllers = [ mvc, gvc!]
-        if #available(iOS 14.0, *) {
-            svc?.hide(.secondary)
-        } else {
-            // Fallback on earlier versions
-        }
-        svc?.delegate = gvc
+        svc?.viewControllers = [nvcmaster, gvcslave]
+        //svc?.SplitBehavior = .overlay
+     
+        
         svc?.modalTransitionStyle = .flipHorizontal
         svc?.modalPresentationStyle = .fullScreen
         
+        svc?.presentsWithGesture = false
         
         wvc = WelcomeViewController(nextViewController: svc!)
-        
-        
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         
         window?.rootViewController = wvc

@@ -15,9 +15,7 @@ class WelcomeViewController: UIViewController{
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.isModalInPresentation = true
- 
         self.view = WelcomeView(frame: UIScreen.main.bounds)
-       
     }
 
     
@@ -34,13 +32,8 @@ class WelcomeViewController: UIViewController{
     @objc func startGame() {
         
         print("Start Game")
-       
-        
+
        // self.navigationController?.pushViewController(GameViewController(), animated: true)
-        
-        
-        
-        
         self.present(nvc, animated: true, completion: nil)
         
         //self.view = GameView(frame: UIScreen.main.bounds)

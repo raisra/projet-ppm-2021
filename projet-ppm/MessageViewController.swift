@@ -9,10 +9,7 @@ import Foundation
 import UIKit
 
 
-class MessageViewController: UIViewController {
-    
-    
-    
+class MessageViewController: UIViewController , UISplitViewControllerDelegate {
     
     var gvc : GameViewController
     var messageView : MessageView?
@@ -32,7 +29,9 @@ class MessageViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        let a = self.navigationItem
         self.navigationItem.title = "Messages"
+     
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(MessageViewController.backToGameView))
         self.navigationItem.backBarButtonItem?.tintColor = .blue
         
@@ -43,16 +42,11 @@ class MessageViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillHide), name: UIWindow.keyboardWillHideNotification, object: nil)
         
         messageView = (self.view) as! MessageView
+        
+        splitViewController?.delegate = self
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
+  
     @objc func keyboardWillShow(notification: NSNotification) {
         print("keyboardwillshow")
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
@@ -74,12 +68,16 @@ class MessageViewController: UIViewController {
     }
     
     @objc func backToGameView()  {
+        print("move from primary to secondary")
         let a = self.navigationController?.viewControllers
-        //   splitVC?.showDetailViewController(detailVC!.navigationController!, sender: self)
+        splitViewController?.preferredDisplayMode = .secondaryOnly
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("message view will appear")
+        
+        
         gvc.blurrGameView()
         gvc.pauseGame()
     }
@@ -88,10 +86,19 @@ class MessageViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         print("message view will desappear")
         gvc.unblurrGameView()
-        
         gvc.showPauseButton()
+    
     }
     
+    func splitViewController(
+                 _ splitViewController: UISplitViewController,
+                 collapseSecondary secondaryViewController: UIViewController,
+                 onto primaryViewController: UIViewController) -> Bool {
+            // Return true to prevent UIKit from applying its default behavior
+        
+        print("split view delegate")
+            return true
+        }
     
 }
 

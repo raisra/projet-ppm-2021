@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 
-class GameViewController : UIViewController, UISplitViewControllerDelegate {
+class GameViewController : UIViewController{
     
     // var mvc : MessageViewController
     
     var timer : Timer?
-    var incTime = TimeInterval(0.1)
+    var incTime = TimeInterval(0.05)
     var gv : GameView?
     
     let blurView : UIVisualEffectView = {
@@ -33,10 +33,13 @@ class GameViewController : UIViewController, UISplitViewControllerDelegate {
   
     
     @objc func startGame(){
-        pauseGame()
-      
-        gv?.hidePauseButton()
+        print("start the game")
+        //pauseGame()
+        gv?.pauseButton.isHidden = true
+        gv?.personnage?.isHidden = false
         timer = Timer.scheduledTimer(timeInterval: incTime, target: self.view, selector: #selector(GameView.updateView), userInfo: nil, repeats: true)
+        
+        gv?.startAnimation()
     }
    
     
@@ -76,27 +79,26 @@ class GameViewController : UIViewController, UISplitViewControllerDelegate {
                         self.animationForNumber(imageName: imageName + 1, callback: callback)
 
                        })
-        
     }
     
 
     
     
     override func viewDidLoad() {
-        
         view = GameView(frame: UIScreen.main.bounds)
         gv = self.view as! GameView
         
         view.addSubview(blurView)
         blurView.isHidden=true
         
-        print("view did load")
+        let a = self.navigationController?.navigationBar.isHidden=true
+        print("view did load game")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
         animationForNumber(imageName: 1, callback: startGame )
-        print("view did appear")
+        print("view did appear game")
     }
     
     
@@ -110,17 +112,29 @@ class GameViewController : UIViewController, UISplitViewControllerDelegate {
     
     
     func pauseGame() {
-        
-        gv?.showPauseButton()
+        gv?.stopAnimation()
+        gv?.pauseButton.isHidden = false
         timer?.invalidate()
         timer=nil
-        
     }
     
     func showPauseButton(){
-        gv?.showPauseButton()
+        gv?.pauseButton.isHidden = false
     }
     
+    
+
   
+    
+    //display the message view
+    @objc func seeMessage(){
+        
+        print("click on message button")
+        if (UIDevice.current.userInterfaceIdiom == .pad) {
+            self.splitViewController?.preferredDisplayMode = .oneBesideSecondary
+        } else {
+            self.splitViewController?.preferredDisplayMode = .primaryOverlay
+        }
+    }
    
 }
