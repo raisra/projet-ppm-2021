@@ -10,8 +10,12 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
+    
+    var wvc: WelcomeViewController?
+    var gvc : GameViewController?
+    var svc : UISplitViewController?
+    
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -19,15 +23,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         
-     
+        gvc = GameViewController()
+        let mvc = MessageViewController(gvc:gvc!)
         
-        let svc = WelcomeViewController()
-       // let mvc = UINavigationController(rootViewController: svc)
+       
+        if #available(iOS 14.0, *) {
+             svc = UISplitViewController(style: .doubleColumn)
+        } else {
+             svc = UISplitViewController()
+        }
+        
+        
+        svc?.preferredDisplayMode = .secondaryOnly
+        svc?.viewControllers = [ mvc, gvc!]
+        if #available(iOS 14.0, *) {
+            svc?.hide(.secondary)
+        } else {
+            // Fallback on earlier versions
+        }
+        svc?.delegate = gvc
+        svc?.modalTransitionStyle = .flipHorizontal
+        svc?.modalPresentationStyle = .fullScreen
+        
+        
+        wvc = WelcomeViewController(nextViewController: svc!)
         
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         
-        window?.rootViewController = svc
+        window?.rootViewController = wvc
         window?.makeKeyAndVisible()
         
         window?.windowScene = windowScene
@@ -50,6 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
+       
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -61,6 +86,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        
+        print("pause the game")
+        gvc?.pauseGame()
     }
 
 

@@ -51,7 +51,10 @@ class MessageViewController: UIViewController {
     
     
     
+    
+    
     @objc func keyboardWillShow(notification: NSNotification) {
+        print("keyboardwillshow")
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
         
         let a = messageView?.frame
@@ -63,6 +66,7 @@ class MessageViewController: UIViewController {
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
+        print("keyboardwillHide")
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
         
         messageView?.frame.origin.y += keyboardFrame.cgRectValue.height

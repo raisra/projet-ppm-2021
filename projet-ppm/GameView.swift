@@ -12,12 +12,7 @@ import UIKit
 
 
 class GameView: UIView {
-    
-    let test : UILabel = UILabel(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
-    
-    
-  
-    
+
     
     let personnage = UIImageView()
     var i = 1
@@ -28,20 +23,16 @@ class GameView: UIView {
     let grassLeftCopy = UIImageView()
     let grassRightCopy = UIImageView()
     
-    
-    let widthGrass: CGFloat = 40.0
-    
-    
     let pauseButton = UIButton()
+    let counterView = UIImageView()
     
+    let widthGrass: CGFloat = 100.0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
-        test.text = "This is the game view"
-        
        
-        
+    
        // let i = UIImage(named: "run-1")
        // personnage.image = i
        
@@ -50,10 +41,6 @@ class GameView: UIView {
         pauseButton.addTarget(self.superview,
                               action: #selector(GameViewController.startGame),
                               for: .touchUpInside)
-        
-        
-        
-        addSubview(test)
      
         addSubview(personnage)
         addSubview(grassLeft)
@@ -63,6 +50,8 @@ class GameView: UIView {
         addSubview(grassRightCopy)
         
         addSubview(pauseButton)
+        
+        addSubview(counterView)
        
     }
     
@@ -95,8 +84,13 @@ class GameView: UIView {
         initGrassImage(grassImage: grassRightCopy, origin: CGPoint(x: w-widthGrass, y: h))
         personnage.frame = CGRect(x: 100, y:100, width: 100, height: 100)
         
-        
         pauseButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
+        
+        self.counterView.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
+        let   a = self.counterView.frame
+        print("draw")
+        
+        
     }
     
    
@@ -123,6 +117,9 @@ class GameView: UIView {
     func hidePauseButton() {
         pauseButton.isHidden = true
     }
+    
+    
+    
     
     
 }

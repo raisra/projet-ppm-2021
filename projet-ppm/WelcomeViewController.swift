@@ -9,6 +9,8 @@ import UIKit
 
 class WelcomeViewController: UIViewController{
 
+    var nvc: UIViewController
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -20,6 +22,14 @@ class WelcomeViewController: UIViewController{
 
     
     
+    init(nextViewController: UIViewController) {
+        self.nvc = nextViewController
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     @objc func startGame() {
         
@@ -30,30 +40,8 @@ class WelcomeViewController: UIViewController{
         
         
         
-        let svc : UISplitViewController
-        if #available(iOS 14.0, *) {
-             svc = UISplitViewController(style: .doubleColumn)
-        } else {
-             svc = UISplitViewController()
-        }
-        let gvc = GameViewController()
-        let mvc = MessageViewController(gvc:gvc)
         
-        
-        
-       
-        svc.preferredDisplayMode = .secondaryOnly
-        
-        svc.viewControllers = [ mvc, gvc]
-        if #available(iOS 14.0, *) {
-            svc.hide(.secondary)
-        } else {
-            // Fallback on earlier versions
-        }
-        svc.delegate = gvc
-        svc.modalTransitionStyle = .flipHorizontal
-        svc.modalPresentationStyle = .fullScreen
-        self.present(svc, animated: true, completion: nil)
+        self.present(nvc, animated: true, completion: nil)
         
         //self.view = GameView(frame: UIScreen.main.bounds)
     }
