@@ -99,7 +99,7 @@ class GameView: UIView {
         viewHandlingCoins.isHidden = false
         
         roadImage.contentMode = .scaleToFill
-        initAnimatedView(roadImage, "chemin", speed: speed)
+        initAnimatedView(roadImage, "road", speed: speed)
         
         landscapeView.backgroundColor = .green
         

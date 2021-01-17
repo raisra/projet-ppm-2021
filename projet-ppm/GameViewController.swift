@@ -42,11 +42,24 @@ class GameViewController : UIViewController{
     //tableau contenant les pieces affiché sur l'ecran
     var coins: Set<UIImageView> = Set<UIImageView>()
     
+    
+ 
+  
+
+    let droite = setButton(title: ">>>>>>", posx: 500, posy: 300)
+    let gauche = setButton(title: "<<<<<<", posx: 400, posy: 300)
+    
+    
+    let saute = setButton(title: "Sauter", posx: 100, posy: 300)
+    let baisse = setButton(title: "BAisser", posx: 100, posy: 400)
+    
+    let accelerate = setButton(title: "x10", posx: 400, posy: 600)
+    
     override func viewDidLoad() {
         
         let r : CGFloat = 0.3
         let rh = r * UIScreen.main.bounds.height
-        modelRoad = ModelRoad(N: N, W: w, i0: w/3.0, i3: 3.0*w/4.0 , H: rh, bSize: 10.0, fSize: 50.0)
+        modelRoad = ModelRoad(N: N, W: w, i0: w/4.0, i3: 3.0*w/4.0 , H: rh, bSize: 10.0, fSize: 50.0)
         view = GameView(frame: UIScreen.main.bounds, r: r)
         
         
@@ -60,6 +73,18 @@ class GameViewController : UIViewController{
         
         
         
+        droite.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
+        gauche.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
+        saute.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
+        baisse.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
+        accelerate.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
+       
+        
+        gv.addSubview(gauche)
+        gv.addSubview(droite)
+        gv.addSubview(baisse)
+        gv.addSubview(saute)
+        gv.addSubview(accelerate)
         
         
         print("view did load game")
@@ -277,6 +302,90 @@ class GameViewController : UIViewController{
         ret.1=Bool.random()
         ret.2=Bool.random()
         return ret
+        
+    }
+    
+    
+    
+    /**
+        bouton pour simuler le deplacement du personnage
+     */
+    
+    static  func setButton(title: String, posx: CGFloat, posy : CGFloat) -> UIButton {
+        let b = UIButton()
+        b.frame = CGRect(x: posx, y: posy, width: 100, height: 50)
+        b.setTitle(title, for: .normal)
+        b.setTitleColor(.black, for: .normal)
+        
+        return b
+    }
+    
+    
+    func moveToTheRight()  {
+        thePosition.0 = min(2 , thePosition.0 + 1)
+        
+    }
+    
+    func moveToTheLeft()  {
+        thePosition.0 = max(0, thePosition.0 - 1)
+    }
+    
+    func moveUp() {
+        
+        let initPosition = thePosition.0
+        thePosition.0 = 42
+        
+        let upAnimation : () ->() = {
+            self.gv.personnage.center.y -= 100
+        }
+        
+        let completion : (Bool) ->() = {(_) in
+            
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent, .curveEaseIn] ,
+            animations : {
+                self.thePosition.0 = initPosition
+                self.gv.personnage.center.y += 100
+            }
+            ,  completion: nil)
+
+            
+        }
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent , .curveEaseOut ],
+                       animations: upAnimation, completion: completion)
+        
+    }
+       
+    
+    
+    @objc func movePersonnage(sender : UIButton) {
+        
+        if( sender == droite){
+            print("move to right")
+            moveToTheRight()
+            let s = modelRoad?.getCenter(i: thePosition.0, j: thePosition.1)
+            gv.personnage.center = s!
+        }
+        else if sender == gauche {
+            print("move to the left")
+            moveToTheLeft()
+            let s = modelRoad?.getCenter(i: thePosition.0, j: thePosition.1)
+            gv.personnage.center = s!
+        }
+        
+        else if sender == saute{
+            print("move up")
+            moveUp()
+        }
+        
+        else if sender == baisse{
+            print("move down")
+            
+        }
+        else if sender == accelerate{
+            print("accelerate")
+           
+        }
+        
         
     }
 }

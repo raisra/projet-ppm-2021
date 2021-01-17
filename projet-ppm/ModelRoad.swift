@@ -164,6 +164,12 @@ class ModelRoad {
     
     
     func removeCoin(i:Int , j : Int)->UIImageView?{
+        
+        //le personnage a sauté
+        if i == 42 {
+            return nil
+        }
+        
         for k in 0..<road[j][i].imagesToDisplay.count{
             let (t,_)=road[j][i].imagesToDisplay[k]
             
