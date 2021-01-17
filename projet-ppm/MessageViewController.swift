@@ -75,7 +75,10 @@ class MessageViewController: UIViewController , UISplitViewControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         print("message view will appear")
         gvc.blurrGameView()
-        gvc.pauseGame()
+        if(!gvc.gameIsStoped){
+            gvc.pauseGame()
+        }
+        
     }
     
     
