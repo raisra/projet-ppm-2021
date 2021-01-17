@@ -260,8 +260,8 @@ class GameViewController : UIViewController{
     var d = 0
     func createCoin(){
         let a = random()
-        
-        for (i,k) in [(0,a.0), (1,a.1), (2,a.2)] {
+        print(a)
+        for (i,k) in [(0,a[0]), (1,a[1]), (2,a[2])] {
             if(k){
                 var newCoin : UIImageView
                 if(coins.isEmpty){
@@ -292,17 +292,29 @@ class GameViewController : UIViewController{
     
     
     
+    var repeatCount = 0
+    var prevRandomValue : [Bool] = [false, false, false]
+    var prevR = 0
     
-    
-    func random () -> (Bool,Bool,Bool){
+    func random () -> [Bool]{
+        if (repeatCount > 0){
+            repeatCount -= 1
+            return prevRandomValue
+        }
         
-        var ret : (Bool, Bool, Bool)
         
-        ret.0=Bool.random()
-        ret.1=Bool.random()
-        ret.2=Bool.random()
-        return ret
+        if(repeatCount == 0 ){
+            repeatCount = Int.random(in: 2...10)
+        }
         
+        prevRandomValue = [false, false, false]
+        
+        let r = Int.random(in: 1...2)
+        let r1 = (r+prevR)%3
+        prevRandomValue[r1] = true
+        prevR = r1
+        repeatCount -= 1
+        return prevRandomValue
     }
     
     
