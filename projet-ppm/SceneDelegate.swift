@@ -23,26 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         
-        gvc = GameViewController()
-        let mvc = MessageViewController(gvc:gvc!)
-        let nvcmaster = UINavigationController(rootViewController: mvc)
-        let gvcslave = UINavigationController(rootViewController: gvc!)
-        
-     
-        svc = UISplitViewController()
-        
-        
-        svc?.preferredDisplayMode = .secondaryOnly
-        svc?.viewControllers = [nvcmaster, gvcslave]
- 
-        //svc?.SplitBehavior = .overlay
-
-        svc?.modalTransitionStyle = .partialCurl
-        svc?.modalPresentationStyle = .fullScreen
-        
-        svc?.presentsWithGesture = false
-        
-        wvc = WelcomeViewController(nextViewController: svc!)
+        wvc = WelcomeViewController()
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         
         window?.rootViewController = wvc

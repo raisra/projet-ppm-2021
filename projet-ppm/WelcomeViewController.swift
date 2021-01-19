@@ -9,7 +9,6 @@ import UIKit
 
 class WelcomeViewController: UIViewController{
 
-    var nvc: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,22 +19,16 @@ class WelcomeViewController: UIViewController{
 
     
     
-    init(nextViewController: UIViewController) {
-        self.nvc = nextViewController
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     @objc func startGame() {
         
         print("Start Game")
-       // self.navigationController?.pushViewController(GameViewController(), animated: true)
-        self.present(nvc  as! UISplitViewController, animated: true, completion: nil)
+       
+        let gvc = GameViewController()
+    
+        gvc.modalTransitionStyle = .partialCurl
+        gvc.modalPresentationStyle = .fullScreen
         
-        //self.view = GameView(frame: UIScreen.main.bounds)
+        self.present(gvc , animated: true, completion: nil)
     }
 
 }

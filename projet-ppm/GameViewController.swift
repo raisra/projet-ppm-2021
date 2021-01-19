@@ -12,16 +12,18 @@ import UIKit
 class GameViewController : UIViewController{
     
     // var mvc : MessageViewController
+    let mvc = { () -> MessageViewController in
+        let mvc = MessageViewController()
+       
+        mvc.modalTransitionStyle = .flipHorizontal
+        mvc.modalPresentationStyle = .fullScreen
+        
+        return mvc
+    }()
     
     var timer : Timer?
     var speed = TimeInterval(2)
     var gv : GameView!
-    
-    let blurView : UIVisualEffectView = {
-        let a = UIVisualEffectView(effect: UIBlurEffect(style:.dark) )
-        a.frame = UIScreen.main.bounds
-        return a
-    }()
     
     
     let N : Int = 100
@@ -29,12 +31,12 @@ class GameViewController : UIViewController{
     var gameIsStoped : Bool = true
     var modelRoad : ModelRoad?
     
-    let w = UIScreen.main.bounds.width
+     let w = UIScreen.main.bounds.width
     let h = UIScreen.main.bounds.height
     
     
-    let sk = 0.3 * UIScreen.main.bounds.height
-    let rh = 0.7 * UIScreen.main.bounds.height
+    let sk = 0 * UIScreen.main.bounds.height
+    let rh = 1 * UIScreen.main.bounds.height
     
     var thePosition :(Int, Int) = (0,0)
     var size : CGSize = CGSize(width: 100, height: 100)
@@ -42,36 +44,30 @@ class GameViewController : UIViewController{
     //tableau contenant les pieces affiché sur l'ecran
     var coins: Set<UIImageView> = Set<UIImageView>()
     
-    
- 
-  
 
-    let droite = setButton(title: ">>>>>>", posx: 500, posy: 300)
-    let gauche = setButton(title: "<<<<<<", posx: 400, posy: 300)
+    let droite = setButton(title: ">>>>", posx: UIScreen.main.bounds.width-100, posy: 50)
+    let gauche = setButton(title: "<<<<", posx: 10, posy: 50)
     
     
-    let saute = setButton(title: "Sauter", posx: 100, posy: 300)
-    let baisse = setButton(title: "BAisser", posx: 100, posy: 400)
+    let saute = setButton(title: "Sauter", posx: UIScreen.main.bounds.width/2, posy: 300)
+    let baisse = setButton(title: "BAisser", posx: UIScreen.main.bounds.width/2, posy: 400)
     
     let accelerate = setButton(title: "x10", posx: 400, posy: 600)
     
     override func viewDidLoad() {
         
-        let r : CGFloat = 0.3
+        let r : CGFloat = 1
         let rh = r * UIScreen.main.bounds.height
-        modelRoad = ModelRoad(N: N, W: w, i0: w/4.0, i3: 3.0*w/4.0 , H: rh, bSize: 10.0, fSize: 50.0)
+        modelRoad = ModelRoad(N: N, W: w, i0: w/4.0, i3: 3.0*w/4.0 , H: 278, bSize: 10.0, fSize: 50.0) //remplacer 278 par rh
         view = GameView(frame: UIScreen.main.bounds, r: r)
         
         
         gv = self.view as? GameView
-        thePosition = (1, N-10)
+        thePosition = (1, N-1)
         
         gv.initPersonnage(position: (modelRoad?.getCenter(i: thePosition.0, j: thePosition.1))!, size : size)
         gv.setSpeed(speed: speed)
-        view.addSubview(blurView)
-        blurView.isHidden=true
-        
-        
+       
         
         droite.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
         gauche.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
@@ -107,12 +103,12 @@ class GameViewController : UIViewController{
         let cb : ()->() = {
             //pauseGame()
             
-            self.gv?.pauseButton.isHidden = false
+            self.gv?.pauseButton.isHidden = true
             self.gv?.personnage.isHidden = false
             self.gv?.messageButton.isHidden = false
             self.timer = Timer.scheduledTimer(timeInterval: self.speed/50.0, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
             
-            self.gv?.startAnimation()
+            self.startAnimation()
             
         }
         if(isFirstStart) {
@@ -125,6 +121,30 @@ class GameViewController : UIViewController{
         gameIsStoped = false
     }
     
+    
+    
+    func startAnimation(){
+        
+//        UIView.animate(withDuration: 50, delay: 0, options: [.repeat , .curveLinear]) {
+//            self.cloud1.frame.origin = CGPoint(x: -50, y: 40)
+//        } completion: {_ in }
+//
+//
+//        UIView.animate(withDuration: 100, delay: 0, options: [.repeat , .curveLinear]) {
+//            self.cloud2.frame.origin = CGPoint(x: -50, y: 40)
+//        } completion: {_ in }
+//
+//        UIView.animate(withDuration: 300, delay: 0, options: [.repeat , .curveLinear]) {
+//            self.cloud3.frame.origin = CGPoint(x: -50, y: 40)
+//        } completion: {_ in }
+//
+//
+      
+
+        gv.personnage.startAnimating()
+        gv.roadImage.startAnimating()
+        
+    }
     
     func animationForNumber(imageName: Int, callback: @escaping ()->Void) {
         
@@ -162,49 +182,37 @@ class GameViewController : UIViewController{
     }
     
     
-    
-    
-    func blurrGameView()  {
-        blurView.isHidden = false
-    }
-    
-    func unblurrGameView()  {
-        blurView.isHidden = true
-    }
-    
-    
     @objc func pauseGame() {
         if(!gameIsStoped){
             gv?.stopAnimation()
             timer?.invalidate()
             timer=nil
             gameIsStoped = true
-            gv?.viewHandlingCoins.isHidden = true
+            //gv?.viewHandlingCoins.isHidden = true
+            gv?.pauseButton.isHidden = false
         }
         else {
             //restart the game
             startGame(isFirstStart: false)
             gameIsStoped = false
+            gv?.pauseButton.isHidden = true
             gv?.viewHandlingCoins.isHidden = false
         }
-        
     }
-    
-    func showPauseButton(){
-        gv?.pauseButton.isHidden = false
-    }
-    
-    
+ 
+
     
     //display the message view
     @objc func seeMessage(){
         print("click on message button")
         
-        if (UIDevice.current.userInterfaceIdiom == .pad) {
-            self.splitViewController?.preferredDisplayMode = .oneBesideSecondary
-        } else {
-            self.splitViewController?.preferredDisplayMode = .primaryOverlay
-        }
+        present(mvc, animated: true, completion: nil)
+    }
+    
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        print("gae vew will deseapper")
+        pauseGame()
     }
     
     @objc func startGameForTheFistTime(){
@@ -212,12 +220,13 @@ class GameViewController : UIViewController{
     }
     
     
-    var c = 10000
+    var c = 0
     @objc func updateView() {
         
+       // print("hello from timer")
         // print("update view")
         c += 1
-        if(c>10){
+        if((c%10)==0){
             createCoin()
             c=0
         }
@@ -237,8 +246,8 @@ class GameViewController : UIViewController{
     
     
     func moveCoinToCorner(_ coin : UIImageView, point : CGPoint){
-        let a = coin.frame
-        UIView.animate(withDuration: 2, delay: 0, options: .transitionCurlUp) {
+        
+        UIView.animate(withDuration: 1, delay: 0, options: .transitionCurlUp) {
             coin.frame.origin = point
             coin.frame.size.height = coin.frame.size.height/3.0
             coin.frame.size.width = coin.frame.size.width/3.0
@@ -246,7 +255,7 @@ class GameViewController : UIViewController{
         } completion: { (true) in
             //erase the coin
             //coin.stopAnimating()
-            let s = String(UInt(bitPattern: ObjectIdentifier(coin)))
+            //let s = String(UInt(bitPattern: ObjectIdentifier(coin)))
            // print("move to the corner finished \(s)")
             coin.isHidden = true
             self.coins.insert(coin)
@@ -260,7 +269,6 @@ class GameViewController : UIViewController{
     var d = 0
     func createCoin(){
         let a = random()
-        print(a)
         for (i,k) in [(0,a[0]), (1,a[1]), (2,a[2])] {
             if(k){
                 var newCoin : UIImageView
@@ -270,15 +278,15 @@ class GameViewController : UIViewController{
                     newCoin.image = UIImage(named: "coin-1")
                     gv.viewHandlingCoins.addSubview(newCoin)
                     
-                    let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
-                    print("\t\t------------create new coin \(s) \(d)--------------")
+                    //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
+                   // print("\t\t------------create new coin \(s) \(d)--------------")
                     d += 1
                 }
                 else{
                     newCoin = coins.popFirst()!
                     newCoin.isHidden = false
-                    let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
-                    print("\t\t\t\t\t\t-----------reuse  coin \(s) \(coins.count)------------")
+                    //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
+                    //print("\t\t\t\t\t\t-----------reuse  coin \(s) \(coins.count)------------")
                 }
 
                 gv.viewHandlingCoins.sendSubviewToBack(newCoin)
@@ -304,7 +312,7 @@ class GameViewController : UIViewController{
         
         
         if(repeatCount == 0 ){
-            repeatCount = Int.random(in: 2...10)
+            repeatCount = Int.random(in: 1...5)
         }
         
         prevRandomValue = [false, false, false]
@@ -323,9 +331,9 @@ class GameViewController : UIViewController{
         bouton pour simuler le deplacement du personnage
      */
     
-    static  func setButton(title: String, posx: CGFloat, posy : CGFloat) -> UIButton {
+    static func setButton(title: String, posx: CGFloat, posy : CGFloat) -> UIButton {
         let b = UIButton()
-        b.frame = CGRect(x: posx, y: posy, width: 100, height: 50)
+        b.frame = CGRect(x: posx, y: posy, width: 50, height: 50)
         b.setTitle(title, for: .normal)
         b.setTitleColor(.black, for: .normal)
         

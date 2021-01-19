@@ -43,7 +43,11 @@ class GameView: UIView {
     
     let skyView : UIImageView = UIImageView()
     let landscapeView : UIView = UIView()
-    let cloud : UIImageView = UIImageView()
+    
+    
+    let cloud1 : UIImageView = UIImageView()
+    let cloud2 : UIImageView = UIImageView()
+    let cloud3 : UIImageView = UIImageView()
     
     let roadImage : UIImageView = UIImageView()
     
@@ -55,7 +59,6 @@ class GameView: UIView {
     var rh = 0.5 * UIScreen.main.bounds.height
     
    
-    
      init(frame: CGRect, r : CGFloat) {
       
         
@@ -64,7 +67,6 @@ class GameView: UIView {
         
         super.init(frame: frame)
         self.backgroundColor = .gray
-        
         
         // let i = UIImage(named: "run-1")
         // personnage.image = i
@@ -99,31 +101,33 @@ class GameView: UIView {
         viewHandlingCoins.isHidden = false
         
         roadImage.contentMode = .scaleToFill
-        initAnimatedView(roadImage, "road", speed: speed)
+        initAnimatedView(roadImage, "riviere", speed: speed)
         
         landscapeView.backgroundColor = .green
         
         
         
-        cloud.image = UIImage(named: "clouds")
-        
+        cloud1.image = UIImage(named: "nuage1")
+        cloud2.image = UIImage(named: "nuage2")
+        cloud3.image = UIImage(named: "nuage3")
         
         
         skyView.contentMode = .scaleToFill
-        skyView.image = UIImage(named: "sky")
+        skyView.image = UIImage(named: "ciel")
         skyView.backgroundColor = .blue
-        skyView.addSubview(cloud)
+        
+        skyView.addSubview(cloud1)
+        skyView.addSubview(cloud2)
+        skyView.addSubview(cloud3)
+        
         addSubview(skyView)
         
         landscapeView.addSubview(roadImage)
         addSubview(landscapeView)
-        
         addSubview(viewHandlingCoins)
         
  
         addSubview(personnage)
-        
-        
         addSubview(pauseButton)
         
         addSubview(counterView)
@@ -160,14 +164,18 @@ class GameView: UIView {
         let h = rect.height
         let w = rect.width
   
-        pauseButton.frame = CGRect(x: w-50, y: h-50, width: 50, height: 50)
+        pauseButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
         startButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
         counterView.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
    
         scoreLabel.frame = CGRect(x: w-100, y: 30, width: 100, height: 100)
         messageButton.frame = CGRect(x: 100, y: 30, width: 100, height: 100)
               
-        cloud.frame = CGRect(x: w, y: 40, width: 100, height: 100)
+        cloud1.frame = CGRect(x: w, y: 40, width: 100, height: 100)
+        cloud2.frame = CGRect(x: w/2, y: 40, width: 100, height: 100)
+        cloud3.frame = CGRect(x: w/3, y: 40, width: 200, height: 100)
+        
+        
         skyView.frame = CGRect(x: 0, y: 0, width: w, height: sk)
         landscapeView.frame = CGRect(x: 0, y: sk, width: w, height: rh)
         roadImage.frame = CGRect(x: 0, y: 0, width: w, height: rh)
@@ -204,17 +212,6 @@ class GameView: UIView {
         roadImage.stopAnimating()
     }
     
-    func startAnimation(){
-        
-        UIView.animate(withDuration: 50, delay: 0, options: [.repeat , .curveLinear]) {
-            self.cloud.frame.origin = CGPoint(x: -50, y: 40)
-        } completion: {_ in
-        }
-        
-        personnage.startAnimating()
-        roadImage.startAnimating()
-        
-    }
     
     
     
