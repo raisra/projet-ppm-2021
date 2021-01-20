@@ -213,7 +213,14 @@ class GameView: UIView {
     }
     
     
+    func getScore()->Int {
+        return score
+    }
     
+    func setScore(score: Int){
+        self.score = score
+        self.scoreLabel.text = String(score)
+    }
     
     
     

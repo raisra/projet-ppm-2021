@@ -205,7 +205,6 @@ class GameViewController : UIViewController{
     //display the message view
     @objc func seeMessage(){
         print("click on message button")
-        
         present(mvc, animated: true, completion: nil)
     }
     
@@ -215,9 +214,17 @@ class GameViewController : UIViewController{
         pauseGame()
     }
     
+    
     @objc func startGameForTheFistTime(){
         startGame(isFirstStart: true)
     }
+    
+    
+    //indique si une timer est déclenché pour un pouvoir
+    var startTimer : Bool = false
+    var timeToLive : Double = 0.0 //enclenche le pouvoir pendant 10s
+    var power : TypeOfObject = .empty
+    
     
     
     var c = 0
@@ -227,25 +234,172 @@ class GameViewController : UIViewController{
         // print("update view")
         c += 1
         if((c%10)==0){
-            createCoin()
-            c=0
+            //on crée un object tous les dix appels pour limiter leurs nombres
+            createObject()
         }
         
+        //vérifie s'il y a des pouvoirs en cours d'execution
+        //met à jour le timer
+        handlePower()
+        
+        
+        //ameliorer ce code
+        //TODO
         modelRoad?.movedown(completion: { (coin) in
             coins.insert(coin as! UIImageView)
         })
        
-        let r = modelRoad?.removeCoin(i: thePosition.0, j: thePosition.1-5)
-        if (r != nil) {
+        let obj : (type: TypeOfObject, view: UIImageView?) = (modelRoad?.removeObject(i: thePosition.0, j: thePosition.1-5, type: .any))!
+        
+        if (obj == (TypeOfObject.empty, nil)){ return}
+        
+        switch obj.type {
+        
+        case .coin:
             gv.score += 1
             gv.scoreLabel.text = String(gv.score)
             
-            moveCoinToCorner(r!, point: gv.scoreLabel.center)
+            moveCoinToPoint(obj.view!, point: gv.scoreLabel.center)
+            break
+            
+        case .barrier:
+            
+            break
+            
+        case .coinx2:
+            gv.setScore(score: gv.getScore()*2)
+            //TODO emetttre un son special
+            break
+            
+        case .coinx5:
+            gv.setScore(score: gv.getScore()*5)
+            break
+            
+        case .magnet:
+            startTimer =  true
+            //TODO mettre TTT en parametre
+            //cmprendre le rapport avec la frequence de declenchement timer
+            timeToLive = 200
+            power = .magnet
+            print("aimant s'en enclenché")
+            obj.view?.isHidden = true
+            
+            //TODO
+            //ici on a caché le l'image du booster mais il faudrait l'afficher dans un petit rectangle
+            //en haut avec un timer qui affiche le temps restant
+            break
+            
+            
+        default:
+            break
+        }
+            
+        
+    }
+    
+    func handlePower(){
+    
+        if(startTimer == false) {return}
+        
+        if(timeToLive <= 0){
+            print("le pouvoir est terminé")
+            //un pouvoir est enclenché
+            timeToLive = 0
+            startTimer = false
+            power = .empty
+            
+            
+        }
+        else {
+            timeToLive -= speed
+            //executer le pouvoir
+            print("TTT: \(timeToLive)")
+            switch power {
+                case .magnet:
+                    //attirer les pieces à la ronde
+                    //on commence par retirer les pieces concernées du chemin
+                    
+                    //TODO corriger cela car si le tableau de ModelData contient moins de 10 lignes
+                    //il y aura une seg fault
+                    //Utilisez colonne
+                    for i in 0 ... 2 {
+                        for neighborhood in 1 ... 20 {
+                            let coin = modelRoad?.removeObject(i: i, j: thePosition.1 - neighborhood, type: .coin).view
+                            if coin != nil {
+                                moveCoinToPoint(coin!, point: gv.personnage.center)
+                            }
+                        }
+                    }
+                    break
+                    
+                case .transparency:
+                    
+                    break
+                
+            default:
+                print("handlePower : ne devrait jamais safficher")
+            }
         }
     }
     
     
-    func moveCoinToCorner(_ coin : UIImageView, point : CGPoint){
+    
+    /**
+     Ajoute une piece aleatoirement dans le tableau des pieces
+     */
+    var d = 0
+    func createObject(){
+        let a = modelRoad!.generateNewObject(level: 0)
+        
+        //TODO
+        //prendre en compte le nombre de colonne
+        for colonne in 0...2 {
+            let type : TypeOfObject = a[colonne]
+            
+            switch type {
+                case .coin:
+                    var newCoin : UIImageView
+                    
+                        if(coins.isEmpty){
+                            c += 1
+                            newCoin = UIImageView()
+                            newCoin.image = UIImage(named: "coin-1")
+                            gv.viewHandlingCoins.addSubview(newCoin)
+                            
+                            //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
+                           // print("\t\t------------create new coin \(s) \(d)--------------")
+                            d += 1
+                        }
+                        else{
+                            newCoin = coins.popFirst()!
+                            newCoin.isHidden = false
+                            //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
+                            //print("\t\t\t\t\t\t-----------reuse  coin \(s) \(coins.count)------------")
+                        }
+
+                    gv.initAnimatedView(newCoin, "coin", speed: 1)
+                    newCoin.startAnimating()
+                    gv.viewHandlingCoins.sendSubviewToBack(newCoin)
+                    modelRoad?.addImage(newCoin, type: type, i: colonne, j: 0)
+                    break
+                        
+                case .magnet :
+                    let magnet = UIImageView(image: UIImage(named: "magnet"))
+                    gv.viewHandlingCoins.addSubview(magnet)
+                    modelRoad?.addImage(magnet, type: type, i: colonne, j: 0)
+                    break
+                    
+            case .any :
+                    break
+                    
+                default: break
+            }
+
+        }
+    }
+    
+    
+    func moveCoinToPoint(_ coin : UIImageView, point : CGPoint){
         
         UIView.animate(withDuration: 1, delay: 0, options: .transitionCurlUp) {
             coin.frame.origin = point
@@ -263,69 +417,7 @@ class GameViewController : UIViewController{
     }
     
     
-    /**
-     Ajoute une piece aleatoirement dans le tableau des pieces
-     */
-    var d = 0
-    func createCoin(){
-        let a = random()
-        for (i,k) in [(0,a[0]), (1,a[1]), (2,a[2])] {
-            if(k){
-                var newCoin : UIImageView
-                if(coins.isEmpty){
-                    c += 1
-                    newCoin = UIImageView()
-                    newCoin.image = UIImage(named: "coin-1")
-                    gv.viewHandlingCoins.addSubview(newCoin)
-                    
-                    //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
-                   // print("\t\t------------create new coin \(s) \(d)--------------")
-                    d += 1
-                }
-                else{
-                    newCoin = coins.popFirst()!
-                    newCoin.isHidden = false
-                    //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
-                    //print("\t\t\t\t\t\t-----------reuse  coin \(s) \(coins.count)------------")
-                }
-
-                gv.viewHandlingCoins.sendSubviewToBack(newCoin)
-                modelRoad?.addImage(newCoin, type: .coin, i: i, j: 0)
   
-                //gv.initAnimatedView(newCoin, "coin", speed: 0.2)
-                // newCoin.startAnimating()
-            }
-        }
-    }
-    
-    
-    
-    var repeatCount = 0
-    var prevRandomValue : [Bool] = [false, false, false]
-    var prevR = 0
-    
-    func random () -> [Bool]{
-        if (repeatCount > 0){
-            repeatCount -= 1
-            return prevRandomValue
-        }
-        
-        
-        if(repeatCount == 0 ){
-            repeatCount = Int.random(in: 1...5)
-        }
-        
-        prevRandomValue = [false, false, false]
-        
-        let r = Int.random(in: 1...2)
-        let r1 = (r+prevR)%3
-        prevRandomValue[r1] = true
-        prevR = r1
-        repeatCount -= 1
-        return prevRandomValue
-    }
-    
-    
     
     /**
         bouton pour simuler le deplacement du personnage
@@ -405,7 +497,8 @@ class GameViewController : UIViewController{
             print("accelerate")
            
         }
-        
-        
     }
+    
+    
+    
 }
