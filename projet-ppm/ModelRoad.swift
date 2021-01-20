@@ -8,11 +8,28 @@
 import Foundation
 import  UIKit
 
-struct frame {
-    var size : CGSize
-    var center : CGPoint
-    var imagesToDisplay : [(TypeOfObject, UIImageView)]
+
+
+class Frame {
+    var type: TypeOfObject
+    var view: UIImageView?
+    
+    let size : CGSize
+    let center : CGPoint
+    
+    init(type: TypeOfObject, view : UIImageView?, size: CGSize, center: CGPoint) {
+        self.type = type
+        self.view = view
+        self.size = size
+        self.center = center
+    }
+    
+    func setObj(type: TypeOfObject, view: UIImageView? ){
+        self.type = type
+        self.view = view
+    }
 }
+
 
 enum TypeOfObject: Int {
     //case character = 0
@@ -39,8 +56,6 @@ enum TypeOfObject: Int {
     case inversion = 41 //les pieces echanges de colonnes
     
     case any = -1
-    
-  
 }
 
 
@@ -50,19 +65,19 @@ class ModelRoad {
     var i1 : CGFloat = 0
     var i2 : CGFloat = 0
     
-    var N : Int = 100
+    var nRows : Int = 100
+    var nColumns : Int = 3
+    
     var D : CGFloat = 0
     var d : CGFloat = 0
     
-    var road : [[frame]]
     var W : CGFloat
     var H : CGFloat
-    
-    
+
     var bSize : CGFloat = 10.0
     var fSize : CGFloat = 100.0
     
-    let Colonne : CGFloat = 3.0
+    var roadGrid : [Frame]
     
     let data: [CGFloat] = [
         
@@ -76,31 +91,15 @@ class ModelRoad {
     ]
     
     
-    
-    func readData ( _ i : Int , _ j : Int) -> CGFloat{
-        return data [i * (N) + j]
-    }
-    
-    
-    func linearX ( _ i : Int , _ k : Int) -> CGFloat{
-        
-        //                var x : CGFloat =  (F(kk) / H) * (i0 + CGFloat(i) * d - CGFloat(i)*W/3.0) + CGFloat(i)*W/3.0
-        //                x = x +  (d + (W/3.0 - d) * kk/CGFloat(N))/2.0
-        
-        let kk : CGFloat = CGFloat(k)
-        var x : CGFloat =   (i0+d*CGFloat(i)  - CGFloat(i)*W/Colonne)
-        x *= (F(kk) / H)
-        x += CGFloat(i)*W/Colonne
-        
-        x = x +  W/6.0 + F(kk)*(d-W/Colonne)/(2.0*H)
-        
-        return x
-        
-    }
+    var repeatCount = 0
+    var prevRandomValue : [TypeOfObject]
+    var prevR = 0
     
     
-    init(N: Int, W : CGFloat, i0 : CGFloat , i3 : CGFloat, H: CGFloat, bSize : CGFloat = 10.0 , fSize : CGFloat = 100.0) {
-        self.N = N
+    init(nRows: Int, nColumns: Int, W : CGFloat, i0 : CGFloat , i3 : CGFloat, H: CGFloat, bSize : CGFloat = 10.0 , fSize : CGFloat = 100.0) {
+        self.nRows = nRows
+        self.nColumns = nColumns
+        
         self.W = W
         self.H = H
         
@@ -108,68 +107,103 @@ class ModelRoad {
         self.fSize = fSize
         
         self.i0 = i0
-        
+        self.i1 = i0 + d
+        self.i2 = i1 + d
         
         D = i3 - i0
         d = D/3.0
         
+        roadGrid = [Frame]()
+        roadGrid.reserveCapacity(nRows*nColumns)
         
-        self.i1 = i0 + d
-        self.i2 = i1 + d
+        repeatCount = 0
+        prevRandomValue = [TypeOfObject](repeating: TypeOfObject.empty, count: nColumns)//utiliser colonne au lieu de 3
+        prevR = 0
         
-        road = [[frame]]()
+        if nRows * nColumns != data.count {
+            print ("ModelRoad: data non initialisé correctement")
+            return
+        }
         
-        for k in 0..<N {
-            var ligne = [frame]()
-            let kk = CGFloat(k)
-            for i in 0...2 {
-                
+        
+        
+        for k in 0..<nRows {
+            let k_ = CGFloat(k)
+            for i in 0..<nColumns {
                 //
                 let x : CGFloat = readData(i, k)
-                print("k:\(k) i:\(i) center:\(x)" )
-                let y : CGFloat = UIScreen.main.bounds.height - F(kk)
+               // print("k:\(k) i:\(i) center:\(x)" )
+                let y : CGFloat = UIScreen.main.bounds.height - F(k_)
                 
                 let o = CGPoint(x: x, y: y)
-                let s = CGSize(width: G(kk), height: G(kk))
+                let s = CGSize(width: G(k_), height: G(k_))
                 
-                
-                ligne.append(frame(size: s, center: o, imagesToDisplay: [(TypeOfObject, UIImageView)]()))
+                roadGrid.append(Frame(type: TypeOfObject.empty, view: nil, size: s, center: o))
             }
-            road.append(ligne)
         }
-
-        print(data.count)
+        
+        print(roadGrid.count)
+    }
+    
+    func getObj(_ i: Int, _ j: Int) -> Frame {
+        return roadGrid[nColumns*j + i]
+    }
+    
+    func readData ( _ i : Int , _ j : Int) -> CGFloat{
+        return data [i * (nRows) + j]
     }
     
     
+    func linearX ( _ i : Int , _ k : Int) -> CGFloat{
+        
+        //                var x : CGFloat =  (F(kk) / H) * (i0 + CGFloat(i) * d - CGFloat(i)*W/3.0) + CGFloat(i)*W/3.0
+        //                x = x +  (d + (W/3.0 - d) * kk/CGFloat(nRows))/2.0
+        
+        let k_ : CGFloat = CGFloat(k)
+        let c : CGFloat = CGFloat(nColumns)
+        
+        var x : CGFloat =   (i0+d*CGFloat(i)  - CGFloat(i)*W/c)
+        x *= (F(k_) / H)
+        x += CGFloat(i)*W/c
+        
+        x = x +  W/6.0 + F(k_)*(d-W/c)/(2.0*H)
+        
+        return x
+    }
+    
+    
+    
+    
+    
     /**
-     function de [0 N] --->[h 0]
+     function de [0 nRows] --->[h 0]
      */
     func F(_ k : CGFloat) -> CGFloat {
         let p : CGFloat = 4.0
-        let Nf = pow(CGFloat(N), p)
-        return CGFloat(-H/CGFloat((Nf))) * CGFloat(pow(CGFloat(k),p)-Nf)
+        let nRowsf = pow(CGFloat(nRows), p)
+        return CGFloat(-H/CGFloat((nRowsf))) * CGFloat(pow(CGFloat(k),p)-nRowsf)
         
-        //return CGFloat(((CGFloat(N) - k) * H)/CGFloat(N))
+        //return CGFloat(((CGFloat(nRows) - k) * H)/CGFloat(nRows))
     }
     
     
     /**
-     function de [0 N] --->[d   W/3]
+     function de [0 nRows] --->[d   W/3]
      */
     
     
     func G(_ k: CGFloat) -> CGFloat {
-        return  bSize + (fSize - bSize) * CGFloat(k)/CGFloat(N)
+        return  bSize + (fSize - bSize) * CGFloat(k)/CGFloat(nRows)
     }
     
     func getFrame(i: Int , j: Int) -> (CGSize, CGPoint) {
-        
-        return (road[j][i].size, road[j][i].center)
+        let obj = getObj(i, j)
+        return (obj.size, obj.center)
     }
     
-    func getObject(i: Int , j: Int) -> [(TypeOfObject,UIView)] {
-        return road[j][i].imagesToDisplay
+    func getObject(i: Int , j: Int) -> UIImageView? {
+        let obj = getObj(i, j)
+        return obj.view
     }
     
     
@@ -178,83 +212,103 @@ class ModelRoad {
     /**
      completion : la methode à effectuer en cas de sortie d'une piece de l'ecran
      */
-    func  movedown(completion : (_: UIView)->())  {
+    func movedown(){
         
-        for i in 0...2 {
-            
-            for im in road[N-1][i].imagesToDisplay {
-                im.1.isHidden = true
-                if(im.0 == .coin){
-                    //let s = String(UInt(bitPattern: ObjectIdentifier(im.1)))
-                    //print("coin is out os screen so reuse it \(s)")
-                    completion(im.1)
-                }
-            }
-            road[N-1][i].imagesToDisplay.removeAll()
-            
-            var j = N-2
+        //suppression de la derniere ligne
+        for i in 0..<nColumns {
+            let obj = getObj(i, nRows-1)
+            obj.view?.isHidden = true
+        }
+        
+        //decalage des case vers le bas
+        for i in 0..<nColumns {
+            var j = nRows-2
             while(j>=0)
             {
-                road[j+1][i].imagesToDisplay = road[j][i].imagesToDisplay
-                for view in road[j+1][i].imagesToDisplay {
-                    view.1.frame = CGRect(origin: CGPoint(), size: road[j+1][i].size)
-                    view.1.center = road[j+1][i].center
-                }
+                let obj = getObj(i, j+1)
+                let prevObj = getObj(i, j)
+                obj.view = prevObj.view
+                obj.type = prevObj.type
+                
+                let view = obj.view
+                view?.frame = CGRect(origin: CGPoint(), size: obj.size)
+                view?.center = obj.center
                 j -= 1
             }
             
-            for _ in road[0][i].imagesToDisplay {
-                road[0][i].imagesToDisplay.removeAll()
-            }
-            
-            
+        }
+        
+        //Creation d'une ligne vide et insertion au debut de la grille
+        for i in 0..<nColumns {
+            let obj = roadGrid[i]
+            obj.view = nil
+            obj.type = TypeOfObject.empty
         }
     }
+//        for i in 0..<nColumns {
+//            let im = roadGrid[nRows-1][i]
+//                im.1.isHidden = true
+//                if(im.0 == .coin){
+//                    //let s = String(UInt(bitPattern: ObjectIdentifier(im.1)))
+//                    //print("coin is out os screen so reuse it \(s)")
+//                    completion(im.1)
+//                }
+//
+//            roadGrid[nRows-1][i].imagesToDisplay.removeAll()
+//
+//            var j = nRows-2
+//            while(j>=0)
+//            {
+//                roadGrid[j+1][i].imagesToDisplay = roadGrid[j][i].imagesToDisplay
+//                for view in roadGrid[j+1][i].imagesToDisplay {
+//                    view.1.frame = CGRect(origin: CGPoint(), size: roadGrid[j+1][i].size)
+//                    view.1.center = roadGrid[j+1][i].center
+//                }
+//                j -= 1
+//            }
+//            roadGrid.
+//            for _ in roadGrid[0][i].imagesToDisplay {
+//                roadGrid[0][i].imagesToDisplay.removeAll()
+//            }
+//        }
+//    }
     
     
-    func addImage(_ img: UIImageView, type : TypeOfObject,  i:Int , j : Int) {
-        img.frame = CGRect(origin: CGPoint(), size: road[j+1][i].size)
-        img.center = road[j][i].center
-        road[j][i].imagesToDisplay.append((type, img))
+    func addObj(_ img: UIImageView, type : TypeOfObject,  i:Int , j : Int) {
+        let obj = getObj(i, j)
+        img.frame = CGRect(origin: CGPoint(), size: obj.size)
+        img.center = obj.center
+        obj.setObj(type: type, view: img)
     }
     
     
     func removeObject(i:Int , j : Int, type: TypeOfObject)->(type: TypeOfObject, view: UIImageView?){
-        
         //le personnage a sauté
         if i == 42 {
             return (TypeOfObject.empty, nil)
         }
         
-        for (index,obj) in road[j][i].imagesToDisplay.enumerated() {
-            if obj.0 == type || type == .any{
-                let r = road[j][i].imagesToDisplay.remove(at: index)
-                
-                //let s = String(UInt(bitPattern: ObjectIdentifier(r.1)))
-                //print("coin collapsed so move it to corner \(s)")
-                
-                return r
-            }
+        let obj = getObj(i, j)
+        if obj.type == type || type == .any{
+            let ret = (obj.type, obj.view)
+            obj.setObj(type: TypeOfObject.empty, view: nil)
+            return ret
         }
+        
         return (TypeOfObject.empty, nil)
     }
     
     func getCenter(i : Int , j: Int) -> CGPoint{
-        return road[j][i].center
+        let obj = getObj(i, j)
+        return obj.center
     }
-    
-    
-    
-    var repeatCount = 0
-    var prevRandomValue : [TypeOfObject] = [TypeOfObject](repeating: TypeOfObject.empty, count: 3)//utiliser colonne au lieu de 3
-    var prevR = 0
+
     
     func generateCoin () -> [TypeOfObject]{
         if (repeatCount > 0){
             repeatCount -= 1
             return prevRandomValue
         }
-        
         
         if(repeatCount == 0 ){
             repeatCount = Int.random(in: 1...5)
@@ -263,7 +317,7 @@ class ModelRoad {
         prevRandomValue = [TypeOfObject.empty, TypeOfObject.empty, TypeOfObject.empty]
         
         let r = Int.random(in: 1...2)
-        let r1 = (r+prevR)%3
+        let r1 = (r+prevR)%nColumns
         prevRandomValue[r1] = TypeOfObject.coin
         prevR = r1
         repeatCount -= 1
@@ -273,28 +327,36 @@ class ModelRoad {
     /**
         level from 1 to 10.
      */
+    var nn = 0
     func generateNewObject(level:Int) -> [TypeOfObject]{
-        var coins : [TypeOfObject] = generateCoin()
-        let p = Int.random(in: 1...100)
-        
+        let coins : [TypeOfObject] = generateCoin()
+        var p = Int.random(in: 1...100)
+        print(nn)
+        nn += 1
         if p < 70 {
             //nothing to do
             return coins
         }
         else
         {
-            var objPos : [TypeOfObject] = [TypeOfObject](repeating: TypeOfObject.empty, count: 3)
-            let r1 = Int.random(in: 0..<(Int)(Colonne))
-//            if p < 80 {
-//            //creer un obstacle
-//                let r2 = Int.random(in: 10...12)
-//                objPos[r1] = TypeOfObject(rawValue: r2)!
-//            }
-//            else if p < 100 {
-            objPos[r1] = TypeOfObject(rawValue: TypeOfObject.magnet.rawValue * coins[r1].rawValue)!
-               
-//            }
-            
+            p = Int.random(in: 1...100)
+            var objPos : [TypeOfObject] = [TypeOfObject](repeating: TypeOfObject.empty, count: nColumns)
+            let r1 = Int.random(in: 0..<nColumns)
+            var t : TypeOfObject
+            if p < 90 {
+            //creer un obstacle
+                let r2 = Int.random(in: 10...12)
+                t = TypeOfObject(rawValue: r2)!
+            }
+            else {
+                //TODO
+                //ici evenement rare
+                //on affiche un bonus ou autre evenement rare
+                //0.3*0.3 de chance d'arriver la soit 3 chances sur 100
+                t = .magnet
+                print ("----------------\(nn)")
+            }
+            objPos[r1] = t
             return objPos
         }
     }

@@ -23,52 +23,53 @@ class GameViewController : UIViewController{
     
     var timer : Timer?
     var speed = TimeInterval(2)
-    var gv : GameView!
-    
+    var gv : GameView
+    var modelRoad : ModelRoad
     
     let N : Int = 100
     
     var gameIsStoped : Bool = true
-    var modelRoad : ModelRoad?
     
-     let w = UIScreen.main.bounds.width
+    
+    let w = UIScreen.main.bounds.width
     let h = UIScreen.main.bounds.height
     
     
     let sk = 0 * UIScreen.main.bounds.height
     let rh = 1 * UIScreen.main.bounds.height
     
+    //the position of the character on the screen grid
     var thePosition :(Int, Int) = (0,0)
+    
+    //the size of the uiview representing the character
     var size : CGSize = CGSize(width: 100, height: 100)
     
-    //tableau contenant les pieces affiché sur l'ecran
+    //set of coins
     var coins: Set<UIImageView> = Set<UIImageView>()
     
-
+    //TODO A REMPLACER par les irecognizer
     let droite = setButton(title: ">>>>", posx: UIScreen.main.bounds.width-100, posy: 50)
     let gauche = setButton(title: "<<<<", posx: 10, posy: 50)
-    
-    
     let saute = setButton(title: "Sauter", posx: UIScreen.main.bounds.width/2, posy: 300)
     let baisse = setButton(title: "BAisser", posx: UIScreen.main.bounds.width/2, posy: 400)
-    
     let accelerate = setButton(title: "x10", posx: 400, posy: 600)
     
-    override func viewDidLoad() {
+    
+     init() {
         
         let r : CGFloat = 1
-        let rh = r * UIScreen.main.bounds.height
-        modelRoad = ModelRoad(N: N, W: w, i0: w/4.0, i3: 3.0*w/4.0 , H: 278, bSize: 10.0, fSize: 50.0) //remplacer 278 par rh
-        view = GameView(frame: UIScreen.main.bounds, r: r)
         
+        modelRoad = ModelRoad(nRows: N, nColumns: 3, W: w, i0: w/4.0, i3: 3.0*w/4.0 , H: 278, bSize: 10.0, fSize: 50.0)
+        gv = GameView(frame: UIScreen.main.bounds, r: r)
         
-        gv = self.view as? GameView
-        thePosition = (1, N-1)
+        thePosition = (1, N-10)
         
-        gv.initPersonnage(position: (modelRoad?.getCenter(i: thePosition.0, j: thePosition.1))!, size : size)
+        gv.initPersonnage(position: (modelRoad.getCenter(i: thePosition.0, j: thePosition.1)), size : size)
         gv.setSpeed(speed: speed)
-       
         
+        super.init(nibName: nil, bundle: nil)
+        
+        view = gv
         droite.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
         gauche.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
         saute.addTarget(self, action: #selector(movePersonnage(sender:)), for: .touchUpInside)
@@ -81,11 +82,15 @@ class GameViewController : UIViewController{
         gv.addSubview(baisse)
         gv.addSubview(saute)
         gv.addSubview(accelerate)
-        
-        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    override func viewDidLoad() {
         print("view did load game")
-        
-        self.navigationController?.navigationItem.backBarButtonItem?.image = UIImage(named: "message")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -97,15 +102,15 @@ class GameViewController : UIViewController{
     func startGame(isFirstStart: Bool ){
         print("start the game")
         
-        self.gv?.startButton.isHidden = true
+        self.gv.startButton.isHidden = true
         
         
         let cb : ()->() = {
             //pauseGame()
             
-            self.gv?.pauseButton.isHidden = true
-            self.gv?.personnage.isHidden = false
-            self.gv?.messageButton.isHidden = false
+            self.gv.pauseButton.isHidden = true
+            self.gv.personnage.isHidden = false
+            self.gv.messageButton.isHidden = false
             self.timer = Timer.scheduledTimer(timeInterval: self.speed/50.0, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
             
             self.startAnimation()
@@ -155,7 +160,7 @@ class GameViewController : UIViewController{
         }
         
         
-        let counterView: UIImageView = gv!.counterView
+        let counterView: UIImageView = gv.counterView
         
         let h = UIScreen.main.bounds.height
         let w = UIScreen.main.bounds.width
@@ -184,19 +189,19 @@ class GameViewController : UIViewController{
     
     @objc func pauseGame() {
         if(!gameIsStoped){
-            gv?.stopAnimation()
+            gv.stopAnimation()
             timer?.invalidate()
             timer=nil
             gameIsStoped = true
-            //gv?.viewHandlingCoins.isHidden = true
-            gv?.pauseButton.isHidden = false
+            //gv.viewHandlingCoins.isHidden = true
+            gv.pauseButton.isHidden = false
         }
         else {
             //restart the game
             startGame(isFirstStart: false)
             gameIsStoped = false
-            gv?.pauseButton.isHidden = true
-            gv?.viewHandlingCoins.isHidden = false
+            gv.pauseButton.isHidden = true
+            gv.viewHandlingCoins.isHidden = false
         }
     }
  
@@ -236,6 +241,8 @@ class GameViewController : UIViewController{
         if((c%10)==0){
             //on crée un object tous les dix appels pour limiter leurs nombres
             createObject()
+            //TODO
+            //baisser cette valeur pour augmenter le niveau de difficulté du jeu 
         }
         
         //vérifie s'il y a des pouvoirs en cours d'execution
@@ -245,11 +252,10 @@ class GameViewController : UIViewController{
         
         //ameliorer ce code
         //TODO
-        modelRoad?.movedown(completion: { (coin) in
-            coins.insert(coin as! UIImageView)
-        })
+        modelRoad.movedown()
+
        
-        let obj : (type: TypeOfObject, view: UIImageView?) = (modelRoad?.removeObject(i: thePosition.0, j: thePosition.1-5, type: .any))!
+        let obj : (type: TypeOfObject, view: UIImageView?) = modelRoad.removeObject(i: thePosition.0, j: thePosition.1-5, type: .any)
         
         if (obj == (TypeOfObject.empty, nil)){ return}
         
@@ -259,7 +265,7 @@ class GameViewController : UIViewController{
             gv.score += 1
             gv.scoreLabel.text = String(gv.score)
             
-            moveCoinToPoint(obj.view!, point: gv.scoreLabel.center)
+            moveCoinToPoint(obj.view!, point: gv.scoreLabel.center, withDuration: 1, options: .transitionCurlUp)
             break
             
         case .barrier:
@@ -307,8 +313,6 @@ class GameViewController : UIViewController{
             timeToLive = 0
             startTimer = false
             power = .empty
-            
-            
         }
         else {
             timeToLive -= speed
@@ -316,7 +320,7 @@ class GameViewController : UIViewController{
             print("TTT: \(timeToLive)")
             switch power {
                 case .magnet:
-                    //attirer les pieces à la ronde
+                    //attirer les pieces situé dans le voisinage
                     //on commence par retirer les pieces concernées du chemin
                     
                     //TODO corriger cela car si le tableau de ModelData contient moins de 10 lignes
@@ -324,16 +328,18 @@ class GameViewController : UIViewController{
                     //Utilisez colonne
                     for i in 0 ... 2 {
                         for neighborhood in 1 ... 20 {
-                            let coin = modelRoad?.removeObject(i: i, j: thePosition.1 - neighborhood, type: .coin).view
+                            let coin = modelRoad.removeObject(i: i, j: thePosition.1 - neighborhood, type: .coin).view
                             if coin != nil {
-                                moveCoinToPoint(coin!, point: gv.personnage.center)
+                                moveCoinToPoint(coin!, point: gv.personnage.center, withDuration: 1, options: .curveEaseIn)
+                                //TODO faire un mouvement plus naturel
+                                //Peut etre animation suivant une courbe de bezier
                             }
                         }
                     }
                     break
                     
                 case .transparency:
-                    
+                    gv.personnage
                     break
                 
             default:
@@ -349,59 +355,68 @@ class GameViewController : UIViewController{
      */
     var d = 0
     func createObject(){
-        let a = modelRoad!.generateNewObject(level: 0)
-        
+        let a = modelRoad.generateNewObject(level: 0)
         //TODO
         //prendre en compte le nombre de colonne
         for colonne in 0...2 {
             let type : TypeOfObject = a[colonne]
+            var newObject : UIImageView?
+            var animated : Bool? = false
+            var name: String? //the name of the file cointaining the object to draw
             
             switch type {
                 case .coin:
-                    var newCoin : UIImageView
-                    
+                    animated = true
+                    name = "coin"
                         if(coins.isEmpty){
                             c += 1
-                            newCoin = UIImageView()
-                            newCoin.image = UIImage(named: "coin-1")
-                            gv.viewHandlingCoins.addSubview(newCoin)
-                            
+                            newObject = UIImageView()
                             //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
                            // print("\t\t------------create new coin \(s) \(d)--------------")
                             d += 1
                         }
                         else{
-                            newCoin = coins.popFirst()!
-                            newCoin.isHidden = false
+                            newObject = coins.popFirst()!
+                            
                             //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
                             //print("\t\t\t\t\t\t-----------reuse  coin \(s) \(coins.count)------------")
                         }
-
-                    gv.initAnimatedView(newCoin, "coin", speed: 1)
-                    newCoin.startAnimating()
-                    gv.viewHandlingCoins.sendSubviewToBack(newCoin)
-                    modelRoad?.addImage(newCoin, type: type, i: colonne, j: 0)
                     break
                         
                 case .magnet :
-                    let magnet = UIImageView(image: UIImage(named: "magnet"))
-                    gv.viewHandlingCoins.addSubview(magnet)
-                    modelRoad?.addImage(magnet, type: type, i: colonne, j: 0)
+                    animated = false
+                    name = "magnet"
+                    newObject = UIImageView()
                     break
                     
-            case .any :
+                case .coinx2 :
+                    animated = true
+                    name = "coin-x2"
+                    newObject = UIImageView()
                     break
                     
-                default: break
+                case .coinx5 :
+                    animated = true
+                    name = "coin-x5"
+                    newObject = UIImageView()
+                    break
+                    
+                case .any : continue
+                case .empty: continue
+                default: continue
             }
-
+            newObject!.isHidden = false
+            gv.initAnimatedView(newObject!, name!, speed: 1, animated: animated!)
+            gv.viewHandlingCoins.addSubview(newObject!)
+            gv.viewHandlingCoins.sendSubviewToBack(newObject!)
+            modelRoad.addObj(newObject!, type: type, i: colonne, j: 0)
         }
     }
     
     
-    func moveCoinToPoint(_ coin : UIImageView, point : CGPoint){
+    func moveCoinToPoint(_ coin : UIImageView, point : CGPoint, withDuration duration: TimeInterval, options: UIView.AnimationOptions = [] ){
         
-        UIView.animate(withDuration: 1, delay: 0, options: .transitionCurlUp) {
+        UIView.animate(withDuration: duration, delay: 0, options: options) {
             coin.frame.origin = point
             coin.frame.size.height = coin.frame.size.height/3.0
             coin.frame.size.width = coin.frame.size.width/3.0
@@ -474,14 +489,14 @@ class GameViewController : UIViewController{
         if( sender == droite){
             print("move to right")
             moveToTheRight()
-            let s = modelRoad?.getCenter(i: thePosition.0, j: thePosition.1)
-            gv.personnage.center = s!
+            let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+            gv.personnage.center = s
         }
         else if sender == gauche {
             print("move to the left")
             moveToTheLeft()
-            let s = modelRoad?.getCenter(i: thePosition.0, j: thePosition.1)
-            gv.personnage.center = s!
+            let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+            gv.personnage.center = s
         }
         
         else if sender == saute{

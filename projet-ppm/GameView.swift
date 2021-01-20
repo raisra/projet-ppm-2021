@@ -83,7 +83,7 @@ class GameView: UIView {
                               action: #selector(GameViewController.startGameForTheFistTime),
                               for: .touchUpInside)
         
-        initAnimatedView(personnage, "personnage", speed: speed)
+        initAnimatedView(personnage, "personnage", speed: speed, animated: true)
         
    
         personnage.isHidden = true
@@ -101,7 +101,7 @@ class GameView: UIView {
         viewHandlingCoins.isHidden = false
         
         roadImage.contentMode = .scaleToFill
-        initAnimatedView(roadImage, "riviere", speed: speed)
+        initAnimatedView(roadImage, "riviere", speed: speed, animated: false)
         
         landscapeView.backgroundColor = .green
         
@@ -185,11 +185,15 @@ class GameView: UIView {
     
     
     
-    func initAnimatedView(_ o: UIImageView,  _ name: String, speed: TimeInterval){
-        o.animationImages = animatedImages(for: name)
-        o.animationDuration = speed
-        o.animationRepeatCount = 0
+    func initAnimatedView(_ o: UIImageView,  _ name: String, speed: TimeInterval, animated : Bool){
         o.image = UIImage(named: name)
+        
+        if(animated){
+            o.animationImages = animatedImages(for: name)
+            o.animationDuration = speed
+            o.animationRepeatCount = 0
+            o.startAnimating()
+        }
     }
     
     
