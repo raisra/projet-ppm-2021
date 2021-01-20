@@ -21,7 +21,11 @@ class MessageViewController: UIViewController{
         view = MessageView(frame: UIScreen.main.bounds)
         messageView = self.view as? MessageView
         
-        view.gestureRecognizers = [UISwipeGestureRecognizer(target: self, action: #selector(backToGameView))]
+        
+        let recognizer = UISwipeGestureRecognizer(target: self, action: #selector(backToGameView))
+        recognizer.direction = [.right, .left]
+        view.gestureRecognizers = [recognizer]
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillShow), name: UIWindow.keyboardWillShowNotification, object: nil)
         
