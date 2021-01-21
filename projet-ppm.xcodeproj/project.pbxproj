@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D3B946F25B975B300750421 /* HumanInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B946E25B975B300750421 /* HumanInterface.swift */; };
+		2D3B947225B975C600750421 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B947125B975C600750421 /* ScoreView.swift */; };
+		2D3B947525B975D500750421 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B947425B975D500750421 /* ScoreViewController.swift */; };
 		2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3C83FF25B3816B009394F2 /* ModelRoad.swift */; };
 		2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD101325AF8AA40041E21B /* AppDelegate.swift */; };
 		2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD101525AF8AA40041E21B /* SceneDelegate.swift */; };
@@ -22,6 +25,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D3B946E25B975B300750421 /* HumanInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanInterface.swift; sourceTree = "<group>"; };
+		2D3B947125B975C600750421 /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
+		2D3B947425B975D500750421 /* ScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		2D3C83FF25B3816B009394F2 /* ModelRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRoad.swift; sourceTree = "<group>"; };
 		2DFD101025AF8AA40041E21B /* projet-ppm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "projet-ppm.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DFD101325AF8AA40041E21B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +55,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D3B946825B9732800750421 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				2D3B946E25B975B300750421 /* HumanInterface.swift */,
+				2DFD102D25AF8E940041E21B /* GameView.swift */,
+				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
+				2D3C83FF25B3816B009394F2 /* ModelRoad.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		2D3B946A25B9736700750421 /* Messagerie */ = {
+			isa = PBXGroup;
+			children = (
+				2DFD104125AFA96F0041E21B /* MessageView.swift */,
+				2DFD103E25AFA9690041E21B /* MessageViewController.swift */,
+			);
+			path = Messagerie;
+			sourceTree = "<group>";
+		};
+		2D3B947825B9768A00750421 /* Score */ = {
+			isa = PBXGroup;
+			children = (
+				2D3B947125B975C600750421 /* ScoreView.swift */,
+				2D3B947425B975D500750421 /* ScoreViewController.swift */,
+			);
+			path = Score;
+			sourceTree = "<group>";
+		};
+		2D3B947925B976B100750421 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				2DFD102925AF8B1B0041E21B /* WelcomeView.swift */,
+				2DFD101725AF8AA40041E21B /* WelcomeViewController.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
 		2DFD100725AF8AA40041E21B = {
 			isa = PBXGroup;
 			children = (
@@ -70,17 +114,14 @@
 			children = (
 				2DFD101325AF8AA40041E21B /* AppDelegate.swift */,
 				2DFD101525AF8AA40041E21B /* SceneDelegate.swift */,
-				2DFD102D25AF8E940041E21B /* GameView.swift */,
-				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
-				2DFD101725AF8AA40041E21B /* WelcomeViewController.swift */,
-				2DFD102925AF8B1B0041E21B /* WelcomeView.swift */,
-				2DFD104125AFA96F0041E21B /* MessageView.swift */,
-				2DFD103E25AFA9690041E21B /* MessageViewController.swift */,
+				2D3B947925B976B100750421 /* Welcome */,
+				2D3B946A25B9736700750421 /* Messagerie */,
+				2D3B946825B9732800750421 /* Game */,
+				2D3B947825B9768A00750421 /* Score */,
 				2DFD101925AF8AA40041E21B /* Main.storyboard */,
 				2DFD101E25AF8AA40041E21B /* LaunchScreen.storyboard */,
 				2DFD102125AF8AA40041E21B /* Info.plist */,
 				2DFD101C25AF8AA40041E21B /* Assets.xcassets */,
-				2D3C83FF25B3816B009394F2 /* ModelRoad.swift */,
 			);
 			path = "projet-ppm";
 			sourceTree = "<group>";
@@ -158,12 +199,15 @@
 				2DFD101825AF8AA40041E21B /* WelcomeViewController.swift in Sources */,
 				2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */,
 				2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */,
+				2D3B946F25B975B300750421 /* HumanInterface.swift in Sources */,
 				2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */,
 				2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */,
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
+				2D3B947225B975C600750421 /* ScoreView.swift in Sources */,
 				2DFD102A25AF8B1B0041E21B /* WelcomeView.swift in Sources */,
 				2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */,
 				2DFD102E25AF8E940041E21B /* GameView.swift in Sources */,
+				2D3B947525B975D500750421 /* ScoreViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

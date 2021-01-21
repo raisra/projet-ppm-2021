@@ -12,7 +12,8 @@ import UIKit
 class MessageViewController: UIViewController{
     
     var messageView : MessageView!
-    
+//    var keyboardFrame: NSValue
+    var keyBoarAlreadyAppeared: Bool = false
     
     override func viewDidLoad() {
         
@@ -21,23 +22,19 @@ class MessageViewController: UIViewController{
         view = MessageView(frame: UIScreen.main.bounds)
         messageView = self.view as? MessageView
         
-        
         let recognizer = UISwipeGestureRecognizer(target: self, action: #selector(backToGameView))
         recognizer.direction = [.right, .left]
         view.gestureRecognizers = [recognizer]
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillShow), name: UIWindow.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillHide), name: UIWindow.keyboardWillHideNotification, object: nil)
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("keyboardwillHide")
-        if(keyBoarAppeared){
-            
-        }
+        print("viewwilldisappear")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("willappear")
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillShow), name: UIWindow.keyboardWillShowNotification, object: nil)
     }
   
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -45,20 +42,23 @@ class MessageViewController: UIViewController{
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
         messageView?.frame.origin.y -= keyboardFrame.cgRectValue.height
         messageView?.setNeedsDisplay()
-        keyBoarAppeared = true
+    
+        
+        NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillHide), name: UIWindow.keyboardWillHideNotification, object: nil)
     }
     
-    var keyBoarAppeared: Bool = false
+    
     @objc func keyboardWillHide(notification: NSNotification) {
         print("keyboardwillHide")
         let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
-        
         messageView?.frame.origin.y += keyboardFrame.cgRectValue.height
         messageView?.setNeedsDisplay()
-        keyBoarAppeared = false
+        
+        NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MessageViewController.keyboardWillShow), name: UIWindow.keyboardWillShowNotification, object: nil)
     }
     
-    func
     
     @objc func backToGameView()  {
         self.dismiss(animated: true, completion: nil)

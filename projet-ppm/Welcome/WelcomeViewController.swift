@@ -25,7 +25,7 @@ class WelcomeViewController: UIViewController{
        
         let gvc = GameViewController()
     
-        gvc.modalTransitionStyle = .partialCurl
+        gvc.modalTransitionStyle = .flipHorizontal
         gvc.modalPresentationStyle = .fullScreen
         
         self.present(gvc , animated: true, completion: nil)

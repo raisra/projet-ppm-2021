@@ -13,7 +13,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var wvc: WelcomeViewController?
     var gvc : GameViewController?
-    var svc : UISplitViewController?
     
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -59,10 +58,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        print(#function)
         
-        print("pause the game")
-        gvc?.pauseGame()
-    }
+   }
 
 
 }

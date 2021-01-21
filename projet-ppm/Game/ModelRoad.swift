@@ -96,7 +96,7 @@ class ModelRoad {
     var prevR = 0
     
     
-    init(nRows: Int, nColumns: Int, W : CGFloat, i0 : CGFloat , i3 : CGFloat, H: CGFloat, bSize : CGFloat = 10.0 , fSize : CGFloat = 100.0) {
+    init(nRows: Int, nColumns: Int, W : CGFloat, i0 : CGFloat , i3 : CGFloat, H: CGFloat, bSize : CGFloat = 10.0 , fSize : CGFloat = 100.0, useData: Bool = false) {
         self.nRows = nRows
         self.nColumns = nColumns
         
@@ -131,7 +131,13 @@ class ModelRoad {
             let k_ = CGFloat(k)
             for i in 0..<nColumns {
                 //
-                let x : CGFloat = readData(i, k)
+                let x : CGFloat
+                if(useData){
+                    x = readData(i, k)
+                }
+                else{
+                    x = linearX(i, k)
+                }
                // print("k:\(k) i:\(i) center:\(x)" )
                 let y : CGFloat = UIScreen.main.bounds.height - F(k_)
                 
@@ -166,7 +172,7 @@ class ModelRoad {
         x *= (F(k_) / H)
         x += CGFloat(i)*W/c
         
-        x = x +  W/6.0 + F(k_)*(d-W/c)/(2.0*H)
+        x = x +  W/(2*c) + F(k_)*(d-W/c)/(2.0*H)
         
         return x
     }
@@ -327,12 +333,11 @@ class ModelRoad {
     /**
         level from 1 to 10.
      */
-    var nn = 0
+   
     func generateNewObject(level:Int) -> [TypeOfObject]{
         let coins : [TypeOfObject] = generateCoin()
         var p = Int.random(in: 1...100)
-        print(nn)
-        nn += 1
+        
         if p < 70 {
             //nothing to do
             return coins
@@ -343,7 +348,7 @@ class ModelRoad {
             var objPos : [TypeOfObject] = [TypeOfObject](repeating: TypeOfObject.empty, count: nColumns)
             let r1 = Int.random(in: 0..<nColumns)
             var t : TypeOfObject
-            if p < 90 {
+            if p < 0 {
             //creer un obstacle
                 let r2 = Int.random(in: 10...12)
                 t = TypeOfObject(rawValue: r2)!
@@ -353,8 +358,9 @@ class ModelRoad {
                 //ici evenement rare
                 //on affiche un bonus ou autre evenement rare
                 //0.3*0.3 de chance d'arriver la soit 3 chances sur 100
-                t = .magnet
-                print ("----------------\(nn)")
+                let r3 = Int.random(in: TypeOfObject.coinx2.rawValue...TypeOfObject.magnet.rawValue)
+                
+                 t = TypeOfObject(rawValue: r3)!
             }
             objPos[r1] = t
             return objPos
