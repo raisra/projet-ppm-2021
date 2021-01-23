@@ -19,19 +19,20 @@ enum TypeOfElem: Int {
     case empty = 6
 }
 
-class ThreeDElem : Hashable{
+class ThreeDElem {
 
     typealias Direction = (h: Int, v: Int)
     var t: TypeOfElem
     var d : Direction
-    var index : Int
+    //var index : Int
     
     var frame : CGRect
     var yTranslate : CGFloat
-    var duration  :CGFloat
+    var duration  :TimeInterval
     var scale : CGFloat
+    var index : Int
     
-    init(t: TypeOfElem, _ index : Int = 0) {
+    init(t: TypeOfElem, _ index : Int) {
         self.t = t
         
         switch t {
@@ -58,11 +59,12 @@ class ThreeDElem : Hashable{
             break
         }
         
-        self.index = index
+        //self.index = index
         frame = CGRect()
         yTranslate = 0.0
         duration = 0
         scale = 0
+        self.index = index
     }
     
     
@@ -72,9 +74,9 @@ class ThreeDElem : Hashable{
         return t
     }
     
-    func setIndex(_ i : Int){
-        index = i
-    }
+//    func setIndex(_ i : Int){
+//        index = i
+//    }
     
     func setFrame(frame : CGRect) {
         self.frame = frame
@@ -99,14 +101,7 @@ class ThreeDElem : Hashable{
     }
     
     
-    static func ==(a: ThreeDElem , b : ThreeDElem) -> Bool{
-        return a.t == b.t
-    }
-    
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(t)
-    }
+
 }
 
 
@@ -118,14 +113,14 @@ class ThreeDRoadModel {
     var elementsToDisplay : [ThreeDElem]
     var nbElements : Int = 0
     var size : CGSize
-    var duration : CGFloat
+    var duration : TimeInterval
     
     var rh: CGFloat
     var rw : CGFloat
     
     
     
-    init(s : CGSize, rh : CGFloat, rw : CGFloat, duration : CGFloat) {
+    init(s : CGSize, rh : CGFloat, rw : CGFloat, duration : TimeInterval) {
         elementsToDisplay = [ThreeDElem]()
         size = s
         self.rh = rh
@@ -144,7 +139,7 @@ class ThreeDRoadModel {
 //    }
     
     
-    func computeSpeed() -> CGFloat {
+    func computeSpeed() -> TimeInterval {
         return duration
     }
     
@@ -222,7 +217,7 @@ class ThreeDRoadModel {
     
     //utile quand on tourne le monde et au debut du jeu
     func generateElementStraight()->ThreeDElem{
-        let newElem = ThreeDElem(t: .straight)
+        let newElem = ThreeDElem(t: .straight, nbElements)
         append(elem: newElem)
         return newElem
     }
@@ -265,7 +260,6 @@ class ThreeDRoadModel {
         case .average:
             probability = 50
             break
-            
         case .hard:
             probability = 30
             break
@@ -282,17 +276,15 @@ class ThreeDRoadModel {
         }
         
         
-        let nextElement = ThreeDElem(t: nextElementType)
+        let nextElement = ThreeDElem(t: nextElementType, nbElements)
         append(elem: nextElement)
         return nextElement
     }
-    
 
- 
     
     //ajoute à la verticiale
    private func append(elem: ThreeDElem){
-        elem.setIndex(nbElements)
+       // elem.setIndex(nbElements)
         let e = getLastElem()
         let f = computeFrame(lastElem: e)
         elem.setFrame(frame : f)
@@ -309,6 +301,27 @@ class ThreeDRoadModel {
     }
     
     
+    func removeFirst(){
+        
+        if nbElements == 0 {
+            return
+        }
+        
+        var i = nbElements-1
+        while i>0 {
+            let elem = elementsToDisplay[i]
+            let prevElem = elementsToDisplay[i-1]
+            
+            elem.frame = prevElem.frame
+            elem.index = prevElem.index
+            elem.yTranslate = prevElem.yTranslate
+            i -= 1
+        }
+        
+        elementsToDisplay.removeFirst()
+        nbElements -= 1
+    }
+    
     func getElements() -> [ThreeDElem] {
         return elementsToDisplay
     }
@@ -317,4 +330,12 @@ class ThreeDRoadModel {
         return elementsToDisplay.last
     }
  
+    
+    func isFirst(_ elem : ThreeDElem) -> Bool {
+        return elem.index == 0
+    }
+    
+    func getIndex(_ elem : ThreeDElem) -> Int? {
+        return elem.index
+    }
 }

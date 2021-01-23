@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         wvc = WelcomeViewController()
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        let rvc = ThreeDRoadViewController(duration: 2, size: CGSize(width: 400, height: 400), rh: 0.45, rw: 0.45)
+        let rvc = ThreeDRoadViewController()
         window?.rootViewController = rvc
         // window?.rootViewController = wvc
         window?.makeKeyAndVisible()

@@ -14,40 +14,40 @@ enum Level {
     case hard
 }
 
+
+
+
+
+
 class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
  
     let names : [TypeOfElem: String] = [.straight:"straight"]
-    
-    
-    //size of the first pic
-    var  rh : CGFloat = 0.8
-    var rw : CGFloat = 0.5
-    var size : CGSize
-    var level :  Level
-    //duration et level soint lié normalement
-    var duration : TimeInterval
-    
+    let duration : TimeInterval = 1
+    let size : CGSize = CGSize(width: 400, height: 400)
+    let rh : CGFloat = 0.45
+    let rw : CGFloat = 0.45
 
+    
+    var nbElements : Int
+    var level :  Level
+    
     var model : ThreeDRoadModel
     //la vue à afficher. C'est un tableau contenant les portion de route à afficher
     var threeDView : [ThreeDRoadView]
     
+
     
-    var nElements : Int
-    
-    
-    
-    init(duration : TimeInterval, size : CGSize, rh : CGFloat, rw : CGFloat) {
+    init() {
         level = .easy
-        self.duration = duration
-        self.size = size
-        nElements = 0
-        self.rh = rh
-        self.rw = rw
-        model = ThreeDRoadModel(s: size, rh: rh, rw: rw, duration: 3)
+       
+        nbElements = 0
+        
+        model = ThreeDRoadModel(s: size, rh: rh, rw: rw, duration: duration)
         //au depart la vue est vide
         threeDView = [ThreeDRoadView]()
      
+        
+        
         super.init(nibName: nil, bundle: nil)
         self.view.frame = UIScreen.main.bounds
         
@@ -71,27 +71,41 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     
     
     //créé la vue associée à l'element en parametre
-    func appendView(withElem: ThreeDElem){
+    func appendView(withElem: ThreeDElem) -> ThreeDRoadView?{
         //create the image view
         let type = withElem.type()
         let name = getName(accordingTo: type)
         let i = UIImage(named:name)
         if i == nil {
             print("image \(name) n'existe pas")
-            return
+            return nil
         }
         //we create the element and associate it to the its view
         let v = ThreeDRoadView(elem: withElem, im : i!)
         
         //initialise les animations de la nouvelle vue
         //ses animations dependent de la position dans la pile de vue
-        initAnimation(viewToAnimate: v)
         threeDView.append(v)
         self.view.addSubview(v)
-        
-        nElements += 1
+        self.view.sendSubviewToBack(v)
+        nbElements += 1
+        return v
     }
     
+    
+    
+    
+    func removeFirstView() {
+        
+        let firstView = threeDView.removeFirst()
+        
+        for view in threeDView {
+            view.frame = view.elem.frame
+        }
+        
+        firstView.removeFromSuperview()
+        nbElements -= 1
+    }
     
     /*
      genere 4 vue de type straight
@@ -99,7 +113,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
      commencer les animations
      */
     func startTheGame(){
-        for _ in 1...3 {
+        for _ in 1...4 {
             //genere un element droit
             //se frame est calculée au prealable par le model pour que la vue
             //associée soit affiché au bon endroit
@@ -107,7 +121,8 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
             
             //créé la vue et l'ajoute à la liste des elements geree par le controller
             //cette vue sera animée
-            appendView(withElem: elem)
+            let v = appendView(withElem: elem)!
+            initAnimation(viewToAnimate: v)
         }
     }
     
@@ -126,10 +141,9 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         transform.toValue = viewToAnimate.elem.scale //1.0 / pow(Double(rh), Double(viewToAnimate.elem.index))
 
         let transformGroup : CAAnimationGroup = CAAnimationGroup()
-        let c = (viewToAnimate.elem.duration)
-        let d = CFTimeInterval(viewToAnimate.elem.duration)
-        transformGroup.duration = d
-        transformGroup.repeatCount = 100
+       
+        transformGroup.duration = CFTimeInterval(viewToAnimate.elem.duration)
+        transformGroup.repeatCount = 1
         transformGroup.autoreverses = false
         
         transformGroup.animations = [translate, transform]
@@ -137,38 +151,51 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         transformGroup.fillMode = .forwards
         transformGroup.delegate = self
         
-        viewToAnimate.layer.anchorPoint.x=0.5
-        
-        let e = viewToAnimate.layer.bounds
-        let b = viewToAnimate.layer.contentsCenter
-        viewToAnimate.layer.add(transformGroup, forKey: "translationAndResize")
+        transformGroup.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
        
+        //on associe la view à son animation afin de retrouver la vue de l'animation qui s'est terminé
+        transformGroup.setValue(viewToAnimate, forKey: "id")
         
         
-        
-        
+        viewToAnimate.layer.add(transformGroup, forKey: "translationAndResize")
     }
     
+    var c = 0
+    //sauvegarder les view dont l'animation s'est terminé
+    var buffer : [ThreeDRoadView] = [ThreeDRoadView]()
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         
-        //on enleve la vue qui est sortie
-        //c'est focemment le premier element
-      //  removeFirst()
+        let threeDView = anim.value(forKey: "id") as! ThreeDRoadView
+       
+        print ( "animation number \(model.getIndex(threeDView.elem)! )finished ")
+        if threeDView.elem.index != 0 {
+            buffer.append(threeDView)
+        }
+       
+        c += 1
         
-        //TODOOOooooo
-        
-        
-     //   IL ne FAUT pas mettre à jour la durée de l'animation pour les view située apres une rotation
-        
-        
-        
-        //////////////////////
-        //on ajoute une nouvelle
-        //dabord on genere une nouvelle vue grace au model
-//        let elem : ThreeDElem? = model.generateElement(level: level)
-//
-//        threeDView.append(type: t, view: getImageView(accordingTo: t))
+        if c == nbElements {
+            print ( "all animation finished \(nbElements )")
+            
+            model.removeFirst()
+            removeFirstView()
+            let newElem = model.generateElementStraight()
+            
+            //créé la vue et l'ajoute à la liste des elements gerees par le controller
+            //cette vue sera animée
+            let v = appendView(withElem: newElem)!
+            initAnimation(viewToAnimate: v)
+            
+            for v in buffer {
+                //toutes les animations sont terminées
+                // si c'est la premiere vue, je la supprime
+                    initAnimation(viewToAnimate: v)
+            }
+            
+            c = 0
+            buffer.removeAll()
+        }
     }
     
     
