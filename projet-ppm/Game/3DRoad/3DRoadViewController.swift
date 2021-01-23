@@ -44,7 +44,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         nElements = 0
         self.rh = rh
         self.rw = rw
-        model = ThreeDRoadModel(s: size, rh: rh, rw: rw)
+        model = ThreeDRoadModel(s: size, rh: rh, rw: rw, duration: 3)
         //au depart la vue est vide
         threeDView = [ThreeDRoadView]()
      
@@ -99,7 +99,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
      commencer les animations
      */
     func startTheGame(){
-        for _ in 1...4 {
+        for _ in 1...3 {
             //genere un element droit
             //se frame est calculée au prealable par le model pour que la vue
             //associée soit affiché au bon endroit
@@ -107,7 +107,6 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
             
             //créé la vue et l'ajoute à la liste des elements geree par le controller
             //cette vue sera animée
-            model.append(elem: elem)
             appendView(withElem: elem)
         }
     }
@@ -118,25 +117,29 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         let translate = CABasicAnimation(keyPath: "position.y")
 
         translate.fromValue = viewToAnimate.center.y
-        translate.toValue = 1024
+        translate.toValue = viewToAnimate.center.y + viewToAnimate.elem.yTranslate
     
-        let transform = CABasicAnimation(keyPath: "transform.scale.x")
+        let transform = CABasicAnimation(keyPath: "transform.scale")
         transform.fromValue = 1
-        transform.toValue = 2.15 //1.0 / pow(Double(rh), Double(viewToAnimate.elem.index))
+        
+        
+        transform.toValue = viewToAnimate.elem.scale //1.0 / pow(Double(rh), Double(viewToAnimate.elem.index))
 
         let transformGroup : CAAnimationGroup = CAAnimationGroup()
-        transformGroup.duration = 10
+        let c = (viewToAnimate.elem.duration)
+        let d = CFTimeInterval(viewToAnimate.elem.duration)
+        transformGroup.duration = d
         transformGroup.repeatCount = 100
         transformGroup.autoreverses = false
         
-        transformGroup.animations = [transform, translate]
+        transformGroup.animations = [translate, transform]
         transformGroup.isRemovedOnCompletion = false
         transformGroup.fillMode = .forwards
         transformGroup.delegate = self
         
         viewToAnimate.layer.anchorPoint.x=0.5
         
-        let c = viewToAnimate.layer.bounds
+        let e = viewToAnimate.layer.bounds
         let b = viewToAnimate.layer.contentsCenter
         viewToAnimate.layer.add(transformGroup, forKey: "translationAndResize")
        

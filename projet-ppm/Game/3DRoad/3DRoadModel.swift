@@ -27,6 +27,9 @@ class ThreeDElem : Hashable{
     var index : Int
     
     var frame : CGRect
+    var yTranslate : CGFloat
+    var duration  :CGFloat
+    var scale : CGFloat
     
     init(t: TypeOfElem, _ index : Int = 0) {
         self.t = t
@@ -57,6 +60,9 @@ class ThreeDElem : Hashable{
         
         self.index = index
         frame = CGRect()
+        yTranslate = 0.0
+        duration = 0
+        scale = 0
     }
     
     
@@ -72,7 +78,10 @@ class ThreeDElem : Hashable{
     
     func setFrame(frame : CGRect) {
         self.frame = frame
-        
+    }
+    
+    func setYTranslation(_ d : CGFloat)  {
+        yTranslate = d
     }
     
     //compute the direction
@@ -100,23 +109,28 @@ class ThreeDElem : Hashable{
     }
 }
 
+
+
+
 class ThreeDRoadModel {
 
 
     var elementsToDisplay : [ThreeDElem]
     var nbElements : Int = 0
     var size : CGSize
+    var duration : CGFloat
     
-     var rh: CGFloat
+    var rh: CGFloat
     var rw : CGFloat
     
     
     
-    init(s : CGSize, rh : CGFloat, rw : CGFloat) {
+    init(s : CGSize, rh : CGFloat, rw : CGFloat, duration : CGFloat) {
         elementsToDisplay = [ThreeDElem]()
         size = s
         self.rh = rh
         self.rw = rw
+        self.duration = duration
     }
     
     
@@ -129,6 +143,39 @@ class ThreeDRoadModel {
 //        return CGRect(x: x, y: y, width: size.width*pow(rw, index_), height: size.height*pow(rh, index_))
 //    }
     
+    
+    func computeSpeed() -> CGFloat {
+        return duration
+    }
+    
+    
+    func computeYTranslation(lastElem: ThreeDElem?) -> CGFloat {
+        
+//        if lastElem == nil {
+//            return size.height*(1.0+rh)/2.0
+//        }
+//
+//        var r : CGFloat = (rh+1.0)/2.0
+//        r = r * lastElem!.frame.height + lastElem!.yTranslate
+//
+        var lastFrameHeight : CGFloat
+        if lastElem == nil {
+            lastFrameHeight = size.height/rh
+        }
+        else {
+            lastFrameHeight =  lastElem!.frame.height
+        }
+        return lastFrameHeight * (rh+1.0)/2.0
+    }
+    
+    func computeSCale() -> CGFloat {
+//        if lastElem == nil {
+//            return CGFloat(1.0/rh)
+//        }
+//
+//        return lastElem!.scale * CGFloat(1.0/rh)
+        return CGFloat(1.0/rh)
+    }
     
     // calcule la frame de la piece empilée
     //TODO prendre en compre les pieces qui ont été empiler
@@ -168,31 +215,32 @@ class ThreeDRoadModel {
                 x = o.x + s.width
             }
             
-            res =  CGRect( x: x
-                           , y: o.y
-                           , width: s.width
-                           , height: s.height)
-        
+            res =  CGRect( x: x , y: o.y, width: s.width, height: s.height)
         }
         return res
     }
     
     //utile quand on tourne le monde et au debut du jeu
     func generateElementStraight()->ThreeDElem{
-        let newElem = ThreeDElem(t: .straight, nbElements)
+        let newElem = ThreeDElem(t: .straight)
+        append(elem: newElem)
         return newElem
     }
     
     func generateElement(level : Level)->ThreeDElem{
         
-        let lastElementType = elementsToDisplay[nbElements-1].type()
-       // let firstElement = elementsToDisplay.remove(at: 0)
-        
+        let lastElementType : TypeOfElem?
+        if nbElements == 0 {
+            lastElementType = .straight
+        } else {
+             lastElementType = elementsToDisplay[nbElements-1].type()
+        }
+    
         
         var nextPossibleType : [TypeOfElem]
         
         
-        switch lastElementType {
+        switch lastElementType! {
         case .straight:
             //straight turn tree bridge passage
             nextPossibleType = [.straight, .turnLeft, .turnRight, .bridge, .passage, .tree, .empty]
@@ -235,10 +283,32 @@ class ThreeDRoadModel {
         
         
         let nextElement = ThreeDElem(t: nextElementType)
+        append(elem: nextElement)
         return nextElement
     }
     
 
+ 
+    
+    //ajoute à la verticiale
+   private func append(elem: ThreeDElem){
+        elem.setIndex(nbElements)
+        let e = getLastElem()
+        let f = computeFrame(lastElem: e)
+        elem.setFrame(frame : f)
+        let d = computeYTranslation(lastElem: e)
+        elem.setYTranslation(d)
+        let v = computeSpeed()
+        elem.duration = v
+        let s = computeSCale()
+        elem.scale = s
+        
+        
+        elementsToDisplay.append(elem)
+        nbElements += 1
+    }
+    
+    
     func getElements() -> [ThreeDElem] {
         return elementsToDisplay
     }
@@ -247,14 +317,4 @@ class ThreeDRoadModel {
         return elementsToDisplay.last
     }
  
-    
-    //ajoute à la verticiale
-    func append(elem: ThreeDElem) {
-        let e = getLastElem()
-        let f = computeFrame(lastElem: e)
-        elem.setFrame(frame : f)
-        elementsToDisplay.append(elem)
-        nbElements += 1
-    }
-    
 }
