@@ -9,21 +9,6 @@ import Foundation
 import UIKit
 
 
-//class ThreeDRoadElement {
-//    var type : TypeOf3DRoadElement
-//    var view : UIImageView
-//
-//    //index
-//    var n : Int
-//
-//    init(t: TypeOf3DRoadElement, view : UIImageView, n : Int) {
-//        self.type = t
-//        self.view = view
-//        self.n = n
-//    }
-//}
-
-
 
 
 

@@ -21,12 +21,15 @@ enum Level {
 
 class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
  
-    let names : [TypeOfElem: String] = [.straight:"straight"]
+    let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
+    //let names : [TypeOfElem: String] = [.straight:"straight-1", .tree:"tree-1"]
     let duration : TimeInterval = 1
-    let size : CGSize = CGSize(width: 400, height: 400)
+    var size : CGSize = CGSize(width: 400, height: 400) //400, 150
     let rh : CGFloat = 0.45
     let rw : CGFloat = 0.45
+    
 
+    let N : Int = 4
     
     var nbElements : Int
     var level :  Level
@@ -36,16 +39,22 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     var threeDView : [ThreeDRoadView]
     
 
+    let deltaY = 10
     
     init() {
         level = .easy
        
         nbElements = 0
         
+        let r = size.height/size.width
+        size.width = UIScreen.main.bounds.width
+        size.height = size.width * r
+        
         model = ThreeDRoadModel(s: size, rh: rh, rw: rw, duration: duration)
         //au depart la vue est vide
         threeDView = [ThreeDRoadView]()
      
+       
         
         
         super.init(nibName: nil, bundle: nil)
@@ -101,6 +110,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         
         for view in threeDView {
             view.frame = view.elem.frame
+            initAnimation(viewToAnimate: view)
         }
         
         firstView.removeFromSuperview()
@@ -113,7 +123,8 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
      commencer les animations
      */
     func startTheGame(){
-        for _ in 1...4 {
+        
+        for _ in 1...N {
             //genere un element droit
             //se frame est calculée au prealable par le model pour que la vue
             //associée soit affiché au bon endroit
@@ -133,70 +144,80 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
 
         translate.fromValue = viewToAnimate.center.y
         translate.toValue = viewToAnimate.center.y + viewToAnimate.elem.yTranslate
-    
-        let transform = CABasicAnimation(keyPath: "transform.scale")
-        transform.fromValue = 1
-        
-        
-        transform.toValue = viewToAnimate.elem.scale //1.0 / pow(Double(rh), Double(viewToAnimate.elem.index))
+
+        let scaleX = CABasicAnimation(keyPath: "transform.scale.x")
+        scaleX.fromValue = 1
+        scaleX.toValue = viewToAnimate.elem.scaleW
+
+        let scaleY = CABasicAnimation(keyPath: "transform.scale.y")
+        scaleY.fromValue = 1
+        scaleY.toValue = viewToAnimate.elem.scaleH
+
 
         let transformGroup : CAAnimationGroup = CAAnimationGroup()
-       
+
         transformGroup.duration = CFTimeInterval(viewToAnimate.elem.duration)
         transformGroup.repeatCount = 1
         transformGroup.autoreverses = false
-        
-        transformGroup.animations = [translate, transform]
-        transformGroup.isRemovedOnCompletion = false
+
+        transformGroup.animations = [translate, scaleX, scaleY]
+        transformGroup.isRemovedOnCompletion = true
         transformGroup.fillMode = .forwards
-        transformGroup.delegate = self
         
-        transformGroup.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-       
-        //on associe la view à son animation afin de retrouver la vue de l'animation qui s'est terminé
-        transformGroup.setValue(viewToAnimate, forKey: "id")
+        if model.isFirst(viewToAnimate.elem) {
+            transformGroup.delegate = self
+            transformGroup.setValue(viewToAnimate, forKey: "id")
+        }
+   
+       // transformGroup.beginTime = CACurrentMediaTime()
+    //transformGroup.timingFunction = CAMediaTimingFunction(name: .linear)
+//        transformGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.55,
+//                                                                            0.44      ,
+//                                                                            0.68       ,
+//                                                                            0.54       )
+        transformGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.50,
+                                                                            0.44      ,
+                                                                            0.7       ,
+                                                                            0.54       )
         
-        
+//        transformGroup.timingFunction = CAMediaTimingFunction(controlPoints: 0.42,
+//                                                                            0.31      ,
+//                                                                            0.77       ,
+//                                                                            0.57       )
+//        //on associe la view à son animation afin de retrouver la vue de l'animation qui s'est terminé
+ 
         viewToAnimate.layer.add(transformGroup, forKey: "translationAndResize")
+        self.view.layer.addSublayer(viewToAnimate.layer)
     }
     
-    var c = 0
-    //sauvegarder les view dont l'animation s'est terminé
-    var buffer : [ThreeDRoadView] = [ThreeDRoadView]()
     
+
+
+
+   var n = 0
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        
-        let threeDView = anim.value(forKey: "id") as! ThreeDRoadView
-       
-        print ( "animation number \(model.getIndex(threeDView.elem)! )finished ")
-        if threeDView.elem.index != 0 {
-            buffer.append(threeDView)
+        let tv = anim.value(forKey: "id") as! ThreeDRoadView
+        if(!flag) {
+            return
         }
        
-        c += 1
+
+       // self.view.layer.removeAnimation(forKey: "id")
+        model.removeFirst()
+        removeFirstView()
         
-        if c == nbElements {
-            print ( "all animation finished \(nbElements )")
-            
-            model.removeFirst()
-            removeFirstView()
-            let newElem = model.generateElementStraight()
-            
-            //créé la vue et l'ajoute à la liste des elements gerees par le controller
-            //cette vue sera animée
-            let v = appendView(withElem: newElem)!
-            initAnimation(viewToAnimate: v)
-            
-            for v in buffer {
-                //toutes les animations sont terminées
-                // si c'est la premiere vue, je la supprime
-                    initAnimation(viewToAnimate: v)
-            }
-            
-            c = 0
-            buffer.removeAll()
+        let elem = model.generateElement(level: .easy)
+        
+        //créé la vue et l'ajoute à la liste des elements geree par le controller
+        //cette vue sera animée
+        let v = appendView(withElem: elem)!
+        initAnimation(viewToAnimate: v)
+        
+        for view in self.threeDView {
+            initAnimation(viewToAnimate: view)
         }
     }
+    
     
     
     //on change de niveau apres un virage
@@ -208,64 +229,14 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     }
     
     
-    
  
-    
-    
-    
-
-   
-    
     //when rotating we have to update all the level and reompute te sizes and transofrmations
     func updateN(newN : Int){
-        
-        
-        
-        
+    
     }
-    
-    
-//    //si j'enleve une rotation
-//    // je dois mettre à jour les elements suivants jusqu'a la prochaine rotation
-//    func removeFirst() -> ThreeDElem {
-//        let t = roadElements.remove(at: 0).type
-//
-//        if t == ThreeDElem.turnLeft || t == TypeOf3DRoadElement.turnRight {
-//            //je dois mettre à jour tous les prochaines animations
-//            //TODO Il faudra aussi ne pas les metttre à jour au momembt de l'ajout
-//            // dans add, ne pas faire init animation quand il y a une rotation aui a eté rajoité avant
-//        }
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //    func append(type: ThreeDElem, view : UIImageView) {
-    //
-    //        //tous les elements ajoutéées avec une rotation doivent etre traités differemment
-    //        //en prevision de la rotation
-    //        if type == .turnLeft || type == .turnRight {
-    //            rotationIsPresent = true
-    //            //traiter normalement cette element
-    //            //mais les prochains ajour seront différents
-    //            append(type: type, view : view )
-    //            nElements += 1
-    //            return
-    //        }
-    //
-    //        //
-    //        if rotationIsPresent {
-    //
-    //
-    //        }
-    //        else {
-    //            //ici on nn'itialise pas les transformations
-    //            append(type: type, view : view )
-    //        }
-    //    }
+ 
+
 }
+
+
+

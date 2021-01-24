@@ -29,7 +29,8 @@ class ThreeDElem {
     var frame : CGRect
     var yTranslate : CGFloat
     var duration  :TimeInterval
-    var scale : CGFloat
+    var scaleH : CGFloat
+    var scaleW : CGFloat
     var index : Int
     
     init(t: TypeOfElem, _ index : Int) {
@@ -62,8 +63,9 @@ class ThreeDElem {
         //self.index = index
         frame = CGRect()
         yTranslate = 0.0
-        duration = 0
-        scale = 0
+        duration = 0.0
+        scaleH = 0.0
+        scaleW = 0.0
         self.index = index
     }
     
@@ -113,10 +115,11 @@ class ThreeDRoadModel {
     var elementsToDisplay : [ThreeDElem]
     var nbElements : Int = 0
     var size : CGSize
-    var duration : TimeInterval
-    
     var rh: CGFloat
     var rw : CGFloat
+    var duration : TimeInterval
+    
+
     
     
     
@@ -140,19 +143,33 @@ class ThreeDRoadModel {
     
     
     func computeSpeed() -> TimeInterval {
-        return duration
+        return  duration
     }
     
+    func computeSpeed(index: Int) -> TimeInterval {
+        
+        return duration * (Double(index)+1.0)
+    }
+    
+    func computeYTranslation(index : Int) -> CGFloat {
+        let i : CGFloat = CGFloat(index)
+        let a = size.height*(rh + 1.0)/2.0
+        let b = (1.0/rh + (1.0 - pow(rh, i))/(1.0 - rh))
+         return a*b
+       
+    }
+    
+    func computeSCale(index : Int ) -> (scaleH:CGFloat, scaleW: CGFloat) {
+        var s1 = CGFloat(1.0/rh)
+        var s2 = CGFloat(1.0/rw)
+        
+        s1 = pow(s1, CGFloat(index+1))
+        s2 = pow(s2, CGFloat(index+1))
+        return (s1,s2)
+    }
     
     func computeYTranslation(lastElem: ThreeDElem?) -> CGFloat {
         
-//        if lastElem == nil {
-//            return size.height*(1.0+rh)/2.0
-//        }
-//
-//        var r : CGFloat = (rh+1.0)/2.0
-//        r = r * lastElem!.frame.height + lastElem!.yTranslate
-//
         var lastFrameHeight : CGFloat
         if lastElem == nil {
             lastFrameHeight = size.height/rh
@@ -163,13 +180,13 @@ class ThreeDRoadModel {
         return lastFrameHeight * (rh+1.0)/2.0
     }
     
-    func computeSCale() -> CGFloat {
+    func computeSCale() -> (scaleH:CGFloat, scaleW: CGFloat) {
 //        if lastElem == nil {
 //            return CGFloat(1.0/rh)
 //        }
 //
 //        return lastElem!.scale * CGFloat(1.0/rh)
-        return CGFloat(1.0/rh)
+        return (CGFloat(1.0/rh), CGFloat(1.0/rw))
     }
     
     // calcule la frame de la piece empilée
@@ -238,7 +255,7 @@ class ThreeDRoadModel {
         switch lastElementType! {
         case .straight:
             //straight turn tree bridge passage
-            nextPossibleType = [.straight, .turnLeft, .turnRight, .bridge, .passage, .tree, .empty]
+            nextPossibleType = [.straight, .bridge, .passage, .tree, .empty] //.turnLeft, .turnRight
             break
             
             
@@ -251,17 +268,17 @@ class ThreeDRoadModel {
         
         var nextElementType: TypeOfElem
         
-        var probability : Int = 100
+        var probability : Int
         
         switch level {
         case .easy:
-            probability = 80
-            break
-        case .average:
             probability = 50
             break
+        case .average:
+            probability = 40
+            break
         case .hard:
-            probability = 30
+            probability = 20
             break
         
         }
@@ -293,13 +310,31 @@ class ThreeDRoadModel {
         let v = computeSpeed()
         elem.duration = v
         let s = computeSCale()
-        elem.scale = s
-        
-        
+    elem.scaleH = s.scaleH
+    elem.scaleW = s.scaleW
+    print ( "data for index \(elem.index) : Time:\(elem.duration) TranslateY: \(elem.yTranslate) Scale: \(elem.scaleH) \(elem.scaleW) Y: \(elem.frame.origin.y)")
         elementsToDisplay.append(elem)
         nbElements += 1
     }
     
+//    private func append(elem: ThreeDElem){
+//        let index = elem.index
+//        // elem.setIndex(nbElements)
+//         let e = getLastElem()
+//         let f = computeFrame(lastElem: e)
+//         elem.setFrame(frame : f)
+//         let d = computeYTranslation(index: index)
+//         elem.setYTranslation(d)
+//         let v = computeSpeed(index: index)
+//         elem.duration = v
+//         let s = computeSCale(index: index)
+//     elem.scaleH = s.scaleH
+//     elem.scaleW = s.scaleW
+//        print ( "data for index \(elem.index) : Time:\(elem.duration) TranslateY: \(elem.yTranslate) Scale: \(elem.scaleH) \(elem.scaleW) Y: \(elem.frame.origin.y) size: \(elem.frame.size)")
+//         elementsToDisplay.append(elem)
+//         nbElements += 1
+//     }
+//
     
     func removeFirst(){
         
@@ -315,6 +350,9 @@ class ThreeDRoadModel {
             elem.frame = prevElem.frame
             elem.index = prevElem.index
             elem.yTranslate = prevElem.yTranslate
+            elem.duration = prevElem.duration
+            elem.scaleH = prevElem.scaleH
+            elem.scaleW = prevElem.scaleW
             i -= 1
         }
         
