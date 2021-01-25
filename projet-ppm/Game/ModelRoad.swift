@@ -10,25 +10,6 @@ import  UIKit
 
 
 
-class Frame {
-    var type: TypeOfObject
-    var view: UIImageView?
-    
-    let size : CGSize
-    let center : CGPoint
-    
-    init(type: TypeOfObject, view : UIImageView?, size: CGSize, center: CGPoint) {
-        self.type = type
-        self.view = view
-        self.size = size
-        self.center = center
-    }
-    
-    func setObj(type: TypeOfObject, view: UIImageView? ){
-        self.type = type
-        self.view = view
-    }
-}
 
 
 enum TypeOfObject: Int {
@@ -65,19 +46,25 @@ class ModelRoad {
     var i1 : CGFloat = 0
     var i2 : CGFloat = 0
     
-    var nRows : Int = 100
-    var nColumns : Int = 3
+    var nRows : Int
+    var nColumns : Int
     
     var D : CGFloat = 0
     var d : CGFloat = 0
     
     var W : CGFloat
     var H : CGFloat
-
+    
     var bSize : CGFloat = 10.0
     var fSize : CGFloat = 100.0
     
     var roadGrid : [Frame]
+    
+    
+    var repeatCount = 0
+    var prevRandomValue : [TypeOfObject]
+    var prevR = 0
+    
     
     let data: [CGFloat] = [
         
@@ -87,31 +74,43 @@ class ModelRoad {
         397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.0, 397.020458923, 397.070637568, 397.126490443, 397.18843000000004, 397.256883163, 397.332291328, 397.415110363, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.5, 397.42241292312497, 397.0, 396.6576450892857, 396.48757705142856, 396.0, 395.9142294514286, 395.5, 395.0, 395.0, 395.0, 395.0, 394.5, 394.5, 394.0, 394.0, 394.0, 394.0, 394.0, 394.0, 394.0, 394.0, 394.5, 395.0, 396.0, 396.7915782215, 397.0, 397.67705629, 397.67705629,
         
         422.50000051666666, 422.50000826666667, 422.50004185, 422.50013226666664, 422.5003229166667, 422.5006696, 422.50124051666666, 422.5021162666667, 422.50338985, 422.50516666666664, 422.50756451666666, 422.5107136, 422.51475651666664, 422.51984826666666, 422.52615625, 422.53386026666664, 422.5431525166667, 422.5542376, 422.5673325166667, 422.5826666666667, 422.60048185, 422.62103226666665, 422.64458451666667, 422.6714176, 422.7018229166667, 422.7361042666667, 422.77457785, 422.8175722666667, 422.86542851666667, 422.9185, 422.97715251666665, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.0, 423.169, 423.9740357, 425.15332079999996, 426.5, 427.7546848, 429.3369375, 431.42867264, 433.38108506, 435.52151040000007, 437.951056325, 441.43100000000004, 447.20161479999996, 452.3089536, 457.3793961333334, 462.95838560000004, 470.650390625, 481.1341184, 491.46164064999994, 500.744456, 510.55656387500005, 522.452, 536.8896702, 550.04704032, 562.7415902, 575.733536, 587.7710625, 596.0725296, 605.1837246857142, 613.0034760000001, 618.6435336428572, 624.6922857142857, 631.3327880571429, 638.0409088, 643.2987077, 647.6773925333333, 651.0705535714286, 654.2992667428572, 655.0, 655.0, 655.0, 655.0
-               
+        
     ]
     
     
-    var repeatCount = 0
-    var prevRandomValue : [TypeOfObject]
-    var prevR = 0
     
     
-    init(nRows: Int, nColumns: Int, W : CGFloat, i0 : CGFloat , i3 : CGFloat, H: CGFloat, bSize : CGFloat = 10.0 , fSize : CGFloat = 100.0, useData: Bool = false) {
-        self.nRows = nRows
-        self.nColumns = nColumns
+    struct Param {
+        var nRows: Int
+        var nColumns: Int
+        var W : CGFloat
+        var H: CGFloat
+        var D : CGFloat
+        var bSize : CGFloat = 10.0
+        var fSize : CGFloat = 100.0
+        var useData: Bool = false
+    }
+    
+    
+    
+    init(_ p : Param) {
+        self.nRows = p.nRows
+        self.nColumns = p.nColumns
         
-        self.W = W
-        self.H = H
+        self.W = p.W
+        self.H = p.H
         
-        self.bSize = bSize
-        self.fSize = fSize
+        self.D = p.D
+        d = self.D/3.0
+        self.bSize = p.bSize
+        self.fSize = p.fSize
         
-        self.i0 = i0
+        self.i0 = (p.W - p.D)/2.0
         self.i1 = i0 + d
         self.i2 = i1 + d
         
-        D = i3 - i0
-        d = D/3.0
+       
+        
         
         roadGrid = [Frame]()
         roadGrid.reserveCapacity(nRows*nColumns)
@@ -120,7 +119,7 @@ class ModelRoad {
         prevRandomValue = [TypeOfObject](repeating: TypeOfObject.empty, count: nColumns)//utiliser colonne au lieu de 3
         prevR = 0
         
-        if nRows * nColumns != data.count {
+        if nRows * nColumns != data.count && p.useData == true{
             print ("ModelRoad: data non initialisé correctement")
             return
         }
@@ -132,13 +131,13 @@ class ModelRoad {
             for i in 0..<nColumns {
                 //
                 let x : CGFloat
-                if(useData){
+                if(p.useData){
                     x = readData(i, k)
                 }
                 else{
-                    x = linearX(i, k)
+                    x = QuadraticX(i, k)
                 }
-               // print("k:\(k) i:\(i) center:\(x)" )
+                // print("k:\(k) i:\(i) center:\(x)" )
                 let y : CGFloat = UIScreen.main.bounds.height - F(k_)
                 
                 let o = CGPoint(x: x, y: y)
@@ -159,12 +158,15 @@ class ModelRoad {
         return data [i * (nRows) + j]
     }
     
+    func linearX ( _ i : Int , _ k : Int) -> CGFloat {
+        let k_ : CGFloat = CGFloat(k)
+        var x : CGFloat =  (F(k_) / H) * (i0 + CGFloat(i) * d - CGFloat(i)*W/3.0) + CGFloat(i)*W/3.0
+        x = x +  (d + (W/3.0 - d) * k_/CGFloat(nRows))/2.0
+        return x
+    }
     
-    func linearX ( _ i : Int , _ k : Int) -> CGFloat{
-        
-        //                var x : CGFloat =  (F(kk) / H) * (i0 + CGFloat(i) * d - CGFloat(i)*W/3.0) + CGFloat(i)*W/3.0
-        //                x = x +  (d + (W/3.0 - d) * kk/CGFloat(nRows))/2.0
-        
+    
+    func QuadraticX ( _ i : Int , _ k : Int) -> CGFloat{
         let k_ : CGFloat = CGFloat(k)
         let c : CGFloat = CGFloat(nColumns)
         
@@ -189,7 +191,7 @@ class ModelRoad {
         let nRowsf = pow(CGFloat(nRows), p)
         return CGFloat(-H/CGFloat((nRowsf))) * CGFloat(pow(CGFloat(k),p)-nRowsf)
         
-        //return CGFloat(((CGFloat(nRows) - k) * H)/CGFloat(nRows))
+       // return CGFloat(((CGFloat(nRows) - k) * H)/CGFloat(nRows))
     }
     
     
@@ -251,33 +253,33 @@ class ModelRoad {
             obj.type = TypeOfObject.empty
         }
     }
-//        for i in 0..<nColumns {
-//            let im = roadGrid[nRows-1][i]
-//                im.1.isHidden = true
-//                if(im.0 == .coin){
-//                    //let s = String(UInt(bitPattern: ObjectIdentifier(im.1)))
-//                    //print("coin is out os screen so reuse it \(s)")
-//                    completion(im.1)
-//                }
-//
-//            roadGrid[nRows-1][i].imagesToDisplay.removeAll()
-//
-//            var j = nRows-2
-//            while(j>=0)
-//            {
-//                roadGrid[j+1][i].imagesToDisplay = roadGrid[j][i].imagesToDisplay
-//                for view in roadGrid[j+1][i].imagesToDisplay {
-//                    view.1.frame = CGRect(origin: CGPoint(), size: roadGrid[j+1][i].size)
-//                    view.1.center = roadGrid[j+1][i].center
-//                }
-//                j -= 1
-//            }
-//            roadGrid.
-//            for _ in roadGrid[0][i].imagesToDisplay {
-//                roadGrid[0][i].imagesToDisplay.removeAll()
-//            }
-//        }
-//    }
+    //        for i in 0..<nColumns {
+    //            let im = roadGrid[nRows-1][i]
+    //                im.1.isHidden = true
+    //                if(im.0 == .coin){
+    //                    //let s = String(UInt(bitPattern: ObjectIdentifier(im.1)))
+    //                    //print("coin is out os screen so reuse it \(s)")
+    //                    completion(im.1)
+    //                }
+    //
+    //            roadGrid[nRows-1][i].imagesToDisplay.removeAll()
+    //
+    //            var j = nRows-2
+    //            while(j>=0)
+    //            {
+    //                roadGrid[j+1][i].imagesToDisplay = roadGrid[j][i].imagesToDisplay
+    //                for view in roadGrid[j+1][i].imagesToDisplay {
+    //                    view.1.frame = CGRect(origin: CGPoint(), size: roadGrid[j+1][i].size)
+    //                    view.1.center = roadGrid[j+1][i].center
+    //                }
+    //                j -= 1
+    //            }
+    //            roadGrid.
+    //            for _ in roadGrid[0][i].imagesToDisplay {
+    //                roadGrid[0][i].imagesToDisplay.removeAll()
+    //            }
+    //        }
+    //    }
     
     
     func addObj(_ img: UIImageView, type : TypeOfObject,  i:Int , j : Int) {
@@ -308,7 +310,7 @@ class ModelRoad {
         let obj = getObj(i, j)
         return obj.center
     }
-
+    
     
     func generateCoin () -> [TypeOfObject]{
         if (repeatCount > 0){
@@ -331,9 +333,9 @@ class ModelRoad {
     }
     
     /**
-        level from 1 to 10.
+     level from 1 to 10.
      */
-   
+    
     func generateNewObject(level:Int) -> [TypeOfObject]{
         let coins : [TypeOfObject] = generateCoin()
         var p = Int.random(in: 1...100)
@@ -349,7 +351,7 @@ class ModelRoad {
             let r1 = Int.random(in: 0..<nColumns)
             var t : TypeOfObject
             if p < 0 {
-            //creer un obstacle
+                //creer un obstacle
                 let r2 = Int.random(in: 10...12)
                 t = TypeOfObject(rawValue: r2)!
             }
@@ -360,14 +362,14 @@ class ModelRoad {
                 //0.3*0.3 de chance d'arriver la soit 3 chances sur 100
                 let r3 = Int.random(in: TypeOfObject.coinx2.rawValue...TypeOfObject.magnet.rawValue)
                 
-                 t = TypeOfObject(rawValue: r3)!
+                t = TypeOfObject(rawValue: r3)!
             }
             objPos[r1] = t
             return objPos
         }
     }
     
-
+    
     
     
     

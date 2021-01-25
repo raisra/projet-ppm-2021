@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 
+
+
+let DISTANCE_OF_MAGNET = 5
+let TTL_POWER : TimeInterval = 20.0
+
 class GameViewController : UIViewController{
     
     // var mvc : MessageViewController
@@ -27,14 +32,15 @@ class GameViewController : UIViewController{
      plus speed est grand plus le jeu est lent
      */
     var periodClock = TimeInterval(0.1)
-    let ttlMagnet : TimeInterval = 20.0
     
     
-    var gv : GameView
-    var hv : HumanInterface
-    var modelRoad : ModelRoad
     
-    let N : Int = 100
+    var gv : GameView!
+    var hv : HumanInterface!
+    var modelRoad : ModelRoad!
+    var threeDRoadVC : ThreeDRoadViewController!
+    
+    let N : Int = 50
     
     var gameIsStoped : Bool = true
     
@@ -43,50 +49,98 @@ class GameViewController : UIViewController{
     let h = UIScreen.main.bounds.height
     
     
-    let sk = 0 * UIScreen.main.bounds.height
-    let rh = 1 * UIScreen.main.bounds.height
+    let sk = 0 * UIScreen.main.bounds.height // la hauteur du ciel
+    let rh = 1 * UIScreen.main.bounds.height // la hauteur de la route
     
     //the position of the character on the screen grid
     var thePosition :(Int, Int) = (0,0)
     
     //the size of the uiview representing the character
-    var size : CGSize = CGSize(width: 100, height: 100)
+    var sizeChar : CGSize = CGSize(width: 100, height: 100)
     
     //set of coins
     var coins: Set<UIImageView> = Set<UIImageView>()
     
 
+    let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
+    //let names : [TypeOfElem: String] = [.straight:"straight-1", .tree:"tree-1"]
+    let duration : TimeInterval = 2
+    let factor : CGFloat = 0.455
     
-    init() {
-        
-        let r : CGFloat = 1
-        
+    let deltaY: CGFloat = 1
+    let COINS_ARE_ANIMATED = false
+    let backGround : UIImageView = UIImageView()
+   
+    
+    
+    
+    
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    override func viewDidLoad() {
+        print ("the Game view did load")
+
+        //init du model 3D
+        var sizeIm = CGSize(width: 400, height: 400)
+        let r = sizeIm.height/sizeIm.width
+        sizeIm.width = UIScreen.main.bounds.width
+        sizeIm.height = sizeIm.width * r
+        let H : CGFloat = sizeIm.height * (1.0 - pow(factor, 4))/(1.0 - factor)
+        let D : CGFloat = sizeIm.width * pow(factor, 4)
+        let param : ModelRoad.Param = ModelRoad.Param(nRows: N,
+                                                      nColumns: 3,
+                                                      W: UIScreen.main.bounds.width,
+                                                      H: H,
+                                                      D: D,
+                                                      bSize: 10.0, fSize: 50.0,
+                                                      useData: false)
         
         //init du model
-        modelRoad = ModelRoad(nRows: N, nColumns: 3, W: 1000, i0: 320, i3: 480 , H: 800, bSize: 10.0, fSize: 50.0, useData: false)
-        
-        //init du character
-        thePosition = (1, N-10)
+        modelRoad = ModelRoad(param)
+        thePosition = (1, N-1)
         let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        
-        //init des vues
-        gv = GameView(frame: UIScreen.main.bounds, s: periodClock*10, position: posOfCharacter , size: size)
+        gv = GameView(frame: UIScreen.main.bounds, s: periodClock*10, position: posOfCharacter , size: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
+       
         
-        super.init(nibName: nil, bundle: nil)
         
+        
+        threeDRoadVC = ThreeDRoadViewController(names: names, duration: duration, model: modelRoad, factor: CGFloat(factor), size0: sizeIm)
+        self.present(threeDRoadVC, animated: true, completion: nil)
+        
+        
+        addChild(threeDRoadVC)
+        threeDRoadVC.didMove(toParent: self)
+        backGround.frame = UIScreen.main.bounds
+        GameView.initView(backGround, "aboveTheSky")
+        view.addSubview(backGround)
+        view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
+        
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //init des vues
+        //init du character
+        hv.animationForNumber(imageName: 1) {
+            self.startGame()
+            self.threeDRoadVC.startTheGame()
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    @objc func startGame() {
-        print("start the game")
+    func startTheGame(){
         
+        print("start the game")
+
         gv.showCharacter()
         gv.startAnimation()
         
@@ -97,8 +151,15 @@ class GameViewController : UIViewController{
         timer = Timer.scheduledTimer(timeInterval:  periodClock, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
         
         gameIsStoped = false
+        
     }
     
+    @objc func startGame() {
+       startTheGame()
+    }
+    
+    
+   
     
     @objc func pauseGame() {
         if(!gameIsStoped){
@@ -154,7 +215,7 @@ class GameViewController : UIViewController{
             switch type {
             case .coin:
                 //le model a créé une piece
-                animated = true
+                animated = COINS_ARE_ANIMATED
                 name = "coin"
                 if(coins.isEmpty){
                     c += 1
@@ -180,14 +241,14 @@ class GameViewController : UIViewController{
                 
             case .coinx2 :
                 //le model a créé une piece+2
-                animated = true
+                animated = COINS_ARE_ANIMATED
                 name = "coin-x2"
                 newObject = UIImageView()
                 break
                 
             case .coinx5 :
                 //le model a créé une piece+2
-                animated = true
+                animated = COINS_ARE_ANIMATED
                 name = "coin-x5"
                 newObject = UIImageView()
                 break
@@ -199,7 +260,7 @@ class GameViewController : UIViewController{
             
             //le nouvel objet est initialisée avec l'image qui lui correspond
             newObject!.isHidden = false
-            gv.initView(newObject!, name!, speed: 1, animated: animated!)
+            GameView.initView(newObject!, name!, speed: 1, animated: animated!)
             gv.objectsView.addSubview(newObject!)
             //l'objet est mis en arriere plan
             gv.objectsView.sendSubviewToBack(newObject!)
@@ -220,7 +281,6 @@ class GameViewController : UIViewController{
      */
     @objc func updateView() {
         
-        print("hello")
         // print("hello from timer")
         // print("update view")
         c += 1
@@ -235,7 +295,6 @@ class GameViewController : UIViewController{
         
         
         //ameliorer ce code
-        //TODO
         modelRoad.movedown()
         
         
@@ -283,13 +342,13 @@ class GameViewController : UIViewController{
         //le personnage attrape un aimant
             //l'icone de l'aimant est déplacée au point de coordonnées p
             p = hv.powerAnchor
-            print("aimant s'en enclenché \(ttlMagnet)")
+            print("aimant s'en enclenché \(TTL_POWER)")
             
             //a la fin de l'animation, ajout de l'icone du pouvoir à l'emplacement réservé dans HumanInterface
             cb = {(Bool) in
                 //declenchement du timer pendant 10s
-                self.TTL.append((TypeOfObject.magnet, self.ttlMagnet))
-                self.hv.addPower(powerView: obj.view!, duration: self.ttlMagnet)
+                self.TTL.append((TypeOfObject.magnet, TTL_POWER))
+                self.hv.addPower(powerView: obj.view!, duration: TTL_POWER)
                 print("add the power now")
             }
             
@@ -327,8 +386,7 @@ class GameViewController : UIViewController{
             let timeToLive = ttl - periodClock
             TTL[0].1 = timeToLive
              aa += 1
-            //executer le pouvoir
-            print("TTT: \(timeToLive) \(aa)")
+            
             switch power {
             
             case .magnet:
@@ -339,7 +397,7 @@ class GameViewController : UIViewController{
                 //il y aura une seg fault
                 //Utilisez colonne
                 for i in 0..<modelRoad.nColumns {
-                    for neighborhood in 1 ... 20 {
+                    for neighborhood in 1 ... DISTANCE_OF_MAGNET {
                         //on tente de retirer les pieces situées dans le voisinage du personnage
                         let coin = modelRoad.removeObject(i: i, j: thePosition.1 - neighborhood, type: .coin).view
                         

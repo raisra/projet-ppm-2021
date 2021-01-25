@@ -10,13 +10,32 @@ import UIKit
 
 
 
+class Frame {
+    var type: TypeOfObject
+    var view: UIImageView?
+    
+    let size : CGSize
+    let center : CGPoint
+    
+    init(type: TypeOfObject, view : UIImageView?, size: CGSize, center: CGPoint) {
+        self.type = type
+        self.view = view
+        self.size = size
+        self.center = center
+    }
+    
+    func setObj(type: TypeOfObject, view: UIImageView? ){
+        self.type = type
+        self.view = view
+    }
+}
 
 
 class GameView: UIView {
     
     let floor = UIImageView()
     let roadImage : UIImageView = UIImageView()
-    let backGround : UIImageView = UIImageView()
+   
     let character : UIImageView = UIImageView()
     let blurr : UIImageView = UIImageView()
     
@@ -48,21 +67,21 @@ class GameView: UIView {
         roadImage.contentMode = .scaleToFill
         
         
-        initView(roadImage, "magic-road", speed: speed, animated: true)
-        initView(backGround, "aboveTheSky")
-        initView(blurr, "blurr")
-        initView(character, "personnage", speed: speed, animated: true)
+        //initView(roadImage, "magic-road", speed: speed, animated: true)
         
-        backGround.frame = frame
+        //initView(blurr, "blurr")
+        GameView.initView(character, "personnage", speed: speed, animated: true)
+        
+        
         roadImage.frame = frame
         blurr.frame = frame
         initPersonnage(position: position, size: size)
         
-        addSubview(backGround)
-        addSubview(roadImage)
+       
+        //addSubview(roadImage)
         addSubview(character)
         addSubview(objectsView)
-        addSubview(blurr)
+        //addSubview(blurr)
         
 //        self.layer.addSublayer(gradientLayer)
     }
@@ -72,7 +91,7 @@ class GameView: UIView {
     }
     
 
-    func initView(_ o: UIImageView,  _ name: String, speed: TimeInterval = 0, animated : Bool = false){
+    static func initView(_ o: UIImageView,  _ name: String, speed: TimeInterval = 0, animated : Bool = false){
         if(animated){
             o.animationImages = animatedImages(for: name)
             o.animationDuration = speed
@@ -85,7 +104,7 @@ class GameView: UIView {
     }
     
     
-    private func animatedImages(for name: String) -> [UIImage] {
+    static private func animatedImages(for name: String) -> [UIImage] {
         var i = 1
         var images = [UIImage]()
         
@@ -112,17 +131,7 @@ class GameView: UIView {
     
     
     func startAnimation(){
-        
         character.startAnimating()
-        
-        UIView.animate(withDuration: speed*200, delay: 0, options: [.repeat] ,
-                       animations : {
-                        self.backGround.frame.origin.y += 500
-        },
-        completion: nil)
-        
-        //TODO animation de la route
-
     }
     
     

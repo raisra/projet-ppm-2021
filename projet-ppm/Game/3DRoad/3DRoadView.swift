@@ -12,11 +12,9 @@ import UIKit
 
 
 
-class ThreeDRoadView : UIImageView {
-    
+class ThreeDRoadView : UIImageView {    
     var elem : ThreeDElem
 
-    
     init(elem: ThreeDElem, im: UIImage) {
         self.elem = elem
         super.init(frame: elem.frame)

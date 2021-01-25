@@ -29,7 +29,7 @@ class HumanInterface: UIView {
     //le nombre de pouvoirs
     var nbPower : Int = 0
     var powerAnchor : CGPoint = CGPoint(x: 0, y: 200)
-    let sizeOfPowerIcons : CGSize  = CGSize(width: 200, height: 200)
+    let sizeOfPowerIcons : CGSize  = CGSize(width: 10, height: 10)
     
     //TODO A REMPLACER par les irecognizer
     let droite = setButton(title: ">>>>", posx: UIScreen.main.bounds.width-100, posy: 50)
@@ -60,6 +60,7 @@ class HumanInterface: UIView {
                               action: #selector(GameViewController.pauseGame),
                               for: .touchUpInside)
         
+        startButton.isHidden = true
         startButton.setImage(UIImage(named: "startButton"), for: .normal)
         startButton.addTarget(self.superview,
                               action: #selector(GameViewController.startGame),
@@ -80,6 +81,7 @@ class HumanInterface: UIView {
         addSubview(scoreLabel)
         addSubview(messageButton)
         addSubview(startButton)
+        
         
         
         //TODO A SUPPRIMER QUAND ON utilisera gesture recognizer
@@ -146,8 +148,8 @@ class HumanInterface: UIView {
         counterView.frame.origin = CGPoint(x: w/2-50, y: h/2-50)
         counterView.frame.size = CGSize(width: 100, height: 100)
         
-        
-        UIView.animate(withDuration: 1,
+    
+        UIView.animate(withDuration: 1, delay: 0, options : [],
                        animations: {
                         print("animation \(imageName)")
                         

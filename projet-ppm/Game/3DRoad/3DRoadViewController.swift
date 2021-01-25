@@ -21,50 +21,48 @@ enum Level {
 
 class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
  
-    let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
+    var names : [TypeOfElem: String] 
     //let names : [TypeOfElem: String] = [.straight:"straight-1", .tree:"tree-1"]
-    let duration : TimeInterval = 1
-    var size : CGSize = CGSize(width: 400, height: 400) //400, 150
-    let rh : CGFloat = 0.45
-    let rw : CGFloat = 0.45
+    var duration : TimeInterval
+    var size : CGSize
+    var rh : CGFloat
     
-
+    
+    //the number of straight lines at the beggining
     let N : Int = 4
     
     var nbElements : Int
     var level :  Level
     
-    var model : ThreeDRoadModel
+    var modelRoad : ModelRoad
+    var model3D : ThreeDRoadModel
     //la vue à afficher. C'est un tableau contenant les portion de route à afficher
     var threeDView : [ThreeDRoadView]
     
 
-    let deltaY = 10
     
-    init() {
+    init(names : [TypeOfElem: String] , duration : TimeInterval, model : ModelRoad, factor : CGFloat, size0: CGSize) {
+        self.names = names
+        self.duration = duration
+        self.size = size0
+        self.modelRoad = model
+        self.rh = factor
         level = .easy
-       
         nbElements = 0
         
-        let r = size.height/size.width
-        size.width = UIScreen.main.bounds.width
-        size.height = size.width * r
+
+        self.model3D = ThreeDRoadModel(s: size0, rh: rh, rw: rh, duration: duration)
         
-        model = ThreeDRoadModel(s: size, rh: rh, rw: rw, duration: duration)
         //au depart la vue est vide
         threeDView = [ThreeDRoadView]()
      
-       
-        
-        
         super.init(nibName: nil, bundle: nil)
         self.view.frame = UIScreen.main.bounds
-        
     }
 
-    override func viewDidLoad() {
-        startTheGame()
-    }
+  
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -100,12 +98,9 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         nbElements += 1
         return v
     }
-    
-    
-    
+
     
     func removeFirstView() {
-        
         let firstView = threeDView.removeFirst()
         
         for view in threeDView {
@@ -123,12 +118,11 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
      commencer les animations
      */
     func startTheGame(){
-        
         for _ in 1...N {
             //genere un element droit
             //se frame est calculée au prealable par le model pour que la vue
             //associée soit affiché au bon endroit
-            let elem = model.generateElementStraight()
+            let elem = model3D.generateElementStraight()
             
             //créé la vue et l'ajoute à la liste des elements geree par le controller
             //cette vue sera animée
@@ -164,7 +158,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         transformGroup.isRemovedOnCompletion = true
         transformGroup.fillMode = .forwards
         
-        if model.isFirst(viewToAnimate.elem) {
+        if model3D.isFirst(viewToAnimate.elem) {
             transformGroup.delegate = self
             transformGroup.setValue(viewToAnimate, forKey: "id")
         }
@@ -203,10 +197,10 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
        
 
        // self.view.layer.removeAnimation(forKey: "id")
-        model.removeFirst()
+        model3D.removeFirst()
         removeFirstView()
         
-        let elem = model.generateElement(level: .easy)
+        let elem = model3D.generateElement(level: .easy)
         
         //créé la vue et l'ajoute à la liste des elements geree par le controller
         //cette vue sera animée

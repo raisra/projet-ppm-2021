@@ -1,9 +1,3 @@
-//
-//  3DRoadController.swift
-//  projet-ppm
-//
-//  Created by ramzi on 21/01/2021.
-//
 
 import Foundation
 import UIKit
@@ -377,3 +371,107 @@ class ThreeDRoadModel {
         return elem.index
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//class ThreeDRoadModel {
+//    
+//    
+//    var elementsToDisplay : [ThreeDElem]
+//    var nbElements : Int = 0
+//    
+//    //duréé de deplacement
+//    var duration : TimeInterval
+//    var modelRoad : ModelRoad
+//    
+//    var size0 : CGSize
+//    var alpha: CGFloat
+//    var H : CGFloat
+//    var H0 : CGFloat
+//    
+//    init(model : ModelRoad, size0: CGSize, alpha : CGFloat, duration: TimeInterval) {
+//        elementsToDisplay = [ThreeDElem]()
+//        self.size0 = size0
+//        self.alpha = alpha
+//        // self.rw = rw
+//        self.duration = duration
+//        
+//        H0 = size0.height
+//        H = H0 / ( 1 / alpha - 1.0)
+//        modelRoad = model
+//    }
+//    
+//    
+//    
+//    
+//    
+//    
+//    func computeFrame(lastElem : ThreeDElem?) -> CGRect {
+//        
+//        var o : CGPoint
+//        var s : CGSize
+//        
+//        if lastElem == nil {
+//            o = CGPoint(x: 0, y: UIScreen.main.bounds.height - H0)
+//            return CGRect(origin: o, size: size0)
+//        }
+//        
+//        
+//        o = lastElem!.frame.origin
+//        s = lastElem!.frame.size
+//        
+//        o = CGPoint(x: o.x + s.width*(1 - alpha)/2.0,
+//                    y: o.y - alpha*s.height)
+//        
+//        s = CGSize(width: (lastElem?.frame.size.width)!*alpha, height: (lastElem?.frame.size.height)!*alpha)
+//        
+//        return CGRect(origin: o, size: s)
+//    }
+//    
+//    
+//    
+//    
+//    
+//    func computeSpeed(index: Int) -> TimeInterval {
+//        
+//        return duration * (Double(index)+1.0)
+//    }
+//    
+//    func computeYTranslation(index : Int) -> CGFloat {
+//        let i : CGFloat = CGFloat(index)
+//        let a = size0.height*(alpha + 1.0)/2.0
+//        let b = (1.0/alpha + (1.0 - pow(alpha, i))/(1.0 - alpha))
+//        return a*b
+//    }
+//    
+//   
+//    
+//    //    //ajoute à la verticiale
+//    private func append(elem: ThreeDElem){
+//        elem.setIndex(nbElements)
+//        let e = getLastElem()
+//        let f = computeFrame(lastElem: e)
+//        elem.setFrame(frame : f)
+//        let d = computeYTranslation(index: elem.index)
+//        elem.setYTranslation(d)
+//        //        let v = computeSpeed()
+//        //        elem.duration = v
+//        //        let s = computeSCale()
+//        //        elem.scaleH = s.scaleH
+//        //        elem.scaleW = s.scaleW
+//        //        print ( "data for index \(elem.index) : Time:\(elem.duration) TranslateY: \(elem.yTranslate) Scale: \(elem.scaleH) \(elem.scaleW) Y: \(elem.frame.origin.y)")
+//        elementsToDisplay.append(elem)
+//        nbElements += 1
+//    }
+//    
