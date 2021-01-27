@@ -17,9 +17,10 @@ class ThreeDRoadView : UIImageView {
 
     init(elem: ThreeDElem, im: UIImage) {
         self.elem = elem
-        super.init(frame: elem.frame)
+        super.init(image: im)
         
-        self.image = im
+        //self.center = elem.center
+        self.frame = elem.frame
         self.contentMode = .scaleAspectFill
     }
     

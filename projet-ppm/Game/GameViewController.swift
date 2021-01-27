@@ -11,10 +11,36 @@ import UIKit
 
 
 
-let DISTANCE_OF_MAGNET = 5
-let TTL_POWER : TimeInterval = 20.0
+let DISTANCE_OF_MAGNET = 2
+let TTL_POWER : TimeInterval = 5.0
+let COINS_ARE_ANIMATED = false
+let INITIAL_CHAR_POSITION : CGFloat = 1
+let BACK_GROUND_IMAGE = "aboveTheSky"
 
-class GameViewController : UIViewController{
+let NB_ROWS : CGFloat = 10
+let NB_COLUMNS : CGFloat = 5
+
+let DURATION : TimeInterval = 0.4
+//the size of the uiview representing the character
+let sizeChar  = CGSize(width: 100, height: 100)
+
+//let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
+let NAMES : [TypeOfElem: String] = [.straight:"pave", .bridge:"bridge", .empty: "pave", .passage: "pave", .tree: "tree", .turnRight:"turnRight", .turnLeft : "turnLeft"]
+
+
+//var sizeIm = CGSize(width: 400, height: 60)
+//let alpha : CGFloat = 75.96
+//let factor : CGFloat = 0.925
+
+var sizeIm = CGSize(width: 400, height: 100)
+let alpha : CGFloat = 75.96
+let factor : CGFloat = 309.96/398.52
+
+
+
+
+class GameViewController : UIViewController, GestureManagerProtocol, MotionManagerProtocol{
+
     
     // var mvc : MessageViewController
     let mvc = { () -> MessageViewController in
@@ -27,100 +53,105 @@ class GameViewController : UIViewController{
     }()
     
     var timer : Timer?
-    
-    /**
-     plus speed est grand plus le jeu est lent
-     */
-    var periodClock = TimeInterval(0.1)
-    
-    
-    
     var gv : GameView!
     var hv : HumanInterface!
-    var modelRoad : ModelRoad!
+    var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
     
-    let N : Int = 50
     
     var gameIsStoped : Bool = true
-    
-    
-    let w = UIScreen.main.bounds.width
-    let h = UIScreen.main.bounds.height
-    
-    
-    let sk = 0 * UIScreen.main.bounds.height // la hauteur du ciel
-    let rh = 1 * UIScreen.main.bounds.height // la hauteur de la route
-    
+
     //the position of the character on the screen grid
     var thePosition :(Int, Int) = (0,0)
-    
-    //the size of the uiview representing the character
-    var sizeChar : CGSize = CGSize(width: 100, height: 100)
+   
     
     //set of coins
     var coins: Set<UIImageView> = Set<UIImageView>()
-    
 
-    let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
-    //let names : [TypeOfElem: String] = [.straight:"straight-1", .tree:"tree-1"]
-    let duration : TimeInterval = 2
-    let factor : CGFloat = 0.455
-    
-    let deltaY: CGFloat = 1
-    let COINS_ARE_ANIMATED = false
     let backGround : UIImageView = UIImageView()
-   
+
+    
+    lazy var soundManager = SoundManager()
+    
+    var gestureManager : GestureManager?
+    var motionManager : MotionManager?
     
     
-    
-    
+    var duration : TimeInterval?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
     }
     
+    
     override func viewDidLoad() {
         print ("the Game view did load")
 
+        duration = DURATION
         //init du model 3D
-        var sizeIm = CGSize(width: 400, height: 400)
+        
         let r = sizeIm.height/sizeIm.width
         sizeIm.width = UIScreen.main.bounds.width
         sizeIm.height = sizeIm.width * r
-        let H : CGFloat = sizeIm.height * (1.0 - pow(factor, 4))/(1.0 - factor)
-        let D : CGFloat = sizeIm.width * pow(factor, 4)
-        let param : ModelRoad.Param = ModelRoad.Param(nRows: N,
-                                                      nColumns: 3,
+        
+        
+        //le paraemetre à metter dans Model
+        print( sizeIm.height)
+        
+        
+        let D : CGFloat = sizeIm.width * pow(factor, NB_ROWS)
+        
+        
+        let param : ModelRoad.Param = ModelRoad.Param(nRows: Int(NB_ROWS),
+                                                      nColumns: Int(NB_COLUMNS),
                                                       W: UIScreen.main.bounds.width,
-                                                      H: H,
+                                                     
                                                       D: D,
-                                                      bSize: 10.0, fSize: 50.0,
-                                                      useData: false)
+                                                      bSize: 5, fSize:50,
+                                                      useData: false,
+                                                      size0: sizeIm,
+                                                        factor: factor)
         
         //init du model
-        modelRoad = ModelRoad(param)
-        thePosition = (1, N-1)
+        //besoin de alpha et de la taille de la premiere image
+        
+        
+        
+        modelRoad = ThreeDRoadModel(duration: duration!, param)
+        
+        //initialise la position du persinnage au mileu de l'ecran
+        thePosition = ((modelRoad.iMax - modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
+        
         let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv = GameView(frame: UIScreen.main.bounds, s: periodClock*10, position: posOfCharacter , size: sizeChar)
+        
+        
+        gv = GameView(frame: UIScreen.main.bounds, s: duration!*10, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
        
-        
-        
-        
-        threeDRoadVC = ThreeDRoadViewController(names: names, duration: duration, model: modelRoad, factor: CGFloat(factor), size0: sizeIm)
-        self.present(threeDRoadVC, animated: true, completion: nil)
-        
-        
+       
+        threeDRoadVC = ThreeDRoadViewController(names: NAMES,
+                                                duration: duration!,
+                                                model3D: modelRoad,
+                                                N: Int(NB_ROWS))
+
         addChild(threeDRoadVC)
         threeDRoadVC.didMove(toParent: self)
         backGround.frame = UIScreen.main.bounds
-        GameView.initView(backGround, "aboveTheSky")
+        GameView.initView(backGround, BACK_GROUND_IMAGE)
         view.addSubview(backGround)
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
         
+    
+        
+        gestureManager = GestureManager(forView: self.hv)
+        motionManager = MotionManager()
+        
+        
+        gestureManager?.delegate = self
+        motionManager?.delegate = self
+        motionManager?.start()
     }
     
     
@@ -132,15 +163,24 @@ class GameViewController : UIViewController{
             self.threeDRoadVC.startTheGame()
         }
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        print(#function)
+        super.viewWillDisappear(animated)
+        
+        self.gestureManager?.removeGesture(from: self.gv)
+        self.motionManager?.stop()
+        self.motionManager?.stop()
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func startTheGame(){
-        
         print("start the game")
 
+        soundManager.playGameSound()
+        
         gv.showCharacter()
         gv.startAnimation()
         
@@ -148,10 +188,9 @@ class GameViewController : UIViewController{
         hv.messageButton.isHidden = false
         hv.startButton.isHidden = true
         
-        timer = Timer.scheduledTimer(timeInterval:  periodClock, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
         
         gameIsStoped = false
-        
     }
     
     @objc func startGame() {
@@ -169,6 +208,8 @@ class GameViewController : UIViewController{
             gameIsStoped = true
             //gv.viewHandlingCoins.isHidden = true
             hv.pauseButton.isHidden = false
+            
+            soundManager.stopGameSoung()
         }
         else {
             //restart the game
@@ -205,7 +246,7 @@ class GameViewController : UIViewController{
         //on commence par générer un objet grace au model
         let a = modelRoad.generateNewObject(level: 0)
         
-        for colonne in 0..<modelRoad.nColumns {
+        for colonne in 0..<modelRoad.iMax {
             //le type de l'objet créé
             let type : TypeOfObject = a[colonne]
             var newObject : UIImageView?
@@ -265,7 +306,7 @@ class GameViewController : UIViewController{
             //l'objet est mis en arriere plan
             gv.objectsView.sendSubviewToBack(newObject!)
             //l'objet est ajouté au model
-            modelRoad.addObj(newObject!, type: type, i: colonne, j: 0)
+            modelRoad.addObj(newObject!, type: type, i: colonne + modelRoad.iMin , j: 0)
         }
     }
     
@@ -279,28 +320,67 @@ class GameViewController : UIViewController{
         cette fonction créé  un objet
             vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
      */
+    
+    
+    
+    var nbOfTurn : Int = 0
+    
+    
     @objc func updateView() {
-        
+
         // print("hello from timer")
         // print("update view")
-        c += 1
-        if((c%5)==0){
-            //on crée un object tous les n appels pour limiter leurs nombres
+     
+        
+        
+        if !threeDRoadVC.stopGeneratingCoins() && modelRoad.getLastElem()?.type() == .straight {
             createObject()
         }
+        
+        threeDRoadVC.animate()
+        
+        //ameliorer ce code
+        modelRoad.movedown()
         
         //vérifie s'il y a des pouvoirs en cours d'execution
         //met à jour le timer
         handlePower()
         
+        //verifier s'i ll'utilisateur doit tourner
+        let t : TypeOfElem? = modelRoad.getElemAtIndex(Int(INITIAL_CHAR_POSITION))?.type()
+        if t == .turnLeft || t == .turnRight {
+            print("L'utilisateur doit tourner")
+            
+            if wantToTurnRight || wantToTurnLeft {
+                nbOfTurn += 1
+                let level : Level = Level(rawValue: Int(nbOfTurn/10)) ?? .hard
+                threeDRoadVC.turn(level: level)
+                wantToTurnLeft = false
+                wantToTurnRight = false
+                
+                //on invalide le timer et on en rreceer un autre plus rapide
+                self.timer?.invalidate()
+                duration = duration! * 0.95
+                threeDRoadVC.updateDuration(duration!)
+                self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+            }
+            else {
+                print("l'utilisateur va perdre")
+                //TODO ICI AFFICHER LE SCORE
+                pauseGame()
+                hv.animationForNumber(imageName: 1) {
+                    self.startGame()
+                    self.threeDRoadVC.startTheGame()
+                }
+            }
+        }
         
-        //ameliorer ce code
-        modelRoad.movedown()
         
         
         //tentative de suppression de l'objet situé devant le personnage
         //suppression de l'objet située 1 cases devant
-        let obj : (type: TypeOfObject, view: UIImageView?) = modelRoad.removeObject(i: thePosition.0, j: thePosition.1-1, type: .any)
+        let obj : (type: TypeOfObject, view: UIImageView?)
+        obj = modelRoad.removeObject(i: thePosition.0, j: thePosition.1, type: .any)
         
         //si aucun n'objet n'est devant le personnage rien à faire
         if (obj == (TypeOfObject.empty, nil)){ return}
@@ -383,7 +463,7 @@ class GameViewController : UIViewController{
                 continue
             }
 
-            let timeToLive = ttl - periodClock
+            let timeToLive = ttl - duration!
             TTL[0].1 = timeToLive
              aa += 1
             
@@ -442,7 +522,7 @@ class GameViewController : UIViewController{
     /**
     deplacement de l'image obj vers le point de coordonnées point.
      */
-    func moveObjToPoint(_ obj : UIImageView, point : CGPoint?, withDuration duration: TimeInterval, options: UIView.AnimationOptions = [] , cb : ((Bool) ->())?){
+    func moveObjToPoint(_ obj : UIImageView, point : CGPoint?, withDuration duration: TimeInterval = DURATION, options: UIView.AnimationOptions = [] , cb : ((Bool) ->())?){
         
         if(point == nil) {return}
         
@@ -455,70 +535,70 @@ class GameViewController : UIViewController{
     
     
     
-    func moveToTheRight()  {
-        thePosition.0 = min(2 , thePosition.0 + 1)
-        
+    
+    
+    
+
+    var wantToTurnLeft : Bool = false
+    var wantToTurnRight  : Bool = false
+    var wantToJump : Bool = false
+    
+    
+    func moveLeft() {
+        thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
+        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        gv.character.center = s
     }
     
-    func moveToTheLeft()  {
-        thePosition.0 = max(0, thePosition.0 - 1)
+    
+    func moveRight() {
+        thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
+        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        gv.character.center = s
     }
     
-    func moveUp() {
+
+
+    func turnLeft() {
+        print("hello from move left")
+        wantToTurnLeft = true
+    }
+    
+    func turnRight() {
+        print("hello from move right")
+        wantToTurnRight = true
+    }
+    
+
+
+    
+    
+    func jump() {
+        wantToJump = true
         
         let initPosition = thePosition.0
         thePosition.0 = 42
-        
         let upAnimation : () ->() = {
             self.gv.character.center.y -= 100
+            
         }
         
+        soundManager.playEdgeSound()
         let completion : (Bool) ->() = {(_) in
             
             UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent, .curveEaseIn] ,
                            animations : {
                             self.thePosition.0 = initPosition
                             self.gv.character.center.y += 100
+                            self.wantToJump = false
                            }
                            ,  completion: nil)
             
             
         }
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent , .curveEaseOut ],
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent , .curveEaseOut],
                        animations: upAnimation, completion: completion)
         
-    }
-    
-    
-    
-    @objc func movePersonnage(sender : UIButton) {
-        
-        if( sender == hv.droite){
-            print("move to right")
-            moveToTheRight()
-            let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-            gv.character.center = s
-        }
-        else if sender == hv.gauche {
-            print("move to the left")
-            moveToTheLeft()
-            let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-            gv.character.center = s
-        }
-        
-        else if sender == hv.saute{
-            print("move up")
-            moveUp()
-        }
-        
-        else if sender == hv.baisse{
-            print("move down")
-            
-        }
-        else if sender == hv.accelerate{
-            print("accelerate")
-            
-        }
     }
     
     
