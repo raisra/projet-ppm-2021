@@ -23,7 +23,7 @@ class MessageViewController: UIViewController{
         messageView = self.view as? MessageView
         
         let recognizer = UISwipeGestureRecognizer(target: self, action: #selector(backToGameView))
-        recognizer.direction = [.right, .left]
+        recognizer.direction = [.right, .left, .up, .down]
         view.gestureRecognizers = [recognizer]
     }
     

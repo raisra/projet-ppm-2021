@@ -7,40 +7,34 @@
 
 import UIKit
 
-@objc protocol GestureManagerProtocol {
+protocol GestureManagerProtocol {
     
-    @objc /*optional*/ func swipeGesture  (_ gesture: UIGestureRecognizer)
+    func turnLeft()
     
+    func turnRight()
+    
+    func jump()
 }
 
-extension GestureManagerProtocol {
-    func swipeGesture  (_ gesture: UIGestureRecognizer) {}
-}
 
-class GestureManager: NSObject {
-    
-    //var view: UIView? = nil
-    
-    var delegate: GestureManagerProtocol?
-    
-    // MARK: -
-    
-   
 
-    func addSwipeGesture (to view:UIView, with directions:[UISwipeGestureRecognizer.Direction]) {
-//        if self.delegate?.swipeGesture(_:) == nil {
-//            print ("IL FAUT DEFINIR LA FONCTION swipe")
-//            return
-//        }
+class GestureManager  {
+
+    var delegate : GestureManagerProtocol?
+    
+    init(forView: UIView) {
+        
+        let directions:[UISwipeGestureRecognizer.Direction] = [.left, .right, .up, .down]
         
         for direction in directions {
-            let gesture = UISwipeGestureRecognizer(target: self.delegate,
-                                                   action: #selector(self.delegate?.swipeGesture(_:)))
+            
+            let gesture = UISwipeGestureRecognizer(target: self,action: #selector(self.swipeGesture(_:)))
             gesture.direction = direction
-            view.addGestureRecognizer(gesture)
+            forView.addGestureRecognizer(gesture)
         }
-        
     }
+    
+ 
     
     func removeGesture (from view: UIView) {
         if let gestures = view.gestureRecognizers {
@@ -48,6 +42,26 @@ class GestureManager: NSObject {
                 view.removeGestureRecognizer(gesture)
             }
         }
+    }
+    
+    
+    
+    @objc func swipeGesture(_ gesture: UIGestureRecognizer) {
+        
+        let swipeGesture = gesture as! UISwipeGestureRecognizer
+        
+        if swipeGesture.direction == .left {
+            print("move to the left")
+            delegate?.turnLeft()
+     
+        }else if swipeGesture.direction == .right {
+            print("move to right")
+            delegate?.turnRight()
+        }else if swipeGesture.direction == .up {
+            print("move up")
+            delegate?.jump()
+        }
+       
     }
     
 }

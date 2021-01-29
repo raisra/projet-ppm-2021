@@ -31,12 +31,6 @@ class HumanInterface: UIView {
     var powerAnchor : CGPoint = CGPoint(x: 0, y: 200)
     let sizeOfPowerIcons : CGSize  = CGSize(width: 10, height: 10)
     
-    //TODO A REMPLACER par les irecognizer
-    let droite = setButton(title: ">>>>", posx: UIScreen.main.bounds.width-100, posy: 50)
-    let gauche = setButton(title: "<<<<", posx: 10, posy: 50)
-    let saute = setButton(title: "Sauter", posx: UIScreen.main.bounds.width/2, posy: 300)
-    let baisse = setButton(title: "BAisser", posx: UIScreen.main.bounds.width/2, posy: 400)
-    let accelerate = setButton(title: "x10", posx: 400, posy: 600)
     
     /**
         bouton pour simuler le deplacement du character
@@ -83,21 +77,6 @@ class HumanInterface: UIView {
         addSubview(startButton)
         
         
-        
-        //TODO A SUPPRIMER QUAND ON utilisera gesture recognizer
-        droite.addTarget(self.superview, action: #selector(GameViewController.movePersonnage(sender:)), for: .touchUpInside)
-        gauche.addTarget(self.superview, action: #selector(GameViewController.movePersonnage(sender:)), for: .touchUpInside)
-        saute.addTarget(self.superview, action: #selector(GameViewController.movePersonnage(sender:)), for: .touchUpInside)
-        baisse.addTarget(self.superview, action: #selector(GameViewController.movePersonnage(sender:)), for: .touchUpInside)
-        accelerate.addTarget(self.superview, action: #selector(GameViewController.movePersonnage(sender:)), for: .touchUpInside)
-        
-        addSubview(gauche)
-        addSubview(droite)
-        addSubview(baisse)
-        addSubview(saute)
-        addSubview(accelerate)
-        
-        //////////////////////////////////////////////
     }
     
     required init?(coder: NSCoder) {
@@ -113,6 +92,8 @@ class HumanInterface: UIView {
    
         scoreLabel.frame = CGRect(x: w-100, y: 30, width: 100, height: 100)
         messageButton.frame = CGRect(x: 100, y: 30, width: 100, height: 100)
+        
+        print("redraw------------")
     }
     
     
@@ -181,7 +162,7 @@ class HumanInterface: UIView {
                         print("---------------completion done")
                         self.nbPower -= 1
                         self.powerAnchor.y -= self.sizeOfPowerIcons.height
-                        self.isHidden = true
+                        powerView.isHidden = true
                        })
         
     }

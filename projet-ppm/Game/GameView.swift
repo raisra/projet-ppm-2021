@@ -9,26 +9,8 @@ import Foundation
 import UIKit
 
 
-
-class Frame {
-    var type: TypeOfObject
-    var view: UIImageView?
-    
-    let size : CGSize
-    let center : CGPoint
-    
-    init(type: TypeOfObject, view : UIImageView?, size: CGSize, center: CGPoint) {
-        self.type = type
-        self.view = view
-        self.size = size
-        self.center = center
-    }
-    
-    func setObj(type: TypeOfObject, view: UIImageView? ){
-        self.type = type
-        self.view = view
-    }
-}
+let JUMP_DURATION : TimeInterval = 1.0
+let BLINK_DURATION : TimeInterval = 0.5
 
 
 class GameView: UIView {
@@ -39,51 +21,51 @@ class GameView: UIView {
     let character : UIImageView = UIImageView()
     let blurr : UIImageView = UIImageView()
     
+    var animationsJump = [UIImage]()
+    var animationsRunning = [UIImage]()
     
     // la vue contenant tous les objets
     let objectsView : UIView = UIView()
     
-//    //ajout de flou
-//    let gradientLayer : CAGradientLayer = {
-//
-//        let initialColor : CGColor = UIColor.black.cgColor
-//        let fincalColor : CGColor = CGColor.init(gray: 1, alpha: 0 )
-//
-//        let gradientLayer =  CAGradientLayer()
-//        gradientLayer.type = .axial
-//        gradientLayer.colors = [initialColor, fincalColor]
-//        gradientLayer.locations = [0, 1]
-//        gradientLayer.frame = UIScreen.main.bounds
-//
-//        return gradientLayer
-//    }()
+    //ajout de flou
+    let gradientLayer : CAGradientLayer = {
+
+        let initialColor : CGColor = UIColor.blue.cgColor
+        let fincalColor : CGColor = CGColor.init(red: 0, green: 0.2, blue: 0.7, alpha: 0)
+
+        let gradientLayer =  CAGradientLayer()
+        gradientLayer.type = .axial
+        gradientLayer.colors = [initialColor, fincalColor]
+        gradientLayer.locations = [0, 0.7]
+        gradientLayer.frame = UIScreen.main.bounds
+        
+
+        return gradientLayer
+    }()
     
     var speed : TimeInterval
     
     
-     init(frame: CGRect, s: TimeInterval, position : CGPoint , size : CGSize) {
+     init(frame: CGRect, s: TimeInterval, position : CGPoint , sizeOfChar : CGSize) {
         self.speed = s
         super.init(frame: frame)
         roadImage.contentMode = .scaleToFill
         
         
-        //initView(roadImage, "magic-road", speed: speed, animated: true)
-        
-        //initView(blurr, "blurr")
-        GameView.initView(character, "personnage", speed: speed, animated: true)
+        animationsJump = GameView.animatedImages(for: "jump")
+        animationsRunning = GameView.animatedImages(for: "run")
+        GameView.initView(character, "run", speed: speed, animated: true)
         
         
         roadImage.frame = frame
         blurr.frame = frame
-        initPersonnage(position: position, size: size)
+        initPersonnage(position: position, size: sizeOfChar)
         
        
-        //addSubview(roadImage)
-        addSubview(character)
         addSubview(objectsView)
-        //addSubview(blurr)
+        addSubview(character)
         
-//        self.layer.addSublayer(gradientLayer)
+        self.layer.addSublayer(gradientLayer)
     }
     
     required init?(coder: NSCoder) {
@@ -114,7 +96,35 @@ class GameView: UIView {
         }
         return images
     }
+    
 
+    func animationForJump() {
+        character.stopAnimating()
+        character.animationImages = animationsJump
+        character.animationDuration = JUMP_DURATION
+        character.animationRepeatCount = 1
+        character.startAnimating()
+    }
+
+    
+    func animationForRunning() {
+        character.stopAnimating()
+        character.animationImages = animationsRunning
+        character.animationDuration = speed
+        character.animationRepeatCount = 0
+        character.startAnimating()
+    }
+
+    
+    
+    func animateBlink() {
+        
+        UIView.animate(withDuration: BLINK_DURATION, delay: 0, options: [.allowAnimatedContent, .autoreverse, .repeat] ) {
+            self.character.alpha = 0.5
+        } completion: { (_) in
+            
+        }
+    }
     
     private func initPersonnage(position : CGPoint , size : CGSize)  {
         character.frame = CGRect(origin: CGPoint(), size: size)
@@ -148,6 +158,7 @@ class GameView: UIView {
         character.isHidden = false
     }
     
+  
     
 }
 

@@ -34,7 +34,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
-        /********************/
+       
         path = Bundle.main.path(forResource: "son", ofType: "mp3")
         url = URL (fileURLWithPath: path!)
         do {
@@ -44,7 +44,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
-        /********************/
+
         path = Bundle.main.path(forResource: "squeeze-toy-1", ofType: "mp3")
         url = URL (fileURLWithPath: path!)
         do {
@@ -54,7 +54,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
-        /********************/
+
         path = Bundle.main.path(forResource: "midnight-ride-01a", ofType: "mp3")
         url = URL (fileURLWithPath: path!)
         do {
@@ -66,7 +66,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
-        /********************/
+    
     }
     
     func playGameSound () {
@@ -101,7 +101,6 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     
     
-    // MARK: - AVAudioPlayerNode
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {

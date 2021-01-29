@@ -22,10 +22,10 @@ let NB_COLUMNS : CGFloat = 5
 
 let DURATION : TimeInterval = 0.4
 //the size of the uiview representing the character
-let sizeChar  = CGSize(width: 100, height: 100)
+let sizeChar  = CGSize(width: 200, height: 450)
 
 //let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
-let NAMES : [TypeOfElem: String] = [.straight:"pave", .bridge:"bridge", .empty: "pave", .passage: "pave", .tree: "tree", .turnRight:"turnRight", .turnLeft : "turnLeft"]
+let NAMES : [TypeOfObject: String] = [STRAIGHT:"pave", BRIDGE:"bridge", _EMPTY_: "pave", PASSAGE: "pave", TREE: "tree", TURN_RIGHT:"turnRight", TURNLEFT : "turnLeft"]
 
 
 //var sizeIm = CGSize(width: 400, height: 60)
@@ -40,7 +40,7 @@ let factor : CGFloat = 309.96/398.52
 
 
 class GameViewController : UIViewController, GestureManagerProtocol, MotionManagerProtocol{
-
+    
     
     // var mvc : MessageViewController
     let mvc = { () -> MessageViewController in
@@ -60,16 +60,16 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     
     
     var gameIsStoped : Bool = true
-
+    
     //the position of the character on the screen grid
     var thePosition :(Int, Int) = (0,0)
-   
+    
     
     //set of coins
     var coins: Set<UIImageView> = Set<UIImageView>()
-
+    
     let backGround : UIImageView = UIImageView()
-
+    
     
     lazy var soundManager = SoundManager()
     
@@ -86,7 +86,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     
     override func viewDidLoad() {
         print ("the Game view did load")
-
+        
         duration = DURATION
         //init du model 3D
         
@@ -105,35 +105,35 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         let param : ModelRoad.Param = ModelRoad.Param(nRows: Int(NB_ROWS),
                                                       nColumns: Int(NB_COLUMNS),
                                                       W: UIScreen.main.bounds.width,
-                                                     
+                                                      
                                                       D: D,
                                                       bSize: 5, fSize:50,
                                                       useData: false,
                                                       size0: sizeIm,
-                                                        factor: factor)
+                                                      factor: factor, duration: duration!)
         
         //init du model
         //besoin de alpha et de la taille de la premiere image
         
         
         
-        modelRoad = ThreeDRoadModel(duration: duration!, param)
+        modelRoad = ThreeDRoadModel(param)
         
         //initialise la position du persinnage au mileu de l'ecran
-        thePosition = ((modelRoad.iMax - modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
+        thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
         
-        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1 - 2 )
         
         
-        gv = GameView(frame: UIScreen.main.bounds, s: duration!*10, position: posOfCharacter , sizeOfChar: sizeChar)
+        gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
-       
-       
+        
+        
         threeDRoadVC = ThreeDRoadViewController(names: NAMES,
                                                 duration: duration!,
                                                 model3D: modelRoad,
                                                 N: Int(NB_ROWS))
-
+        
         addChild(threeDRoadVC)
         threeDRoadVC.didMove(toParent: self)
         backGround.frame = UIScreen.main.bounds
@@ -143,7 +143,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         view.addSubview(gv)
         view.addSubview(hv)
         
-    
+        
         
         gestureManager = GestureManager(forView: self.hv)
         motionManager = MotionManager()
@@ -178,8 +178,8 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     
     func startTheGame(){
         print("start the game")
-
-        soundManager.playGameSound()
+        
+        //soundManager.playGameSound()
         
         gv.showCharacter()
         gv.startAnimation()
@@ -194,13 +194,14 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     }
     
     @objc func startGame() {
-       startTheGame()
+        startTheGame()
     }
     
     
-   
+    
     
     @objc func pauseGame() {
+        //TODO SAUVEGARDER LE niveau et la valeur du timer pr elancer le timer a la meme frequence
         if(!gameIsStoped){
             gv.stopAnimation()
             timer?.invalidate()
@@ -241,7 +242,6 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     /**
      genere aleatoirement un objet qur le parcours
      */
-    var d = 0
     func createObject(){
         //on commence par générer un objet grace au model
         let a = modelRoad.generateNewObject(level: 0)
@@ -254,16 +254,16 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
             var name: String? //the name of the file cointaining the object to draw
             
             switch type {
-            case .coin:
+            case _COIN_:
                 //le model a créé une piece
                 animated = COINS_ARE_ANIMATED
                 name = "coin"
                 if(coins.isEmpty){
-                    c += 1
+                    
                     newObject = UIImageView()
                     //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
                     // print("\t\t------------create new coin \(s) \(d)--------------")
-                    d += 1
+                   
                 }
                 else{
                     newObject = coins.popFirst()!
@@ -273,29 +273,29 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
                 }
                 break
                 
-            case .magnet :
+            case magnet :
                 //le model a créé un aimant
                 animated = false
                 name = "magnet"
                 newObject = UIImageView()
                 break
                 
-            case .coinx2 :
+            case coinx2 :
                 //le model a créé une piece+2
                 animated = COINS_ARE_ANIMATED
                 name = "coin-x2"
                 newObject = UIImageView()
                 break
                 
-            case .coinx5 :
+            case coinx5 :
                 //le model a créé une piece+2
                 animated = COINS_ARE_ANIMATED
                 name = "coin-x5"
                 newObject = UIImageView()
                 break
                 
-            case .any : continue
-            case .empty: continue
+            case any : continue
+            case _EMPTY_: continue
             default: continue
             }
             
@@ -306,54 +306,93 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
             //l'objet est mis en arriere plan
             gv.objectsView.sendSubviewToBack(newObject!)
             //l'objet est ajouté au model
-            modelRoad.addObj(newObject!, type: type, i: colonne + modelRoad.iMin , j: 0)
+            let f = modelRoad.addObj(newObject!, type: type, i: colonne + modelRoad.iMin , j: 0)
+            modelRoad.initAnimation(elem: f)
+            modelRoad.startAnimation(elem: f)
         }
     }
     
-    //compte le nombre d'objets créés
-    var c = 0
+    
     
     //dictionnaire contenant le Time to live de chaque pouvoir qui a été enclenché
     var TTL: [(TypeOfObject, TimeInterval)] = [(TypeOfObject, TimeInterval)]()
     
     /**
-        cette fonction créé  un objet
-            vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
+     cette fonction créé  un objet
+     vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
      */
-    
-    
-    
     var nbOfTurn : Int = 0
+    var level : Level = .easy
     
+    let MALUS_DURATION :TimeInterval = 2.0
+    var malus : Bool = false //indique si le personnage s'est cogné
+    
+    var timerJump : TimeInterval = 0.0
+    var timerBlink: TimeInterval = 0.0
     
     @objc func updateView() {
-
-        // print("hello from timer")
-        // print("update view")
-     
         
         
-        if !threeDRoadVC.stopGeneratingCoins() && modelRoad.getLastElem()?.type() == .straight {
-            createObject()
+        
+        //on véerifie si le personnage a sauté
+        if wantToJump {
+            timerJump -= duration!
+            if timerJump < 0 {
+                print("End jumping")
+                timerJump = 0.0
+                wantToJump = false
+                gv.animationForRunning()
+            }
         }
         
-        threeDRoadVC.animate()
+        if malus {
+            timerBlink -= duration!
+            if timerBlink < 0 {
+                print("End Blink")
+                timerBlink = 0.0
+                malus = false
+            }
+        }
         
-        //ameliorer ce code
-        modelRoad.movedown()
         
-        //vérifie s'il y a des pouvoirs en cours d'execution
-        //met à jour le timer
-        handlePower()
-        
-        //verifier s'i ll'utilisateur doit tourner
-        let t : TypeOfElem? = modelRoad.getElemAtIndex(Int(INITIAL_CHAR_POSITION))?.type()
-        if t == .turnLeft || t == .turnRight {
-            print("L'utilisateur doit tourner")
+        //on vérifie sur quel type de route se trouve le personnage
+        let t = modelRoad.getElemAtIndex(Int(INITIAL_CHAR_POSITION))?.type
+        if (t == TURNLEFT && !wantToTurnLeft) || (t == TURN_RIGHT && !wantToTurnRight) {
+            //le joueur a perdu
+                print("l'utilisateur va perdre")
             
-            if wantToTurnRight || wantToTurnLeft {
+                soundManager.playEndSound()
+                //TODO ICI AFFICHER LE SCORE
+                pauseGame()
+                print("The Game is becoming Harder")
+            
+                //arreter l'a imation du personnage
+                //TODO RELA?CER LE JEU
+                //effacer toutes les pieces et pouvoir etc
+                //relancer le timer
+                //remettre la duration des controller à la valeur initiale
+            
+                //stopGenerating coins à false
+              
+                return
+        }
+        
+        
+        if( t == TREE && !wantToJump && malus ){
+            //le personnage s'est cogné deux fois d'affiler
+            print("on a perdu")
+            
+            self.pauseGame()
+            return
+        }
+        
+        if (t == TURNLEFT && wantToTurnLeft) || (t == TURN_RIGHT && wantToTurnRight){
+            
                 nbOfTurn += 1
-                let level : Level = Level(rawValue: Int(nbOfTurn/10)) ?? .hard
+                
+                level = Level(rawValue: Int(nbOfTurn/10)) ?? .hard
+                
+                print("The Game is becoming Harder")
                 threeDRoadVC.turn(level: level)
                 wantToTurnLeft = false
                 wantToTurnRight = false
@@ -362,29 +401,56 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
                 self.timer?.invalidate()
                 duration = duration! * 0.95
                 threeDRoadVC.updateDuration(duration!)
+                
                 self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+            
+                return
             }
-            else {
-                print("l'utilisateur va perdre")
-                //TODO ICI AFFICHER LE SCORE
-                pauseGame()
-                hv.animationForNumber(imageName: 1) {
-                    self.startGame()
-                    self.threeDRoadVC.startTheGame()
-                }
-            }
+        
+        
+        if( t == TREE && !wantToJump) {
+            print("Le personnage se cogne sur un arbre")
+            soundManager.playCollisionSound()
+            
+            malus = true
+            gv.animateBlink()
+            timerBlink = BLINK_DURATION
         }
         
+        
+    
+            
+        
+        
+        
+        
+        
+        let lastElemType = modelRoad.getLastElem()?.type
+        if !threeDRoadVC.stopGeneratingCoins() && (lastElemType == STRAIGHT || lastElemType == BRIDGE){
+            print("create object over \(lastElemType)")
+            createObject()
+        }
+        
+        modelRoad.movedown()
+        
+        threeDRoadVC.createRoad(level: level)
+      
+        //vérifie s'il y a des pouvoirs en cours d'execution
+        //met à jour le timer
+        handlePower()
         
         
         //tentative de suppression de l'objet situé devant le personnage
         //suppression de l'objet située 1 cases devant
         let obj : (type: TypeOfObject, view: UIImageView?)
-        obj = modelRoad.removeObject(i: thePosition.0, j: thePosition.1, type: .any)
+        obj = modelRoad.removeObject(i: thePosition.0, j: thePosition.1, type: any)
         
         //si aucun n'objet n'est devant le personnage rien à faire
-        if (obj == (TypeOfObject.empty, nil)){ return}
-        
+        if (obj == (_EMPTY_, nil)){
+            return}
+        else {
+            
+        }
         
         //les coordonnées du point vers lesquels renvoyer les pieces
         var p : CGPoint?
@@ -393,33 +459,32 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         
         switch obj.type {
         
-        case .coin:
+        case _COIN_:
             //le personnage attrape une piece
+            soundManager.playCollisionSound()
             hv.addScore(1)
             p = hv.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
             
-        case .coinx2:
+        case coinx2:
             //le personnage attrape une piece double
             hv.addScore(2)
             p = hv.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
-        
-        case .coinx5:
+            
+        case coinx5:
             hv.addScore(5)
             p = hv.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
         //TODO FACTORISER LE CODE PRECEDENT
         
-        case .barrier:
-            
-            break
-            
-        case .magnet:
-        //le personnage attrape un aimant
+        
+        
+        case magnet:
+            //le personnage attrape un aimant
             //l'icone de l'aimant est déplacée au point de coordonnées p
             p = hv.powerAnchor
             print("aimant s'en enclenché \(TTL_POWER)")
@@ -427,7 +492,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
             //a la fin de l'animation, ajout de l'icone du pouvoir à l'emplacement réservé dans HumanInterface
             cb = {(Bool) in
                 //declenchement du timer pendant 10s
-                self.TTL.append((TypeOfObject.magnet, TTL_POWER))
+                self.TTL.append((magnet, TTL_POWER))
                 self.hv.addPower(powerView: obj.view!, duration: TTL_POWER)
                 print("add the power now")
             }
@@ -441,13 +506,16 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         
         //deplacement de l'objet si les coordonnées p sont non nuls
         moveObjToPoint(obj.view!, point: p, withDuration: 1, options: .transitionCurlUp, cb : cb)
+        
+        wantToTurnLeft = false
+        wantToTurnRight = false
     }
     
     
     
     var aa = 0
     func handlePower(){
-
+        
         //si un aucun poucoir n'est en cours d'execution on ne fait rien
         if(TTL.isEmpty) {return}
         
@@ -456,20 +524,20 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
             let (power, ttl) = TTL.first!
             //si le pouvoir a fini de s'executer
             if ttl <= 0 {
-                print("le pouvoir \(TypeOfObject.power.rawValue) est terminé")
+                print("le pouvoir \(power) est terminé")
                 //un pouvoir est enclenché
                 TTL.remove(at: 0)
                 aa = 0
                 continue
             }
-
+            
             let timeToLive = ttl - duration!
             TTL[0].1 = timeToLive
-             aa += 1
+            aa += 1
             
             switch power {
             
-            case .magnet:
+            case magnet:
                 //attirer les pieces situé dans le voisinage
                 //on commence par retirer les pieces concernées du chemin
                 
@@ -479,7 +547,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
                 for i in 0..<modelRoad.nColumns {
                     for neighborhood in 1 ... DISTANCE_OF_MAGNET {
                         //on tente de retirer les pieces situées dans le voisinage du personnage
-                        let coin = modelRoad.removeObject(i: i, j: thePosition.1 - neighborhood, type: .coin).view
+                        let coin = modelRoad.removeObject(i: i, j: thePosition.1 - neighborhood, type: _COIN_).view
                         
                         //si on trouve une piece
                         if coin != nil {
@@ -493,7 +561,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
                                             self.coins.insert(coin!)
                                            }
                             )
-
+                            
                             //TODO faire un mouvement plus naturel
                             //Peut etre animation suivant une courbe de bezier
                         }
@@ -501,7 +569,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
                 }
                 break
                 
-            case .transparency:
+            case transparency:
                 //le personnage devient mi-transparent
                 //il devient capable de traverser les obstacles
                 gv.character.alpha = 0.5
@@ -516,11 +584,11 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         
     }
     
-
-
-
+    
+    
+    
     /**
-    deplacement de l'image obj vers le point de coordonnées point.
+     deplacement de l'image obj vers le point de coordonnées point.
      */
     func moveObjToPoint(_ obj : UIImageView, point : CGPoint?, withDuration duration: TimeInterval = DURATION, options: UIView.AnimationOptions = [] , cb : ((Bool) ->())?){
         
@@ -538,7 +606,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     
     
     
-
+    
     var wantToTurnLeft : Bool = false
     var wantToTurnRight  : Bool = false
     var wantToJump : Bool = false
@@ -557,8 +625,8 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         gv.character.center = s
     }
     
-
-
+    
+    
     func turnLeft() {
         print("hello from move left")
         wantToTurnLeft = true
@@ -569,36 +637,18 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         wantToTurnRight = true
     }
     
-
-
     
     
-    func jump() {
-        wantToJump = true
-        
-        let initPosition = thePosition.0
-        thePosition.0 = 42
-        let upAnimation : () ->() = {
-            self.gv.character.center.y -= 100
+    
+    
+    @objc func jump() {
+        if !wantToJump {
+            timerJump = JUMP_DURATION
+            wantToJump = true
             
+            soundManager.playEdgeSound()
+            gv.animationForJump()
         }
-        
-        soundManager.playEdgeSound()
-        let completion : (Bool) ->() = {(_) in
-            
-            UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent, .curveEaseIn] ,
-                           animations : {
-                            self.thePosition.0 = initPosition
-                            self.gv.character.center.y += 100
-                            self.wantToJump = false
-                           }
-                           ,  completion: nil)
-            
-            
-        }
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.allowAnimatedContent , .curveEaseOut],
-                       animations: upAnimation, completion: completion)
-        
     }
     
     
