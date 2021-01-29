@@ -2,7 +2,7 @@
 //  MessageView.swift
 //  splitview
 //
-//  Created by ramzi on 13/01/2021.
+// Description : gestion des messages
 //
 
 import Foundation
