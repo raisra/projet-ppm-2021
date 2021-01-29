@@ -2,7 +2,7 @@
 //  GameView.swift
 //  projet-ppm
 //
-//  Created by ramzi on 13/01/2021.
+//  Description : gestion image perso, road, animation jump/run.
 //
 
 import Foundation

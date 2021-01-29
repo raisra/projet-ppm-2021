@@ -2,7 +2,7 @@
 //  WelcomeView.swift
 //  projet-ppm
 //
-//  Created by ramzi on 13/01/2021.
+// Desccription : Image d'acceuil : choix niveaux et boutton play.
 //
 
 import Foundation
@@ -12,6 +12,7 @@ import UIKit
 class WelcomeView : UIView{
     let title = UILabel()
     let playButton = UIButton()
+    let levels = UIButton()
     
     
     override init(frame: CGRect) {
@@ -25,9 +26,14 @@ class WelcomeView : UIView{
         playButton.setImage(UIImage(named: "playButton"), for: .normal)
         playButton.setTitleColor(.black, for: .normal)
         playButton.addTarget(self.superview, action: #selector(WelcomeViewController.startGame), for: .touchUpInside)
+        
+        levels.setImage(UIImage(named: "playButton"), for: .normal)
+        levels.setTitleColor(.black, for: .normal)
+        levels.addTarget(self.superview, action: #selector(WelcomeViewController.levelChoices), for: .touchUpInside)
 
         addSubview(title)
         addSubview(playButton)
+        addSubview(levels)
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +50,8 @@ class WelcomeView : UIView{
         title.frame = CGRect(x: w/2-50, y: h/2, width: 100, height: 30)
         
         playButton.frame = CGRect(x: w/2-100, y: h/2-50, width: 200, height: 100)
+        
+        levels.frame = CGRect(x: w/2-100, y: h/2-250, width: 200, height: 100)
     }
     
     

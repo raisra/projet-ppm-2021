@@ -2,7 +2,7 @@
 //  HumanInterface.swift
 //  projet-ppm
 //
-//  Created by ramzi on 21/01/2021.
+//  Description : Boutton pause, score, message, calcul du score.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  projet-ppm
 //
-//  Created by ramzi on 13/01/2021.
+//  Description : lancement du jeu et choix du niveau (vitesse du jeu)
 //
 
 import UIKit
@@ -31,6 +31,10 @@ class WelcomeViewController: UIViewController{
     }
     
     
+    
+    @objc func levelChoices() {
+       print( "trying" )
+    }
     
     
     
