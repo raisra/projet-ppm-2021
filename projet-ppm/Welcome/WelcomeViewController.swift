@@ -7,6 +7,8 @@
 
 import UIKit
 
+let levelView = LevelView(frame : UIScreen.main.bounds)
+
 class WelcomeViewController: UIViewController{
     
     
@@ -33,7 +35,9 @@ class WelcomeViewController: UIViewController{
     
     
     @objc func levelChoices() {
-       print( "trying" )
+        print( "trying" )
+        self.view.isHidden = true
+        levelView.isHidden = false
     }
     
     

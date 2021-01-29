@@ -2,7 +2,7 @@
 //  GameViewController.swift
 //  projet-ppm
 //
-//  Created by ramzi on 13/01/2021.
+//  Description : 
 //
 
 import Foundation
@@ -636,27 +636,20 @@ class GameViewController : UIViewController {
         }
     }
     
+    @objc func jumpMore() {
+        if !wantToJump {
+            timerJump = JUMP_DURATION + JUMP_DURATION
+            wantToJump = true
+            
+            soundManager.playEdgeSound()
+            gv.animationForJump()
+        }
+    }
+    
     @objc func tapSauteAfunc (){
-        //Saute plus haut
-        print("tapSaute")
-            let initPosition = thePosition.0
-            thePosition.0 = 42
-            
-            let upAnimation : () ->() = {
-                self.gv.character.center.y -= 200
-            }
-            
-            let completion : (Bool) ->() = {(_) in
-                
-                UIView.animate(withDuration: 0.3, delay: 0, options: [.allowAnimatedContent, .curveEaseIn] ,
-                               animations : {
-                                self.thePosition.0 = initPosition
-                                self.gv.character.center.y += 200
-                               }
-                               ,  completion: nil)
-            }
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowAnimatedContent , .curveEaseOut ],
-                           animations: upAnimation, completion: completion)
+        //Saute plus longtemps
+        jumpMore()
+        
     }
     
     @objc func pressAccelerateFunc () {

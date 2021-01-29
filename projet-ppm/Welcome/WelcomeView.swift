@@ -10,6 +10,8 @@ import Foundation
 
 import UIKit
 class WelcomeView : UIView{
+    
+
     let title = UILabel()
     let playButton = UIButton()
     let levels = UIButton()
@@ -27,7 +29,7 @@ class WelcomeView : UIView{
         playButton.setTitleColor(.black, for: .normal)
         playButton.addTarget(self.superview, action: #selector(WelcomeViewController.startGame), for: .touchUpInside)
         
-        levels.setImage(UIImage(named: "playButton"), for: .normal)
+        levels.setTitle("Levels", for: .normal) //A changer par une image § Jihane
         levels.setTitleColor(.black, for: .normal)
         levels.addTarget(self.superview, action: #selector(WelcomeViewController.levelChoices), for: .touchUpInside)
 
@@ -51,7 +53,7 @@ class WelcomeView : UIView{
         
         playButton.frame = CGRect(x: w/2-100, y: h/2-50, width: 200, height: 100)
         
-        levels.frame = CGRect(x: w/2-100, y: h/2-250, width: 200, height: 100)
+        levels.frame = CGRect(x: w/2-100, y: h/2+250, width: 200, height: 100)
     }
     
     
