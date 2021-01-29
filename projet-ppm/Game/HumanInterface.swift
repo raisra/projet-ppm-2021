@@ -92,8 +92,6 @@ class HumanInterface: UIView {
    
         scoreLabel.frame = CGRect(x: w-100, y: 30, width: 100, height: 100)
         messageButton.frame = CGRect(x: 100, y: 30, width: 100, height: 100)
-        
-        print("redraw------------")
     }
     
     

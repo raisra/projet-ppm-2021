@@ -40,7 +40,7 @@ class MotionManager: CMMotionManager {
     
 
     internal override func startGyroUpdates() {
-        self.startGyroUpdates(to: .main ) { (data, error) in
+        super.startGyroUpdates(to: .main ) { (data, error) in
             if let myData = data {
                // print("data from gyrscope")
 //                let s = String(format: "%.2f",myData.rotationRate.z)

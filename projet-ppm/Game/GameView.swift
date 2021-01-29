@@ -11,7 +11,7 @@ import UIKit
 
 let JUMP_DURATION : TimeInterval = 1.0
 let BLINK_DURATION : TimeInterval = 0.5
-
+let MOVE_DURATION : TimeInterval = 1.0
 
 class GameView: UIView {
     
@@ -116,14 +116,21 @@ class GameView: UIView {
     }
 
     
-    
     func animateBlink() {
-        
-        UIView.animate(withDuration: BLINK_DURATION, delay: 0, options: [.allowAnimatedContent, .autoreverse, .repeat] ) {
+        UIView.animate(withDuration: BLINK_DURATION, delay: 0, options: [.allowAnimatedContent, .autoreverse] ) {
             self.character.alpha = 0.5
         } completion: { (_) in
-            
+            self.character.alpha = 1
         }
+    }
+    
+    func animationMove(to position : CGPoint) {
+        UIView.animate(withDuration: MOVE_DURATION , delay : 0, options : [.allowAnimatedContent, .curveEaseOut],  animations: {
+            self.character.center = position
+        }, completion: {(_) in
+            self.character.center = position
+        } )
+
     }
     
     private func initPersonnage(position : CGPoint , size : CGSize)  {

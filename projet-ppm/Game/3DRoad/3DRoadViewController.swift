@@ -33,6 +33,12 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     //la vue à afficher. C'est un tableau contenant les portion de route à afficher
     
     var N : Int
+    
+    //créé la vue associée à l'element en parametre
+    var buffer : [(UIImageView, TypeOfObject)] = []
+    
+    var goingToTurn = false
+    var stopCoins = false
 
     init(names : [TypeOfObject: String] , duration : TimeInterval, model3D : ThreeDRoadModel, N: Int) {
         //le nombre dd'ilages à empiler
@@ -77,14 +83,9 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
             buffer.append( (UIImageView(image:image), ofType) )
             i += 1
         }
-       
     }
     
-   
-    
 
-    
-   
     /*
      genere 4 vue de type straight
      ajouter les à la vue principale
@@ -93,33 +94,14 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     func startTheGame(){
         model3D.deleteAllRoad()
         for _ in 0..<N {
-            //genere un element droit
-            //se frame est calculée au prealable par le model pour que la vue
-            //associée soit affiché au bon endroit
-            //créé la vue et l'ajoute à la liste des elements geree par le controller
-            //cette vue sera animée
             createRoad(withType: STRAIGHT, level: .easy)
         }
     }
     
-
-
-    var goingToTurn = false
-    var stopCoins = false
     
     func stopGeneratingCoins()-> Bool{
         return stopCoins
     }
-    
-
-    
-    
-    
-    
-    
-    //créé la vue associée à l'element en parametre
-    var buffer : [(UIImageView, TypeOfObject)] = []
-    
    
     
     //get called by the timer every duration
@@ -157,37 +139,25 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
             
             buffer.removeFirst()
         }
-        
-      
-        
     }
     
  
     func turn (level: Level) {
-       
-        
         model3D.deleteAllRoad()
         buffer.removeAll()
         
         goingToTurn = false
         stopCoins = false
         
-        for _ in 1...3 {
+        for _ in 1...5 {
             createRoad(withType: STRAIGHT, level: level)
         }
         
         for _ in 1...N {
             createRoad(level: level)
         }
-        
-        
     }
-    
-
-    
- 
-    
-   
+     
 }
 
 

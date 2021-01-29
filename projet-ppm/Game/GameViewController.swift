@@ -11,7 +11,7 @@ import UIKit
 
 
 
-let DISTANCE_OF_MAGNET = 2
+let DISTANCE_OF_MAGNET = 5
 let TTL_POWER : TimeInterval = 5.0
 let COINS_ARE_ANIMATED = false
 let INITIAL_CHAR_POSITION : CGFloat = 1
@@ -541,9 +541,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
                 //attirer les pieces situé dans le voisinage
                 //on commence par retirer les pieces concernées du chemin
                 
-                //TODO corriger cela car si le tableau de ModelData contient moins de 10 lignes
-                //il y aura une seg fault
-                //Utilisez colonne
+
                 for i in 0..<modelRoad.nColumns {
                     for neighborhood in 1 ... DISTANCE_OF_MAGNET {
                         //on tente de retirer les pieces situées dans le voisinage du personnage
@@ -615,29 +613,25 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
     func moveLeft() {
         thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
+        gv.animationMove(to: s)
     }
     
     
     func moveRight() {
         thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
+        gv.animationMove(to: s)
     }
     
     
     
     func turnLeft() {
-        print("hello from move left")
         wantToTurnLeft = true
     }
     
     func turnRight() {
-        print("hello from move right")
         wantToTurnRight = true
     }
-    
-    
     
     
     

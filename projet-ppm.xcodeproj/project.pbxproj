@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D0F6D7125C3A6CC00E4DA8D /* score.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D0F6D7025C3A6CC00E4DA8D /* score.storyboard */; };
 		2D3B946F25B975B300750421 /* HumanInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B946E25B975B300750421 /* HumanInterface.swift */; };
 		2D3B947225B975C600750421 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B947125B975C600750421 /* ScoreView.swift */; };
 		2D3B947525B975D500750421 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B947425B975D500750421 /* ScoreViewController.swift */; };
 		2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3C83FF25B3816B009394F2 /* ModelRoad.swift */; };
 		2D3C929925BB8495001A0538 /* libswiftNetwork.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3C929825BB8495001A0538 /* libswiftNetwork.tbd */; };
-		2D3F64B525BA35140061D108 /* 3DRoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64B425BA35140061D108 /* 3DRoadView.swift */; };
 		2D3F64B925BA37A40061D108 /* 3DRoadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */; };
 		2D3F64BE25BA42480061D108 /* 3DRoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */; };
 		2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D50664125C0467D007EEAFF /* GestureManager.swift */; };
@@ -37,12 +37,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D0F6D7025C3A6CC00E4DA8D /* score.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = score.storyboard; sourceTree = "<group>"; };
 		2D3B946E25B975B300750421 /* HumanInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanInterface.swift; sourceTree = "<group>"; };
 		2D3B947125B975C600750421 /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		2D3B947425B975D500750421 /* ScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		2D3C83FF25B3816B009394F2 /* ModelRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRoad.swift; sourceTree = "<group>"; };
 		2D3C929825BB8495001A0538 /* libswiftNetwork.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftNetwork.tbd; path = usr/lib/swift/libswiftNetwork.tbd; sourceTree = SDKROOT; };
-		2D3F64B425BA35140061D108 /* 3DRoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadView.swift; sourceTree = "<group>"; };
 		2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadModel.swift; sourceTree = "<group>"; };
 		2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadViewController.swift; sourceTree = "<group>"; };
 		2D50664125C0467D007EEAFF /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
@@ -106,6 +106,7 @@
 			children = (
 				2D3B947125B975C600750421 /* ScoreView.swift */,
 				2D3B947425B975D500750421 /* ScoreViewController.swift */,
+				2D0F6D7025C3A6CC00E4DA8D /* score.storyboard */,
 			);
 			path = Score;
 			sourceTree = "<group>";
@@ -131,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */,
-				2D3F64B425BA35140061D108 /* 3DRoadView.swift */,
 				2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */,
 			);
 			path = 3DRoad;
@@ -255,6 +255,7 @@
 				2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */,
 				2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */,
 				2DEFE5B025C15A0B009E61C2 /* HumanInterface.storyboard in Resources */,
+				2D0F6D7125C3A6CC00E4DA8D /* score.storyboard in Resources */,
 				2DFD102025AF8AA40041E21B /* LaunchScreen.storyboard in Resources */,
 				2DEFE5A725C0C376009E61C2 /* midnight-ride-01a.mp3 in Resources */,
 				2DEFE5A825C0C376009E61C2 /* son.mp3 in Resources */,
@@ -270,7 +271,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D3F64B525BA35140061D108 /* 3DRoadView.swift in Sources */,
 				2DFD101825AF8AA40041E21B /* WelcomeViewController.swift in Sources */,
 				2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */,
 				2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */,
