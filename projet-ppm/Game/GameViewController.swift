@@ -39,8 +39,7 @@ let factor : CGFloat = 309.96/398.52
 
 
 
-class GameViewController : UIViewController, GestureManagerProtocol, MotionManagerProtocol{
-    
+class GameViewController : UIViewController {
     
     // var mvc : MessageViewController
     let mvc = { () -> MessageViewController in
@@ -127,6 +126,32 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
+
+        //Autres :
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapSauteAfunc))
+        tap.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(tap)
+        
+        let pressAcc = UILongPressGestureRecognizer( target: self, action: #selector(pressAccelerateFunc))
+        pressAcc.minimumPressDuration = 1.5
+        gv.addGestureRecognizer(pressAcc)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector ( swipeDirectionFunc(sender:)))
+        swipeLeft.direction = .left
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector( swipeDirectionFunc(sender:)))
+        swipeRight.direction = .right
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector( swipeDirectionFunc(sender:)))
+        swipeUp.direction = .up
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector( swipeDirectionFunc(sender:)))
+        swipeDown.direction = .down
+        
+        self.view.addGestureRecognizer(swipeLeft)
+        self.view.addGestureRecognizer(swipeRight)
+        self.view.addGestureRecognizer(swipeUp)
+        self.view.addGestureRecognizer(swipeDown)
         
         
         threeDRoadVC = ThreeDRoadViewController(names: NAMES,
@@ -145,12 +170,12 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         
         
         
-        gestureManager = GestureManager(forView: self.hv)
-        motionManager = MotionManager()
+ //       gestureManager = GestureManager(forView: self.hv)
+//        motionManager = MotionManager()
         
         
-        gestureManager?.delegate = self
-        motionManager?.delegate = self
+   //     gestureManager?.delegate = self
+   //     motionManager?.delegate = self
         motionManager?.start()
     }
     
@@ -167,9 +192,9 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         print(#function)
         super.viewWillDisappear(animated)
         
-        self.gestureManager?.removeGesture(from: self.gv)
-        self.motionManager?.stop()
-        self.motionManager?.stop()
+      //  self.gestureManager?.removeGesture(from: self.gv)
+      //  self.motionManager?.stop()
+      //  self.motionManager?.stop()
     }
     
     required init?(coder: NSCoder) {
@@ -418,11 +443,7 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         }
         
         
-    
-            
-        
-        
-        
+
         
         
         let lastElemType = modelRoad.getLastElem()?.type
@@ -601,45 +622,9 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         }, completion: cb)
     }
     
-    
-    
-    
-    
-    
-    
     var wantToTurnLeft : Bool = false
     var wantToTurnRight  : Bool = false
     var wantToJump : Bool = false
-    
-    
-    func moveLeft() {
-        thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
-        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
-    }
-    
-    
-    func moveRight() {
-        thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
-        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
-    }
-    
-    
-    
-    func turnLeft() {
-        print("hello from move left")
-        wantToTurnLeft = true
-    }
-    
-    func turnRight() {
-        print("hello from move right")
-        wantToTurnRight = true
-    }
-    
-    
-    
-    
     
     @objc func jump() {
         if !wantToJump {
@@ -651,6 +636,77 @@ class GameViewController : UIViewController, GestureManagerProtocol, MotionManag
         }
     }
     
+    @objc func tapSauteAfunc (){
+        //Saute plus haut
+        print("tapSaute")
+            let initPosition = thePosition.0
+            thePosition.0 = 42
+            
+            let upAnimation : () ->() = {
+                self.gv.character.center.y -= 200
+            }
+            
+            let completion : (Bool) ->() = {(_) in
+                
+                UIView.animate(withDuration: 0.3, delay: 0, options: [.allowAnimatedContent, .curveEaseIn] ,
+                               animations : {
+                                self.thePosition.0 = initPosition
+                                self.gv.character.center.y += 200
+                               }
+                               ,  completion: nil)
+            }
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowAnimatedContent , .curveEaseOut ],
+                           animations: upAnimation, completion: completion)
+    }
+    
+    @objc func pressAccelerateFunc () {
+        print("accelerating")
+        self.gv.setSpeed(speed: 0.2)
+    }
+    
+    func rightmove(){
+        thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
+        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        gv.character.center = s
+        print("hello from move right")
+        wantToTurnRight = true
+    }
+    
+    func leftmove (){
+        thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
+        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        gv.character.center = s
+        print("hello from move left")
+        wantToTurnLeft = true
+    }
+    
+    func upmove (){
+        jump()
+    }
+    
+    func downmove(){
+        //Plus la même image donc je ne peux pas le faire...
+    }
+    
+    @objc func swipeDirectionFunc (sender : UISwipeGestureRecognizer){
+        if sender.direction == .right {
+            print("going right")
+            rightmove()
+        }
+        if sender.direction == .left {
+            print("going left")
+            leftmove()
+
+        }
+        if sender.direction == .up {
+            print("going up")
+            upmove()
+        }
+        if sender.direction == .down {
+            print("going down")
+            downmove()
+        }
+    }
     
     
 }
