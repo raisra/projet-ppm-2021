@@ -635,6 +635,7 @@ class GameViewController : UIViewController {
     }
     
 
+
     @objc func jumpMore() {
         if !wantToJump {
             timerJump = JUMP_DURATION + JUMP_DURATION
@@ -652,6 +653,7 @@ class GameViewController : UIViewController {
         
     }
     
+
     @objc func pressAccelerateFunc () {
         print("accelerating")
         self.gv.setSpeed(speed: 0.2)
