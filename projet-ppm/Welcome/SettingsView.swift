@@ -8,16 +8,23 @@
 import Foundation
 import UIKit
 
-class LevelView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
+class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
      
     private var picker =  UIPickerView()
     private var pickerData =  ["Beginner", "Medium", "Hard", "Extreme"]
     private let textField = UITextField()
+    private let soundOnOff = UISwitch()
+    private let sound = UILabel()
     private let done  = UIButton()
     private var value = ""
+    let h = UIScreen.main.bounds.height
+    let w = UIScreen.main.bounds.width
+    
 
     override init (frame: CGRect){
         super.init(frame: frame)
+        self.backgroundColor = .white
+
         // picker.delegate = self as UIPickerViewDelegate
         //picker.datasourcer = self as UIPickerViewDataSource
         self.picker.delegate = self
@@ -27,11 +34,17 @@ class LevelView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         self.addSubview(picker)
         
         done.setTitle("done", for: [])
-        done.setTitleColor(UIColor.white, for: [])
+        done.setTitleColor(UIColor.black, for: [])
         done.addTarget(self.superview, action: #selector(buttondisplay), for: .touchUpInside )
+        
+        
+        sound.text = "Sound :  "
+        sound.font = UIFont.boldSystemFont(ofSize: 18.0)
+        sound.textColor = .black
+        
+        self.addSubview(sound)
+        self.addSubview(soundOnOff)
         self.addSubview(done)
-         self.display_constraint()
-
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -64,24 +77,21 @@ class LevelView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         return value
     }
     
-    func display_constraint(){
-        done.translatesAutoresizingMaskIntoConstraints = false
-        let dico = ["D": self.done, "P": self.picker]
-        var constraints: [NSLayoutConstraint] = []
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[D(50)]", metrics: nil, views:dico)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[D(50)]", metrics: nil, views:dico)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[D]", metrics: nil, views:dico)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-500-[D]", metrics: nil, views:dico)
-        
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[P(200)]", metrics: nil, views:dico)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:[P(200)]", metrics: nil, views:dico)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-130-[P]", metrics: nil, views:dico)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-260-[P]", metrics: nil, views:dico)
-        NSLayoutConstraint.activate(constraints)
+    override func draw(_ rect: CGRect) {
+        picker.frame = CGRect(x: w/2-150, y: h/2-150, width: 300, height: 300)
+        done.frame = CGRect(x: w-150, y: 150, width: 100, height: 100)
+        soundOnOff.frame = CGRect(x: w/2 + 20, y: h/2-115, width: 100, height: 100)
+        sound.frame = CGRect(x: w/2 - 50, y: h/2-150, width: 100, height: 100)
+
+    }
+    
+    @objc func soundON() -> Bool{
+        return soundOnOff.isOn
     }
     
     @objc func buttondisplay(){
-        levelView.isHidden = true
+        sView.isHidden = true
+        wView.isHidden = false
     }
         
 }

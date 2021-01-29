@@ -14,7 +14,7 @@ class WelcomeView : UIView{
 
     let title = UILabel()
     let playButton = UIButton()
-    let levels = UIButton()
+    let settings = UIButton()
     
     
     override init(frame: CGRect) {
@@ -29,13 +29,14 @@ class WelcomeView : UIView{
         playButton.setTitleColor(.black, for: .normal)
         playButton.addTarget(self.superview, action: #selector(WelcomeViewController.startGame), for: .touchUpInside)
         
-        levels.setTitle("Levels", for: .normal) //A changer par une image § Jihane
-        levels.setTitleColor(.black, for: .normal)
-        levels.addTarget(self.superview, action: #selector(WelcomeViewController.levelChoices), for: .touchUpInside)
+      //  levels.setTitle("Levels", for: .normal) //A changer par une image § Jihane
+        settings.setImage(UIImage(named: "settings"), for: .normal)
+        settings.setTitleColor(.black, for: .normal)
+        settings.addTarget(self.superview, action: #selector(WelcomeViewController.settingsChoices), for: .touchUpInside)
 
         addSubview(title)
         addSubview(playButton)
-        addSubview(levels)
+        addSubview(settings)
     }
     
     required init?(coder: NSCoder) {
@@ -53,7 +54,7 @@ class WelcomeView : UIView{
         
         playButton.frame = CGRect(x: w/2-100, y: h/2-50, width: 200, height: 100)
         
-        levels.frame = CGRect(x: w/2-100, y: h/2+250, width: 200, height: 100)
+        settings.frame = CGRect(x: w/2-100, y: h/2+100, width: 200, height: 100)
     }
     
     

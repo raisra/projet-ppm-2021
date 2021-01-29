@@ -20,7 +20,7 @@ let BACK_GROUND_IMAGE = "aboveTheSky"
 let NB_ROWS : CGFloat = 10
 let NB_COLUMNS : CGFloat = 5
 
-let DURATION : TimeInterval = 0.4
+let DURATION : TimeInterval = 4.4
 //the size of the uiview representing the character
 let sizeChar  = CGSize(width: 200, height: 450)
 
@@ -35,6 +35,8 @@ let NAMES : [TypeOfObject: String] = [STRAIGHT:"pave", BRIDGE:"bridge", _EMPTY_:
 var sizeIm = CGSize(width: 400, height: 100)
 let alpha : CGFloat = 75.96
 let factor : CGFloat = 309.96/398.52
+
+var SoundOnOff : Bool = true
 
 
 
@@ -54,6 +56,7 @@ class GameViewController : UIViewController {
     var timer : Timer?
     var gv : GameView!
     var hv : HumanInterface!
+    var sv : SettingsView!
     var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
     
@@ -126,6 +129,7 @@ class GameViewController : UIViewController {
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
+        sv = SettingsView(frame: UIScreen.main.bounds)
 
         //Autres :
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapSauteAfunc))
@@ -167,8 +171,10 @@ class GameViewController : UIViewController {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
+        view.addSubview(sv)
+        sv.isHidden = true
         
-        
+        SoundOnOff = sv.soundON()
         
  //       gestureManager = GestureManager(forView: self.hv)
 //        motionManager = MotionManager()
@@ -223,8 +229,6 @@ class GameViewController : UIViewController {
     }
     
     
-    
-    
     @objc func pauseGame() {
         //TODO SAUVEGARDER LE niveau et la valeur du timer pr elancer le timer a la meme frequence
         if(!gameIsStoped){
@@ -234,7 +238,6 @@ class GameViewController : UIViewController {
             gameIsStoped = true
             //gv.viewHandlingCoins.isHidden = true
             hv.pauseButton.isHidden = false
-            
             soundManager.stopGameSoung()
         }
         else {
@@ -386,7 +389,9 @@ class GameViewController : UIViewController {
             //le joueur a perdu
                 print("l'utilisateur va perdre")
             
-                soundManager.playEndSound()
+                if (SoundOnOff){
+                    soundManager.playEndSound()
+                }
                 //TODO ICI AFFICHER LE SCORE
                 pauseGame()
                 print("The Game is becoming Harder")
@@ -435,7 +440,10 @@ class GameViewController : UIViewController {
         
         if( t == TREE && !wantToJump) {
             print("Le personnage se cogne sur un arbre")
-            soundManager.playCollisionSound()
+            if (SoundOnOff){
+                soundManager.playCollisionSound()
+
+            }
             
             malus = true
             gv.animateBlink()
@@ -482,7 +490,9 @@ class GameViewController : UIViewController {
         
         case _COIN_:
             //le personnage attrape une piece
-            soundManager.playCollisionSound()
+            if (SoundOnOff){
+                soundManager.playCollisionSound()
+            }
             hv.addScore(1)
             p = hv.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
@@ -628,8 +638,9 @@ class GameViewController : UIViewController {
         if !wantToJump {
             timerJump = JUMP_DURATION
             wantToJump = true
-            
-            soundManager.playEdgeSound()
+            if (SoundOnOff){
+                soundManager.playEdgeSound()
+            }
             gv.animationForJump()
         }
     }
@@ -640,8 +651,9 @@ class GameViewController : UIViewController {
         if !wantToJump {
             timerJump = JUMP_DURATION + JUMP_DURATION
             wantToJump = true
-            
-            soundManager.playEdgeSound()
+            if (SoundOnOff){
+                soundManager.playEdgeSound()
+            }
             gv.animationForJump()
         }
 

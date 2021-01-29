@@ -7,7 +7,8 @@
 
 import UIKit
 
-let levelView = LevelView(frame : UIScreen.main.bounds)
+let sView = SettingsView(frame : UIScreen.main.bounds)
+let wView = WelcomeView(frame : UIScreen.main.bounds)
 
 class WelcomeViewController: UIViewController{
     
@@ -15,8 +16,12 @@ class WelcomeViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.isModalInPresentation = true
-        self.view = WelcomeView(frame: UIScreen.main.bounds)
+      //  self.isModalInPresentation = true
+       // self.view = WelcomeView(frame: UIScreen.main.bounds)
+        
+        self.view.addSubview(wView)
+        self.view.addSubview(sView)
+        sView.isHidden = true
     }
     
     
@@ -34,10 +39,11 @@ class WelcomeViewController: UIViewController{
     
     
     
-    @objc func levelChoices() {
+    @objc func settingsChoices() {
         print( "trying" )
-        self.view.isHidden = true
-        levelView.isHidden = false
+        sView.isHidden = false
+        wView.isHidden = true
+        view.bringSubviewToFront(sView)
     }
     
     
