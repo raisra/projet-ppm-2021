@@ -12,6 +12,8 @@ import UIKit
 let JUMP_DURATION : TimeInterval = 1.0
 let BLINK_DURATION : TimeInterval = 0.5
 let MOVE_DURATION : TimeInterval = 1.0
+let TRANSPARENCY_DURATION : TimeInterval = 3.0
+
 
 class GameView: UIView {
     
@@ -113,6 +115,14 @@ class GameView: UIView {
         character.animationDuration = speed
         character.animationRepeatCount = 0
         character.startAnimating()
+    }
+    
+    func animationForTransparency() {
+        UIView.animate(withDuration: TRANSPARENCY_DURATION, delay: 0, options: [.allowAnimatedContent] ) {
+            self.character.alpha = 0.2
+        }completion: { (_) in
+            self.character.alpha = 1
+        }
     }
 
     

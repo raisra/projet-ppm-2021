@@ -545,7 +545,6 @@ class GameViewController : UIViewController {
         
         //si un aucun poucoir n'est en cours d'execution on ne fait rien
         if(TTL.isEmpty) {return}
-        
         var i = 0
         while i<TTL.count  {
             let (power, ttl) = TTL.first!
@@ -637,17 +636,12 @@ class GameViewController : UIViewController {
             gv.animationForJump()
         }
     }
-    
 
-
-    @objc func power() {
-        
-    }
-    
     @objc func tapSauteAfunc (){
-        //Pouvoir : destruction obstacle
-        power()
-        
+        //Pouvoir : devenir invisible pendant 3 secondes
+        //power_transparence()
+        gv.animationForTransparency()
+
     }
     
 
