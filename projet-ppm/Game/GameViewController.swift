@@ -232,7 +232,7 @@ class GameViewController : UIViewController {
             timer=nil
             gameIsStoped = true
             //gv.viewHandlingCoins.isHidden = true
-            hv.pauseButton.isHidden = false
+            //hv.pauseButton.isHidden = false
             soundManager.stopGameSoung()
         }
         else {

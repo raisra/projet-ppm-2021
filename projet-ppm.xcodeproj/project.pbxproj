@@ -36,6 +36,7 @@
 		2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD103025AF8FD60041E21B /* GameViewController.swift */; };
 		2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD103E25AFA9690041E21B /* MessageViewController.swift */; };
 		2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD104125AFA96F0041E21B /* MessageView.swift */; };
+		CCB4F29525C5FB450036D25E /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB4F29425C5FB450036D25E /* GameOverView.swift */; };
 		CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE2A75425C483B000D1062D /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		2DFD103025AF8FD60041E21B /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		2DFD103E25AFA9690041E21B /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		2DFD104125AFA96F0041E21B /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		CCB4F29425C5FB450036D25E /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		CCE2A75425C483B000D1062D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,6 +96,7 @@
 				2DFD102D25AF8E940041E21B /* GameView.swift */,
 				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
 				2D3C83FF25B3816B009394F2 /* ModelRoad.swift */,
+				CCB4F29425C5FB450036D25E /* GameOverView.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
 				2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */,
 				CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */,
+				CCB4F29525C5FB450036D25E /* GameOverView.swift in Sources */,
 				2DFD102A25AF8B1B0041E21B /* WelcomeView.swift in Sources */,
 				2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */,
 				2DFD102E25AF8E940041E21B /* GameView.swift in Sources */,
