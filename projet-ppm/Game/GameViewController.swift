@@ -56,7 +56,6 @@ class GameViewController : UIViewController {
     var timer : Timer?
     var gv : GameView!
     var hv : HumanInterface!
-    var sv : SettingsView!
     var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
     
@@ -88,8 +87,7 @@ class GameViewController : UIViewController {
     
     override func viewDidLoad() {
         print ("the Game view did load")
-        
-        duration = DURATION
+        LevelDuration()
         //init du model 3D
         
         let r = sizeIm.height/sizeIm.width
@@ -129,7 +127,6 @@ class GameViewController : UIViewController {
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
-        sv = SettingsView(frame: UIScreen.main.bounds)
 
         //Autres :
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapSauteAfunc))
@@ -171,10 +168,8 @@ class GameViewController : UIViewController {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
-        view.addSubview(sv)
-        sv.isHidden = true
-        
-        SoundOnOff = sv.soundON()
+
+        SoundOnOff = sView.soundON()
         
  //       gestureManager = GestureManager(forView: self.hv)
 //        motionManager = MotionManager()
@@ -421,7 +416,6 @@ class GameViewController : UIViewController {
                 nbOfTurn += 1
                 
                 level = Level(rawValue: Int(nbOfTurn/10)) ?? .hard
-                
                 print("The Game is becoming Harder")
                 threeDRoadVC.turn(level: level)
                 wantToTurnLeft = false
@@ -718,6 +712,21 @@ class GameViewController : UIViewController {
 
         }
     }
-    
+    func LevelDuration(){
+        print("VALEUR IS" + sView.value)
+        switch  sView.value {
+        case "Beginner" :
+            duration = 1.4
+        case "Medium" :
+            duration = 1.0
+        case "Hard" :
+            duration = 0.5
+        case "Extreme" :
+            duration = 0.3
+        default :
+            duration = 1.5
+        }
+
+     }
     
 }

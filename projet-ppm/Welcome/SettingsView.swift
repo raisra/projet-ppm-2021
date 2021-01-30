@@ -16,7 +16,7 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     private let soundOnOff = UISwitch()
     private let sound = UILabel()
     private let done  = UIButton()
-    private var value = ""
+    var value : String = ""
     let h = UIScreen.main.bounds.height
     let w = UIScreen.main.bounds.width
     
@@ -56,10 +56,14 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        choiceLevel(level : pickerData[row])
         return pickerData[row]
     }
         
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let level = pickerData[row] as String
+        choiceLevel(level : level)
+        print (level)
+    }
  
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -71,11 +75,10 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func choiceLevel(level : String){
         value = level
+        print("choiceLevel a " + value )
     }
     
-    func getLevel() -> String! {
-        return value
-    }
+
     
     override func draw(_ rect: CGRect) {
         picker.frame = CGRect(x: w/2-150, y: h/2-150, width: 300, height: 300)
