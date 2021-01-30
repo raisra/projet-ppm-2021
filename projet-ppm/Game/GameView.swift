@@ -164,7 +164,6 @@ class GameView: UIView {
     
     func stopAnimation(){
         character.stopAnimating()
-        
     }
  
     

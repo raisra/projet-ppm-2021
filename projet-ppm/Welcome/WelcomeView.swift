@@ -56,10 +56,6 @@ class WelcomeView : UIView{
         
         settings.frame = CGRect(x: w/2-100, y: h/2+100, width: 200, height: 100)
     }
-    
-    
- 
-    
-    
+        
     
 }

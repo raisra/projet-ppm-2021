@@ -17,6 +17,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
     fileprivate var collisionSound : AVAudioPlayer?
     fileprivate var endSound : AVAudioPlayer?
     fileprivate var edgeSound : AVAudioPlayer?
+    fileprivate var gameOverSound : AVAudioPlayer?
     
     override init () {
         super.init()
@@ -67,6 +68,17 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
     
+        path = Bundle.main.path(forResource: "gameover", ofType: "wav")
+        url = URL (fileURLWithPath: path!)
+        do {
+            gameOverSound = try AVAudioPlayer (contentsOf: url)
+            gameOverSound!.delegate = self
+            gameOverSound!.numberOfLoops = -1
+            gameOverSound!.volume = 0
+            gameOverSound!.prepareToPlay()
+        }catch let erreur {
+            print ("***** ERROR : \(erreur.localizedDescription)")
+        }
     }
     
     func playGameSound () {
@@ -100,7 +112,13 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         edgeSound!.play()
     }
     
-    
+    func playGameOverSound () {
+        if gameOverSound!.isPlaying {
+            gameOverSound!.stop()
+            gameOverSound!.currentTime = 0.0
+        }
+        gameOverSound!.play()
+    }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {

@@ -37,6 +37,7 @@
 		2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD103E25AFA9690041E21B /* MessageViewController.swift */; };
 		2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD104125AFA96F0041E21B /* MessageView.swift */; };
 		CCB4F29525C5FB450036D25E /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB4F29425C5FB450036D25E /* GameOverView.swift */; };
+		CCB4F29825C609FC0036D25E /* gameover.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCB4F29725C609FC0036D25E /* gameover.wav */; };
 		CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE2A75425C483B000D1062D /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		2DFD103E25AFA9690041E21B /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		2DFD104125AFA96F0041E21B /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		CCB4F29425C5FB450036D25E /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		CCB4F29725C609FC0036D25E /* gameover.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gameover.wav; sourceTree = "<group>"; };
 		CCE2A75425C483B000D1062D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,6 +164,7 @@
 		2DEFE5A125C0C302009E61C2 /* sound */ = {
 			isa = PBXGroup;
 			children = (
+				CCB4F29725C609FC0036D25E /* gameover.wav */,
 				2DEFE5A325C0C376009E61C2 /* midnight-ride-01a.mp3 */,
 				2DEFE5A525C0C376009E61C2 /* son-etoile.mp3 */,
 				2DEFE5A425C0C376009E61C2 /* son.mp3 */,
@@ -270,6 +273,7 @@
 				2DFD102025AF8AA40041E21B /* LaunchScreen.storyboard in Resources */,
 				2DEFE5A725C0C376009E61C2 /* midnight-ride-01a.mp3 in Resources */,
 				2DEFE5A825C0C376009E61C2 /* son.mp3 in Resources */,
+				CCB4F29825C609FC0036D25E /* gameover.wav in Resources */,
 				2DFD101D25AF8AA40041E21B /* Assets.xcassets in Resources */,
 				2DFD101B25AF8AA40041E21B /* Main.storyboard in Resources */,
 			);

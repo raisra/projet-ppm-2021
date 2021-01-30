@@ -58,7 +58,7 @@ class GameViewController : UIViewController {
     var hv : HumanInterface!
     var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
-    
+    var gOv : GameOverView!
     
     var gameIsStoped : Bool = true
     
@@ -127,6 +127,8 @@ class GameViewController : UIViewController {
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
+        gOv = GameOverView(frame: UIScreen.main.bounds)
+
 
         //Autres :
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapSauteAfunc))
@@ -168,6 +170,7 @@ class GameViewController : UIViewController {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
+        view.addSubview(gOv)
 
         SoundOnOff = sView.soundON()
         
@@ -206,17 +209,25 @@ class GameViewController : UIViewController {
         print("start the game")
         
         //soundManager.playGameSound()
-        
+        gOv.isHidden = true
+
         gv.showCharacter()
         gv.startAnimation()
         
         hv.pauseButton.isHidden = true
         hv.messageButton.isHidden = false
         hv.startButton.isHidden = true
-        
+
         timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
         
         gameIsStoped = false
+    }
+    
+    @objc func restartTheGame(){
+        startGame()
+        gameIsStoped = false
+        hv.pauseButton.isHidden = true
+        gv.objectsView.isHidden = false
     }
     
     @objc func startGame() {
@@ -234,6 +245,8 @@ class GameViewController : UIViewController {
             //gv.viewHandlingCoins.isHidden = true
             //hv.pauseButton.isHidden = false
             soundManager.stopGameSoung()
+            soundManager.playGameOverSound()
+            gOv.isHidden = false
         }
         else {
             //restart the game
@@ -241,6 +254,7 @@ class GameViewController : UIViewController {
             gameIsStoped = false
             hv.pauseButton.isHidden = true
             gv.objectsView.isHidden = false
+            
         }
     }
     
