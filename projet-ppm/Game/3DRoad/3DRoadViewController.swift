@@ -9,9 +9,10 @@ import Foundation
 import UIKit
 
 enum Level: Int {
-    case easy=0
-    case average=1
-    case hard=2
+    case Beginner=0
+    case Medium=1
+    case Hard=2
+    case Extreme=3
 }
 
 
@@ -46,7 +47,18 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         self.names = names
         self.duration = duration
         
-        level = .easy
+        switch sView.value {
+        case "Beginner" :
+            level = .Beginner
+        case "Medium" :
+            level = .Medium
+        case "Hard" :
+            level = .Hard
+        case "Extreme" :
+            level = .Extreme
+        default :
+            level = .Beginner
+        }
         nbElements = 0
         
         self.model3D = model3D
@@ -94,7 +106,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     func startTheGame(){
         model3D.deleteAllRoad()
         for _ in 0..<N {
-            createRoad(withType: STRAIGHT, level: .easy)
+            createRoad(withType: STRAIGHT, level: level)
         }
     }
     

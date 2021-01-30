@@ -345,7 +345,8 @@ class GameViewController : UIViewController {
      vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
      */
     var nbOfTurn : Int = 0
-    var level : Level = .easy
+    var level : Level = .Beginner
+    
     
     let MALUS_DURATION :TimeInterval = 2.0
     var malus : Bool = false //indique si le personnage s'est cogné
@@ -415,7 +416,8 @@ class GameViewController : UIViewController {
             
                 nbOfTurn += 1
                 
-                level = Level(rawValue: Int(nbOfTurn/10)) ?? .hard
+                //level = Level(rawValue: Int(nbOfTurn/10)) ?? .Hard
+                typeOfLevel()
                 print("The Game is becoming Harder")
                 threeDRoadVC.turn(level: level)
                 wantToTurnLeft = false
@@ -606,10 +608,7 @@ class GameViewController : UIViewController {
         }
         
     }
-    
-    
-    
-    
+           
     /**
      deplacement de l'image obj vers le point de coordonnées point.
      */
@@ -641,21 +640,13 @@ class GameViewController : UIViewController {
     
 
 
-    @objc func jumpMore() {
-        if !wantToJump {
-            timerJump = JUMP_DURATION + JUMP_DURATION
-            wantToJump = true
-            if (SoundOnOff){
-                soundManager.playEdgeSound()
-            }
-            gv.animationForJump()
-        }
-
+    @objc func power() {
+        
     }
     
     @objc func tapSauteAfunc (){
-        //Saute plus longtemps
-        jumpMore()
+        //Pouvoir : destruction obstacle
+        power()
         
     }
     
@@ -712,6 +703,7 @@ class GameViewController : UIViewController {
 
         }
     }
+    
     func LevelDuration(){
         print("VALEUR IS" + sView.value)
         switch  sView.value {
@@ -724,9 +716,23 @@ class GameViewController : UIViewController {
         case "Extreme" :
             duration = 0.3
         default :
-            duration = 1.5
+            duration = 1.4
         }
 
      }
     
+    func typeOfLevel(){
+        switch  sView.value {
+        case "Beginner" :
+            level = .Beginner
+        case "Medium" :
+            level = .Medium
+        case "Hard" :
+            level = .Hard
+        case "Extreme" :
+            level = .Extreme
+        default :
+            level = .Beginner
+        }
+    }
 }
