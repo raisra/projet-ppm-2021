@@ -53,20 +53,21 @@ class PreferenceManager: NSObject {
     }
     
     func loadScorePreference(for key: String) -> [ScoreDataObject] {
-        var scores = [ScoreDataObject]()
-        do {
-            for scoreData in (standartDefault.array(forKey: key) as! [NSData]) {
-                let score =  try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(scoreData as Data)
-                if score != nil {
-                    scores.append(score! as! ScoreDataObject)
-                }
-                
-            }
-        }catch {
-            print ("EXCEPTION CATCH : line " + String(#line), terminator: " from ")
-        }
+//        var scores = [ScoreDataObject]()
+//        do {
+//            for scoreData in (standartDefault.array(forKey: key) as! [NSData]?) {
+//                let score =  try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(scoreData as Data)
+//                if score != nil {
+//                    scores.append(score! as! ScoreDataObject)
+//                }
+//
+//            }
+//        }catch {
+//            print ("EXCEPTION CATCH : line " + String(#line), terminator: " from ")
+//        }
         
-        return scores
+//        return scores
+        return [ScoreDataObject]()
     }
     
 

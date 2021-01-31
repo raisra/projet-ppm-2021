@@ -29,7 +29,7 @@ class ScoreView: UIView {
         titleView.sizeToFit()
         
         backButton.setImage(UIImage(named: "back"), for: .normal)
-        backButton.contentMode = .scaleAspectFit
+        backButton.contentMode = .scaleAspectFill
         backButton.addTarget(self.superview, action: #selector(ScoreViewController.backAction), for: .touchUpInside)
         
         addSubview(titleView)

@@ -17,7 +17,10 @@ let PASSAGE = 105
 class ThreeDRoadModel : ModelRoad{
     var nbElements : Int = 0
 
-    override init(_ p: ModelRoad.Param) {
+    var duration : TimeInterval
+    
+    init(_ p: ModelRoad.Param, duration : TimeInterval) {
+        self.duration = duration
         super.init(p)
         
         let scale : CGFloat = (p.fSize - p.bSize)/CGFloat(nRows)
@@ -69,6 +72,16 @@ class ThreeDRoadModel : ModelRoad{
     }
     
     
+    
+    override func reset() {
+        super.reset()
+        nbElements = 0
+        duration = DURATION
+    }
+    
+    func setDuration(duration: TimeInterval)  {
+        self.duration = duration
+    }
     func getElemAtIndex(_ i : Int) -> Frame? {
         if nbElements == 0 {return nil}
         

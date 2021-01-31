@@ -73,11 +73,11 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         gameSound!.play()
         gameSound!.volume = 0.3
     }
-    @objc func stopGameSoung() {
+    @objc func stopGameSound() {
         print(#function)
         if (gameSound!.volume > 0) {
             gameSound!.setVolume(0, fadeDuration: 1)
-            Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(stopGameSoung), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(stopGameSound), userInfo: nil, repeats: false)
             return
         }
         

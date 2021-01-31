@@ -11,14 +11,15 @@ import UIKit
 class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let scoreModel = ScoreModel(scoreArray: PreferenceManager.sharedInstance.loadScorePreference(for: PreferenceKeys.score))
-    let scoreView  = ScoreView(frame: .zero)
 
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = self.scoreView
-        
-        self.scoreView.tableView?.delegate = self
-        self.scoreView.tableView?.dataSource = self
+  
+        let scoreView = ScoreView(frame: UIScreen.main.bounds)
+        scoreView.tableView?.delegate = self
+        scoreView.tableView?.dataSource = self
+        view = scoreView
     }
 
     
@@ -46,8 +47,7 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     @objc func backAction() {
-        
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
 

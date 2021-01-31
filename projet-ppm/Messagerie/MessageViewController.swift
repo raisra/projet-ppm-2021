@@ -1,6 +1,6 @@
 //
 //  MessageViewController.swift
-//  splitview
+//
 //
 //  Created by ramzi on 13/01/2021.
 //
@@ -8,11 +8,27 @@
 import Foundation
 import UIKit
 
+struct _USER {
+    static let myID   = UIDevice.current.identifierForVendor?.description
+    static let myUUID = UUID().uuidString
+    static let myName = UIDevice.current.name
+}
+
+struct _NOTIFICATION {
+    static let START_COMPTEUR       = "NOTIFICATION_START_COMPTEUR"
+    static let STOP_COMPTEUR        = "NOTIFICATION_STOP_COMPTEUR"
+}
+
+struct _SERVER {
+    static let adresse = "192.168.2.98"
+    static let port    = "50000"
+}
+
+
 
 class MessageViewController: UIViewController{
     
     var messageView : MessageView!
-//    var keyboardFrame: NSValue
     var keyBoarAlreadyAppeared: Bool = false
     
     override func viewDidLoad() {
@@ -27,10 +43,7 @@ class MessageViewController: UIViewController{
         view.gestureRecognizers = [recognizer]
     }
     
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        print("viewwilldisappear")
-    }
+   
     
     override func viewWillAppear(_ animated: Bool) {
         print("willappear")

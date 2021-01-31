@@ -134,6 +134,7 @@ class GameView: UIView {
     }
     
     private func initPersonnage(position : CGPoint , size : CGSize)  {
+        character.image = UIImage(named: "run-1")
         character.frame = CGRect(origin: CGPoint(), size: size)
         character.center = position
         character.isHidden = true

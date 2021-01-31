@@ -63,7 +63,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     }
     
     
-    func updateDuration(_ d : TimeInterval){
+    func setDuration(_ d : TimeInterval){
         duration = d
     }
     

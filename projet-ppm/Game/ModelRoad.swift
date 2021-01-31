@@ -123,8 +123,7 @@ class ModelRoad {
     
     var size0 : CGSize
     var factor : CGFloat
-    
-    var duration : TimeInterval
+
     
 
     
@@ -140,8 +139,6 @@ class ModelRoad {
         
         var size0 : CGSize
         var factor : CGFloat
-        
-        var duration : TimeInterval
     }
     
     
@@ -169,14 +166,16 @@ class ModelRoad {
         self.size0 = p.size0
         self.factor = p.factor
         
-        self.duration = p.duration
+    
         H = size0.height * (1.0 - pow(factor, NB_ROWS))/(1.0 - factor)
         
         roadGrid = [Frame]()
         roadGrid.reserveCapacity((nRows+1)*nColumns)
         
+        
+        /**Utile pour la génération des pieces */
         repeatCount = 0
-        prevRandomValue = [TypeOfObject](repeating: _EMPTY_, count: nColumns)//utiliser colonne au lieu de 3
+        prevRandomValue = [TypeOfObject](repeating: _EMPTY_, count: nColumns)
         prevR = 0
         
 
@@ -206,14 +205,27 @@ class ModelRoad {
             }
         }
         
-        print(roadGrid.count)
+        
     }
+    
+    
+    
+    func reset() {
+        for k in 0...nRows {
+            for i in 0..<nColumns {
+                removeAndDelete(i:i , j : k, type: any)
+            }
+        }
+    }
+    
     
     func getObj(_ i: Int, _ j: Int) -> Frame {
         return roadGrid[nColumns*j + i]
     }
     
    
+    
+    
     
 
     func linearX ( _ i : Int , _ k : Int) -> CGFloat{
@@ -311,20 +323,14 @@ class ModelRoad {
                 obj.type = prevObj.type
                 
                 
-                //TODO CE CODE NE DEVRAIT PAS ETRE DS LE MODEL
+                
+                prevObj.view?.center = obj.center!
+                prevObj.view?.frame.size = obj.size!
               
-                UIView.animate(withDuration: DURATION, delay: 0, options: .curveLinear, animations:  {
-                    prevObj.view?.center = obj.center!
-                    prevObj.view?.frame.size = obj.size!
-                }, completion: {_ in
                             
-                    let view = obj.view
-                    view?.frame = CGRect(origin: CGPoint(), size: obj.size!)
-                    view?.center = obj.center!
-                    
-                    
-                           })
-
+                let view = obj.view
+                view?.frame = CGRect(origin: CGPoint(), size: obj.size!)
+                view?.center = obj.center!
                 
                 j -= 1
             }

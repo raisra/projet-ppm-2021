@@ -6,77 +6,90 @@
 //
 
 import Foundation
-
-
 import UIKit
 
-class MessageView: UIView, UITextFieldDelegate {
+class MessageView: UIView {
     
-    let messages: UITextView = UITextView()
-    let newMessage : UITextField = UITextField()
+    
+    let newMessage = UITextField()
+    let titleLabel = UILabel()
+    var tableView:UITableView
+    let borderWidth:CGFloat = 2.0
+
+    
     
     
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .black
-        self.alpha = 0.5
-        messages.backgroundColor = .white
-        messages.isEditable = false
-        messages.textColor = .black
+        tableView = UITableView()
+        tableView.backgroundColor = .white
         
+        super.init(frame: frame)
+        backgroundColor = .gray
+        
+        //self.update_textLabel(with: chatStatus)
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .white
+        titleLabel.backgroundColor = .gray
+        
+        titleLabel.shadowOffset = CGSize(width: 1, height: 1)
+        titleLabel.shadowColor = .blue
+
+        newMessage.placeholder = "   Taper votre message"
+        newMessage.returnKeyType = .done
         newMessage.backgroundColor = .white
         newMessage.textColor = .black
-        newMessage.borderStyle = .roundedRect
-        newMessage.keyboardType = .asciiCapable
-        newMessage.delegate = self
-        newMessage.placeholder = "type your message here"
-   
-        newMessage.layer.cornerRadius = 5
-        newMessage.layer.borderColor = UIColor.lightGray.cgColor
-        newMessage.layer.borderWidth = 1
-        newMessage.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: newMessage.frame.height))
-        newMessage.leftViewMode = .always
-        newMessage.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: newMessage.frame.height))
-        newMessage.rightViewMode = .always
-        newMessage.clearButtonMode = .whileEditing
-       
-        addSubview(messages)
+        newMessage.borderStyle = .line
+        
+        addSubview(tableView)
         addSubview(newMessage)
+        addSubview(titleLabel)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-
+   
     
+ 
     override func draw(_ rect: CGRect) {
         
-        let h = rect.height
-        let w = rect.width
-        let entete : CGFloat = 30.0
-        let margeHorizontal : CGFloat = 10.0
-        let margeVertical : CGFloat = 10.0
+        let frameTitle = CGRect(origin: CGPoint(x: borderWidth-borderWidth, y: 0),
+                                size: CGSize(width: rect.width /*+ borderWidth*/,
+                                             height: 40))
         
-        messages.frame = CGRect(x: margeHorizontal, y: margeVertical+entete,
-                                 width: w - 2*margeHorizontal, height: h - 3*margeVertical-40-entete)
+        let frameField = CGRect (x: borderWidth-borderWidth,
+                                 y: rect.height - 50,
+                                 width: rect.width /*+ borderWidth*/,
+                                 height: 50)
+        
+        let frameTableView = CGRect (x: 0,
+                                    y: frameTitle.maxY,
+                                    width: rect.width,
+                                    height: rect.height - frameTitle.height - frameField.height)
+        
+        
+        titleLabel.frame = frameTitle
+        newMessage.frame = frameField
+        tableView.frame  = frameTableView
+
+    }
     
-        newMessage.frame = CGRect(x: margeHorizontal, y: h - margeVertical - 40, width: w - 2*margeHorizontal, height: 40)
+ 
+    func viewAppeared () {
+        self.center = CGPoint(x: abs(-self.center.x), y: self.center.y)
+        self.setNeedsDisplay()
+    }
+    
+    func viewDisappeared () {
+        self.center = CGPoint(x: -abs(-self.center.x), y: self.center.y)
+        self.setNeedsDisplay()
     }
     
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        return true
+    func setTextLabel (with text: String) {
+        titleLabel.text = "LIVE CHAT"
     }
+
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        
-        if(textField.text?.count==0) {return true}
-        
-        messages.text += (textField.text)! + "\n"
-        textField.text = ""
-        return true
-    }
 }

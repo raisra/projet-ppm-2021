@@ -29,7 +29,7 @@ class HumanInterface: UIView {
     //le nombre de pouvoirs
     var nbPower : Int = 0
     var powerAnchor : CGPoint = CGPoint(x: 0, y: 200)
-    let sizeOfPowerIcons : CGSize  = CGSize(width: 10, height: 10)
+    let sizeOfPowerIcons : CGSize  = CGSize(width: 20, height: 20)
     
     
     /**
@@ -163,6 +163,11 @@ class HumanInterface: UIView {
                         powerView.isHidden = true
                        })
         
+    }
+    
+    func resetPower() {
+        powerAnchor.y -= (sizeOfPowerIcons.height * CGFloat(nbPower))
+        nbPower = 0
     }
     
 }

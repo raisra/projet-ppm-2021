@@ -20,9 +20,9 @@ let BACK_GROUND_IMAGE = "aboveTheSky"
 let NB_ROWS : CGFloat = 10
 let NB_COLUMNS : CGFloat = 5
 
-let DURATION : TimeInterval = 4.4
+let DURATION : TimeInterval = 0.3
 //the size of the uiview representing the character
-let sizeChar  = CGSize(width: 200, height: 450)
+let sizeChar  = CGSize(width: 300, height: 675)
 
 //let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
 let NAMES : [TypeOfObject: String] = [STRAIGHT:"pave", BRIDGE:"bridge", _EMPTY_: "pave", PASSAGE: "pave", TREE: "tree", TURN_RIGHT:"turnRight", TURNLEFT : "turnLeft"]
@@ -44,7 +44,7 @@ var SoundOnOff : Bool = true
 class GameViewController : UIViewController {
     
     // var mvc : MessageViewController
-    let mvc = { () -> MessageViewController in
+    let mvc : MessageViewController = {
         let mvc = MessageViewController()
         
         mvc.modalTransitionStyle = .flipHorizontal
@@ -52,6 +52,14 @@ class GameViewController : UIViewController {
         
         return mvc
     }()
+    
+    
+    let scoreViewController : ScoreViewController = {
+        var sv = ScoreViewController()
+        sv.modalTransitionStyle = .coverVertical
+        return sv
+    } ()
+    
     
     var timer : Timer?
     var gv : GameView!
@@ -112,19 +120,20 @@ class GameViewController : UIViewController {
                                                       bSize: 5, fSize:50,
                                                       useData: false,
                                                       size0: sizeIm,
-                                                      factor: factor, duration: duration!)
+                                                      factor: factor)
         
         //init du model
         //besoin de alpha et de la taille de la premiere image
         
         
         
-        modelRoad = ThreeDRoadModel(param)
+        modelRoad = ThreeDRoadModel(param, duration: duration!)
         
         //initialise la position du persinnage au mileu de l'ecran
         thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
         
-        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1 - 2 )
+        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        
         
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
@@ -238,7 +247,7 @@ class GameViewController : UIViewController {
             gameIsStoped = true
             //gv.viewHandlingCoins.isHidden = true
             hv.pauseButton.isHidden = false
-            soundManager.stopGameSoung()
+            soundManager.stopGameSound()
         }
         else {
             //restart the game
@@ -388,22 +397,10 @@ class GameViewController : UIViewController {
         if (t == TURNLEFT && !wantToTurnLeft) || (t == TURN_RIGHT && !wantToTurnRight) {
             //le joueur a perdu
                 print("l'utilisateur va perdre")
-            
                 if (SoundOnOff){
                     soundManager.playEndSound()
                 }
-                //TODO ICI AFFICHER LE SCORE
-                pauseGame()
-                print("The Game is becoming Harder")
-            
-                //arreter l'a imation du personnage
-                //TODO RELA?CER LE JEU
-                //effacer toutes les pieces et pouvoir etc
-                //relancer le timer
-                //remettre la duration des controller à la valeur initiale
-            
-                //stopGenerating coins à false
-              
+                gameOver()
                 return
         }
         
@@ -411,8 +408,7 @@ class GameViewController : UIViewController {
         if( t == TREE && !wantToJump && malus ){
             //le personnage s'est cogné deux fois d'affiler
             print("on a perdu")
-            
-            self.pauseGame()
+            gameOver()
             return
         }
         
@@ -430,7 +426,7 @@ class GameViewController : UIViewController {
                 //on invalide le timer et on en rreceer un autre plus rapide
                 self.timer?.invalidate()
                 duration = duration! * 0.95
-                threeDRoadVC.updateDuration(duration!)
+                threeDRoadVC.setDuration(duration!)
                 
                 self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
             
@@ -442,7 +438,6 @@ class GameViewController : UIViewController {
             print("Le personnage se cogne sur un arbre")
             if (SoundOnOff){
                 soundManager.playCollisionSound()
-
             }
             
             malus = true
@@ -477,9 +472,7 @@ class GameViewController : UIViewController {
         //si aucun n'objet n'est devant le personnage rien à faire
         if (obj == (_EMPTY_, nil)){
             return}
-        else {
-            
-        }
+      
         
         //les coordonnées du point vers lesquels renvoyer les pieces
         var p : CGPoint?
@@ -540,6 +533,7 @@ class GameViewController : UIViewController {
         
         wantToTurnLeft = false
         wantToTurnRight = false
+        
     }
     
     
@@ -675,15 +669,18 @@ class GameViewController : UIViewController {
         thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
 
-        gv.character.center = s
+      //  gv.character.center = s
         print("hello from move right")
+        
+        gv.animationMove(to: s)
         wantToTurnRight = true
     }
     
     func leftmove (){
         thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
+        //gv.character.center = s
+        gv.animationMove(to: s)
         print("hello from move left")
         wantToTurnLeft = true
     }
@@ -719,5 +716,51 @@ class GameViewController : UIViewController {
         }
     }
     
+    
+    
+    
+    func gameOver() {
+    
+        gv.stopAnimation()
+        timer?.invalidate()
+        timer=nil
+        gameIsStoped = true
+        
+        modelRoad.reset()
+       
+        soundManager.stopGameSound()
+        
+        hv.resetPower()
+ 
+        //effacer toutes les pieces et pouvoir etc
+        //relancer le timer
+        //remettre la duration des controller à la valeur initiale
+    
+        
+        wantToTurnLeft = false
+        wantToTurnRight = false
+        wantToJump = false
+        
+        threeDRoadVC.goingToTurn = false
+        threeDRoadVC.stopCoins = false
+            
+            
+        self.timer?.invalidate()
+        duration = DURATION
+        threeDRoadVC.setDuration(duration!)
+        
+        //scoreViewController.reference(int: hv.getScore(), for key:"scores")
+        thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
+        
+        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        
+        gv.hideCharacter()
+        
+       // viewWillAppear(true)
+        //scoreViewController.modalTransitionStyle = .coverVertical
+       // scoreViewController.isModalInPresentation = true
+        self.present(scoreViewController, animated: true, completion: nil)
+        
+    }
     
 }

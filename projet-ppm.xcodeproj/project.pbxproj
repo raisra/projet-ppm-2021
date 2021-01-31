@@ -18,6 +18,11 @@
 		2DE0E11325C4C21E00FC49E9 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */; };
 		2DE0E11425C4C21E00FC49E9 /* ScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */; };
 		2DE0E11725C4C39400FC49E9 /* PreferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E11625C4C39400FC49E9 /* PreferenceManager.swift */; };
+		2DE0E11F25C512CA00FC49E9 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E11E25C512CA00FC49E9 /* NetworkManager.swift */; };
+		2DE0E12725C512E800FC49E9 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E12225C512E800FC49E9 /* ChatViewController.swift */; };
+		2DE0E12825C512E800FC49E9 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E12325C512E800FC49E9 /* MessageTableViewCell.swift */; };
+		2DE0E12925C512E800FC49E9 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E12425C512E800FC49E9 /* MessageModel.swift */; };
+		2DE0E12A25C512E800FC49E9 /* MessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DE0E12525C512E800FC49E9 /* MessageTableViewCell.xib */; };
 		2DEFE59925C0C17A009E61C2 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEFE59825C0C17A009E61C2 /* SoundManager.swift */; };
 		2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DEFE5A225C0C376009E61C2 /* squeeze-toy-1.mp3 */; };
 		2DEFE5A725C0C376009E61C2 /* midnight-ride-01a.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DEFE5A325C0C376009E61C2 /* midnight-ride-01a.mp3 */; };
@@ -51,6 +56,11 @@
 		2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreModel.swift; sourceTree = "<group>"; };
 		2DE0E11625C4C39400FC49E9 /* PreferenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceManager.swift; sourceTree = "<group>"; };
+		2DE0E11E25C512CA00FC49E9 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		2DE0E12225C512E800FC49E9 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		2DE0E12325C512E800FC49E9 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
+		2DE0E12425C512E800FC49E9 /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		2DE0E12525C512E800FC49E9 /* MessageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageTableViewCell.xib; sourceTree = "<group>"; };
 		2DEFE59825C0C17A009E61C2 /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		2DEFE5A225C0C376009E61C2 /* squeeze-toy-1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "squeeze-toy-1.mp3"; sourceTree = "<group>"; };
 		2DEFE5A325C0C376009E61C2 /* midnight-ride-01a.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "midnight-ride-01a.mp3"; sourceTree = "<group>"; };
@@ -101,6 +111,10 @@
 		2D3B946A25B9736700750421 /* Messagerie */ = {
 			isa = PBXGroup;
 			children = (
+				2DE0E12425C512E800FC49E9 /* MessageModel.swift */,
+				2DE0E12325C512E800FC49E9 /* MessageTableViewCell.swift */,
+				2DE0E12525C512E800FC49E9 /* MessageTableViewCell.xib */,
+				2DE0E12225C512E800FC49E9 /* ChatViewController.swift */,
 				2DFD104125AFA96F0041E21B /* MessageView.swift */,
 				2DFD103E25AFA9690041E21B /* MessageViewController.swift */,
 			);
@@ -148,6 +162,7 @@
 		2DEFE59B25C0C18D009E61C2 /* features */ = {
 			isa = PBXGroup;
 			children = (
+				2DE0E11E25C512CA00FC49E9 /* NetworkManager.swift */,
 				2D50664125C0467D007EEAFF /* GestureManager.swift */,
 				2DEFE59825C0C17A009E61C2 /* SoundManager.swift */,
 				2DEFE5AB25C10903009E61C2 /* MotionManager.swift */,
@@ -188,9 +203,9 @@
 			isa = PBXGroup;
 			children = (
 				2DE0E10C25C4C21E00FC49E9 /* Score */,
-				2DEFE59B25C0C18D009E61C2 /* features */,
 				2DFD101325AF8AA40041E21B /* AppDelegate.swift */,
 				2DFD101525AF8AA40041E21B /* SceneDelegate.swift */,
+				2DEFE59B25C0C18D009E61C2 /* features */,
 				2D3B947925B976B100750421 /* Welcome */,
 				2D3B946A25B9736700750421 /* Messagerie */,
 				2D3B946825B9732800750421 /* Game */,
@@ -262,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */,
+				2DE0E12A25C512E800FC49E9 /* MessageTableViewCell.xib in Resources */,
 				2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */,
 				2DEFE5B025C15A0B009E61C2 /* HumanInterface.storyboard in Resources */,
 				2DFD102025AF8AA40041E21B /* LaunchScreen.storyboard in Resources */,
@@ -283,10 +299,14 @@
 				2DE0E11725C4C39400FC49E9 /* PreferenceManager.swift in Sources */,
 				2DFD101825AF8AA40041E21B /* WelcomeViewController.swift in Sources */,
 				2DE0E11325C4C21E00FC49E9 /* ScoreView.swift in Sources */,
+				2DE0E11F25C512CA00FC49E9 /* NetworkManager.swift in Sources */,
 				2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */,
+				2DE0E12825C512E800FC49E9 /* MessageTableViewCell.swift in Sources */,
 				2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */,
 				2D3B946F25B975B300750421 /* HumanInterface.swift in Sources */,
 				2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */,
+				2DE0E12925C512E800FC49E9 /* MessageModel.swift in Sources */,
+				2DE0E12725C512E800FC49E9 /* ChatViewController.swift in Sources */,
 				2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */,
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
 				2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */,
