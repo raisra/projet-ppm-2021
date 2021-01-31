@@ -1,0 +1,6 @@
+framework module Pods_projet_ppm {
+  umbrella header "Pods-projet-ppm-umbrella.h"
+
+  export *
+  module * { export * }
+}

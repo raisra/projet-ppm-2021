@@ -44,14 +44,15 @@ var SoundOnOff : Bool = true
 class GameViewController : UIViewController {
     
     // var mvc : MessageViewController
-    let mvc = { () -> MessageViewController in
+    /*let mvc = { () -> MessageViewController in
         let mvc = MessageViewController()
         
         mvc.modalTransitionStyle = .flipHorizontal
         mvc.modalPresentationStyle = .fullScreen
         
         return mvc
-    }()
+    }()*/
+    var mvcNavVC: UINavigationController?
     
     var timer : Timer?
     var gv : GameView!
@@ -181,6 +182,12 @@ class GameViewController : UIViewController {
    //     gestureManager?.delegate = self
    //     motionManager?.delegate = self
         motionManager?.start()
+        
+        let chatVC = ChatViewController()
+        chatVC.title = "Messagerie"
+        mvcNavVC = UINavigationController(rootViewController: chatVC)
+        mvcNavVC?.modalTransitionStyle = .flipHorizontal
+        mvcNavVC?.modalPresentationStyle = .fullScreen
     }
     
     
@@ -263,7 +270,7 @@ class GameViewController : UIViewController {
     //display the message view
     @objc func seeMessage(){
         print("click on message button")
-        present(mvc, animated: true, completion: nil)
+        present(mvcNavVC!, animated: true, completion: nil)
     }
     
     
