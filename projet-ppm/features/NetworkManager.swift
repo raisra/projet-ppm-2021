@@ -9,54 +9,58 @@ import UIKit
 import Network
 
 
+protocol receiveTCP {
+    func receiveTCP(data : String)
+}
 
 
 class NetworkManager {
-    
-    var available = false
-    let monitor = NWPathMonitor()
-    
-    let serveurEndPoint: NWEndpoint = NWEndpoint.hostPort(host:NWEndpoint.Host(_SERVER.adresse),
-                                                          port: NWEndpoint.Port(String(_SERVER.port))!)
-    
+
     private var connection: NWConnection?
-    private var queue = DispatchQueue(label: "Ramzi_dispathQueue", qos: .utility)
-    var host: NWEndpoint.Host
-    var port: NWEndpoint.Port
+    private var host: NWEndpoint.Host
+    private var port: NWEndpoint.Port
     
-    var msg : String = ""
+    
+    //private var queue : DispatchQueue
+    
   
     
-    init(host:String = _SERVER.adresse , port:String = _SERVER.port) {
+    var delegate : receiveTCP?
+    
+    init(host:String , port:String ) {
         self.host = NWEndpoint.Host(host)
         self.port = NWEndpoint.Port(port)!
+        
+        
+        connectTCP()
     }
     
     
-    
-    func checkConnection (){
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                print("We're connected!")
-                self.available = true
-                self.connectTCP()
-            } else {
-                print("No connection.")
-            }
-            
-            print(path.isExpensive)
-        }
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
-    }
-    
-    
+//
+//     func checkAndConnect (){
+//        monitor.pathUpdateHandler = { path in
+//            if path.status == .satisfied {
+//                print("We're connected!")
+//                self.connectTCP()
+//            } else {
+//                print("No connection.")
+//            }
+//
+//            print(path.isExpensive)
+//        }
+//        let queue = DispatchQueue(label: "Monitor")
+//
+//        monitor.start(queue: queue)
+//    }
     
     
-    
+    private
     func connectTCP()
     {
         connection = NWConnection(host: host, port: port, using: .tcp)
+        connection?.receive(minimumIncompleteLength: 1, maximumLength: 128, completion: completionWhenReceiveTCP)
+        let queueTCP = DispatchQueue(label: "TCP_queue", qos: .utility)
+        connection?.start(queue: queueTCP)
         connection?.stateUpdateHandler =
             {
                 (newState) in switch (newState)
@@ -64,7 +68,7 @@ class NetworkManager {
                 case .ready:
                     //The connection is established and ready to send and recieve data.
                     print("ready")
-                
+
                 case .setup:
                     //The connection has been initialized but not started
                     print("setup")
@@ -80,9 +84,31 @@ class NetworkManager {
                     print(self.connection?.debugDescription)
                 }
             }
-        receiveTCP()
-        connection?.start(queue: queue)
+        
     }
+    
+    
+    private func completionWhenReceiveTCP(data: Data?, isComplete : NWConnection.ContentContext?, _ : Bool , error: NWError?) {
+        
+        print("Got it ... is Complete: " + isComplete.debugDescription)
+        if let err = error {
+            print("Recieve error: \(err)")
+            return
+        }
+        
+        if data != nil {
+            delegate?.receiveTCP(data: String(data:data!, encoding: .utf8)!)
+        }
+    }
+    
+    
+   
+        
+        
+    
+    
+    
+    
     
     
     func close() {
@@ -93,7 +119,7 @@ class NetworkManager {
     
     
     
-    func sendPaket(_ packet:String) {
+    func sendMsg(_ packet:String) {
         let packetData = packet.data(using: .utf8)
         let completionHandler = { (error: NWError?) in
             if let err = error {
@@ -111,23 +137,7 @@ class NetworkManager {
     
     
     
-    func receiveTCP() {
-        
-        let completionWhenReceiveTCP = {
-            (data: Data?, isComplete : NWConnection.ContentContext?, _ : Bool , error: NWError?) in
-            print("Got it ... is Complete: " + isComplete.debugDescription)
-            if let err = error {
-                print("Recieve error: \(err)")
-                return
-            }
-            
-            if data == nil {
-                self.msg = String(data:data!, encoding: .utf8)!
-            }
-        }
-        
-        connection?.receive(minimumIncompleteLength: 1, maximumLength: 128, completion: completionWhenReceiveTCP)
-    }
+    
     
     
     

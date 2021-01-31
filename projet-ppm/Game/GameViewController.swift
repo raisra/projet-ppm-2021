@@ -44,14 +44,7 @@ var SoundOnOff : Bool = true
 class GameViewController : UIViewController {
     
     // var mvc : MessageViewController
-    let mvc : MessageViewController = {
-        let mvc = MessageViewController()
-        
-        mvc.modalTransitionStyle = .flipHorizontal
-        mvc.modalPresentationStyle = .fullScreen
-        
-        return mvc
-    }()
+    let mvc : MessageViewController = MessageViewController.sharedInstance
     
     
     let scoreViewController : ScoreViewController = {
@@ -64,10 +57,9 @@ class GameViewController : UIViewController {
     var timer : Timer?
     var gv : GameView!
     var hv : HumanInterface!
-    var sv : SettingsView!
     var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
-    
+    var gOv : GameOverView!
     
     var gameIsStoped : Bool = true
     
@@ -96,8 +88,7 @@ class GameViewController : UIViewController {
     
     override func viewDidLoad() {
         print ("the Game view did load")
-        
-        duration = DURATION
+        LevelDuration()
         //init du model 3D
         
         let r = sizeIm.height/sizeIm.width
@@ -138,7 +129,8 @@ class GameViewController : UIViewController {
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
-        sv = SettingsView(frame: UIScreen.main.bounds)
+        gOv = GameOverView(frame: UIScreen.main.bounds)
+
 
         //Autres :
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapSauteAfunc))
@@ -180,10 +172,9 @@ class GameViewController : UIViewController {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
-        view.addSubview(sv)
-        sv.isHidden = true
-        
-        SoundOnOff = sv.soundON()
+        view.addSubview(gOv)
+
+        SoundOnOff = sView.soundON()
         
  //       gestureManager = GestureManager(forView: self.hv)
 //        motionManager = MotionManager()
@@ -220,17 +211,25 @@ class GameViewController : UIViewController {
         print("start the game")
         
         //soundManager.playGameSound()
-        
+        gOv.isHidden = true
+
         gv.showCharacter()
         gv.startAnimation()
         
         hv.pauseButton.isHidden = true
         hv.messageButton.isHidden = false
         hv.startButton.isHidden = true
-        
+
         timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
         
         gameIsStoped = false
+    }
+    
+    @objc func restartTheGame(){
+        startGame()
+        gameIsStoped = false
+        hv.pauseButton.isHidden = true
+        gv.objectsView.isHidden = false
     }
     
     @objc func startGame() {
@@ -246,8 +245,14 @@ class GameViewController : UIViewController {
             timer=nil
             gameIsStoped = true
             //gv.viewHandlingCoins.isHidden = true
+
             hv.pauseButton.isHidden = false
+
+            //hv.pauseButton.isHidden = false
             soundManager.stopGameSound()
+            soundManager.playGameOverSound()
+            gOv.isHidden = false
+
         }
         else {
             //restart the game
@@ -255,6 +260,7 @@ class GameViewController : UIViewController {
             gameIsStoped = false
             hv.pauseButton.isHidden = true
             gv.objectsView.isHidden = false
+            
         }
     }
     
@@ -359,7 +365,8 @@ class GameViewController : UIViewController {
      vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
      */
     var nbOfTurn : Int = 0
-    var level : Level = .easy
+    var level : Level = .Beginner
+    
     
     let MALUS_DURATION :TimeInterval = 2.0
     var malus : Bool = false //indique si le personnage s'est cogné
@@ -416,8 +423,8 @@ class GameViewController : UIViewController {
             
                 nbOfTurn += 1
                 
-                level = Level(rawValue: Int(nbOfTurn/10)) ?? .hard
-                
+                //level = Level(rawValue: Int(nbOfTurn/10)) ?? .Hard
+                typeOfLevel()
                 print("The Game is becoming Harder")
                 threeDRoadVC.turn(level: level)
                 wantToTurnLeft = false
@@ -543,7 +550,6 @@ class GameViewController : UIViewController {
         
         //si un aucun poucoir n'est en cours d'execution on ne fait rien
         if(TTL.isEmpty) {return}
-        
         var i = 0
         while i<TTL.count  {
             let (power, ttl) = TTL.first!
@@ -606,10 +612,7 @@ class GameViewController : UIViewController {
         }
         
     }
-    
-    
-    
-    
+           
     /**
      deplacement de l'image obj vers le point de coordonnées point.
      */
@@ -638,25 +641,12 @@ class GameViewController : UIViewController {
             gv.animationForJump()
         }
     }
-    
 
-
-    @objc func jumpMore() {
-        if !wantToJump {
-            timerJump = JUMP_DURATION + JUMP_DURATION
-            wantToJump = true
-            if (SoundOnOff){
-                soundManager.playEdgeSound()
-            }
-            gv.animationForJump()
-        }
-
-    }
-    
     @objc func tapSauteAfunc (){
-        //Saute plus longtemps
-        jumpMore()
-        
+        //Pouvoir : devenir invisible pendant 3 secondes
+        //power_transparence()
+        gv.animationForTransparency()
+
     }
     
 
@@ -716,6 +706,7 @@ class GameViewController : UIViewController {
         }
     }
     
+
     
     
     
@@ -763,4 +754,37 @@ class GameViewController : UIViewController {
         
     }
     
+
+    func LevelDuration(){
+        print("VALEUR IS" + sView.value)
+        switch  sView.value {
+        case "Beginner" :
+            duration = 1.4
+        case "Medium" :
+            duration = 1.0
+        case "Hard" :
+            duration = 0.5
+        case "Extreme" :
+            duration = 0.3
+        default :
+            duration = 1.4
+        }
+
+     }
+    
+    func typeOfLevel(){
+        switch  sView.value {
+        case "Beginner" :
+            level = .Beginner
+        case "Medium" :
+            level = .Medium
+        case "Hard" :
+            level = .Hard
+        case "Extreme" :
+            level = .Extreme
+        default :
+            level = .Beginner
+        }
+    }
+
 }

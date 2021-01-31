@@ -225,16 +225,18 @@ class ThreeDRoadModel : ModelRoad{
         var probability : Int
         
         switch level {
-        case .easy:
+        case .Beginner:
             probability = 80
             break
-        case .average:
+        case .Medium:
             probability = 50
             break
-        case .hard:
+        case .Hard:
             probability = 20
             break
-        
+        case .Extreme:
+            probability = 10
+            break
         }
         
         let p = Int.random(in: 1...100)
