@@ -26,7 +26,7 @@ class GameOverView: UIView {
 
         restartButton.setImage(UIImage(named: "restart"), for: .normal)
         restartButton.setTitleColor(.black, for: .normal)
-        restartButton.addTarget(self.superview, action: #selector(WelcomeViewController.startGame), for: .touchUpInside)
+        restartButton.addTarget(self.superview, action: #selector(WelcomeViewController.RestartGame), for: .touchUpInside)
         
         GameOver.image = UIImage(named: "gameover")
         GameOver.alpha = 1

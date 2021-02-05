@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-
+let gOvView = GameOverView(frame : UIScreen.main.bounds)
 
 let DISTANCE_OF_MAGNET = 5
 let TTL_POWER : TimeInterval = 5.0
@@ -38,9 +38,6 @@ let factor : CGFloat = 309.96/398.52
 
 var SoundOnOff : Bool = true
 
-
-
-
 class GameViewController : UIViewController {
     
     // var mvc : MessageViewController
@@ -59,7 +56,6 @@ class GameViewController : UIViewController {
     var hv : HumanInterface!
     var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
-    var gOv : GameOverView!
     
     var gameIsStoped : Bool = true
     
@@ -74,7 +70,8 @@ class GameViewController : UIViewController {
     
     
     lazy var soundManager = SoundManager()
-    
+    lazy var welcomeV = WelcomeViewController()
+
     var gestureManager : GestureManager?
     var motionManager : MotionManager?
     
@@ -128,7 +125,6 @@ class GameViewController : UIViewController {
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
-        gOv = GameOverView(frame: UIScreen.main.bounds)
 
 
         //Autres :
@@ -156,8 +152,6 @@ class GameViewController : UIViewController {
         self.view.addGestureRecognizer(swipeRight)
         self.view.addGestureRecognizer(swipeUp)
         self.view.addGestureRecognizer(swipeDown)
-        
-        
         threeDRoadVC = ThreeDRoadViewController(names: NAMES,
                                                 duration: duration!,
                                                 model3D: modelRoad,
@@ -171,7 +165,8 @@ class GameViewController : UIViewController {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(hv)
-        view.addSubview(gOv)
+        view.addSubview(gOvView)
+
 
         SoundOnOff = sView.soundON()
         
@@ -206,6 +201,7 @@ class GameViewController : UIViewController {
       //  self.gestureManager?.removeGesture(from: self.gv)
       //  self.motionManager?.stop()
       //  self.motionManager?.stop()
+
     }
     
     required init?(coder: NSCoder) {
@@ -216,11 +212,10 @@ class GameViewController : UIViewController {
         print("start the game")
         
         //soundManager.playGameSound()
-        gOv.isHidden = true
 
         gv.showCharacter()
         gv.startAnimation()
-        
+        gOvView.isHidden = true
         hv.pauseButton.isHidden = true
         hv.messageButton.isHidden = false
         hv.startButton.isHidden = true
@@ -253,7 +248,11 @@ class GameViewController : UIViewController {
             //hv.pauseButton.isHidden = false
             soundManager.stopGameSoung()
             soundManager.playGameOverSound()
-            gOv.isHidden = false
+            gOvView.isHidden = false
+//            self.view.isHidden = true
+            view.bringSubviewToFront(gOvView)
+            
+            print("it's over")
         }
         else {
             //restart the game
@@ -278,10 +277,6 @@ class GameViewController : UIViewController {
         print("gae vew will deseapper")
         pauseGame()
     }
-    
-    
-    
-    
     
     /**
      genere aleatoirement un objet qur le parcours

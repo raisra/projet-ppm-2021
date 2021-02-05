@@ -10,6 +10,7 @@ import UIKit
 let sView = SettingsView(frame : UIScreen.main.bounds)
 let wView = WelcomeView(frame : UIScreen.main.bounds)
 
+
 class WelcomeViewController: UIViewController{
     
     
@@ -28,28 +29,37 @@ class WelcomeViewController: UIViewController{
     
     @objc func startGame() {
         print("Start Game")
-
         let gvc = GameViewController()
-
         gvc.modalTransitionStyle = .flipHorizontal
         gvc.modalPresentationStyle = .fullScreen
-
         self.present(gvc , animated: true, completion: nil)
+        gOvView.isHidden = true
+
     }
     
+    
+    
+    @objc func RestartGame() {
+        print("ReStart Game")
+        let gvc = GameViewController()
+        gvc.modalTransitionStyle = .flipHorizontal
+        gvc.modalPresentationStyle = .fullScreen
+        self.present(gvc , animated: true, completion: nil)
+        gOvView.isHidden = true
+    }
     
     
     @objc func settingsChoices() {
         print( "trying" )
         sView.isHidden = false
         wView.isHidden = true
+        gOvView.isHidden = true
         view.bringSubviewToFront(sView)
     }
     
     
     
     @objc func scoreButtonSelector () {
-        
         let scoreController = ScoreViewController()
         scoreController.modalTransitionStyle = .coverVertical
         scoreController.modalPresentationStyle = .fullScreen
