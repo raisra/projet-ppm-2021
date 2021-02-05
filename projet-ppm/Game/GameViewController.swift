@@ -723,15 +723,15 @@ class GameViewController : UIViewController {
         print("VALEUR IS" + sView.value)
         switch  sView.value {
         case "Beginner" :
-            duration = 1.4
+            duration = 0.6
         case "Medium" :
-            duration = 1.0
+            duration = 0.4
         case "Hard" :
-            duration = 0.5
-        case "Extreme" :
             duration = 0.3
+        case "Extreme" :
+            duration = 0.2
         default :
-            duration = 1.4
+            duration = 0.6
         }
 
      }
