@@ -82,7 +82,7 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     override func draw(_ rect: CGRect) {
         picker.frame = CGRect(x: w/2-150, y: h/2-150, width: 300, height: 300)
-        done.frame = CGRect(x: w-150, y: 150, width: 100, height: 100)
+        done.frame = CGRect(x: w/2+50, y: h/2-250, width: 100, height: 100)
         soundOnOff.frame = CGRect(x: w/2 + 20, y: h/2-115, width: 100, height: 100)
         sound.frame = CGRect(x: w/2 - 50, y: h/2-150, width: 100, height: 100)
 
