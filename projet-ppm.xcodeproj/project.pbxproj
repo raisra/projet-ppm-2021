@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		2D3F64B925BA37A40061D108 /* 3DRoadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */; };
 		2D3F64BE25BA42480061D108 /* 3DRoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */; };
 		2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D50664125C0467D007EEAFF /* GestureManager.swift */; };
+		2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEA25CF41FB00E92D66 /* Config.swift */; };
 		2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */; };
 		2DE0E11225C4C21E00FC49E9 /* ScoreDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10E25C4C21E00FC49E9 /* ScoreDataObject.swift */; };
 		2DE0E11325C4C21E00FC49E9 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */; };
@@ -45,6 +46,58 @@
 		D89C5F6B25C735A6009FC05E /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89C5F6A25C735A6009FC05E /* MessageModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2D710FD325CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B81513B0B3333500DFFB1B1B179FB571;
+			remoteInfo = InputBarAccessoryView;
+		};
+		2D710FD525CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06F01032A21F13BD94243DC567B3C955;
+			remoteInfo = MessageInputBar;
+		};
+		2D710FD725CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15A68A8F33BD9EB9AFD02465B0418BCF;
+			remoteInfo = MessageKit;
+		};
+		2D710FD925CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD5B759AAB8D741C6874A6ADBB63976;
+			remoteInfo = "MessageKit-MessageKit";
+		};
+		2D710FDB25CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D9A3F0F4A1819A2224D0AD8539302D92;
+			remoteInfo = "Pods-projet-ppm";
+		};
+		2D710FDD25CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF49C6976D05624BF6B6B35F11BB1802;
+			remoteInfo = Scaledrone;
+		};
+		2D710FDF25CF3A7500E92D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 891B2270823847ED23F2ECFC28F935EC;
+			remoteInfo = Starscream;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2D3B946E25B975B300750421 /* HumanInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanInterface.swift; sourceTree = "<group>"; };
 		2D3C83FF25B3816B009394F2 /* ModelRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRoad.swift; sourceTree = "<group>"; };
@@ -52,6 +105,8 @@
 		2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadModel.swift; sourceTree = "<group>"; };
 		2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadViewController.swift; sourceTree = "<group>"; };
 		2D50664125C0467D007EEAFF /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
+		2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
+		2D710FEA25CF41FB00E92D66 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		2DE0E10E25C4C21E00FC49E9 /* ScoreDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreDataObject.swift; sourceTree = "<group>"; };
 		2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
@@ -107,7 +162,6 @@
 				DB2358DB7F782279C19711E0 /* Pods-projet-ppm.debug.xcconfig */,
 				FAACFD0103E9252583F67ACC /* Pods-projet-ppm.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -120,6 +174,7 @@
 				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
 				2D3C83FF25B3816B009394F2 /* ModelRoad.swift */,
 				CCB4F29425C5FB450036D25E /* GameOverView.swift */,
+				2D710FEA25CF41FB00E92D66 /* Config.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -164,6 +219,20 @@
 			path = 3DRoad;
 			sourceTree = "<group>";
 		};
+		2D710FCA25CF3A7500E92D66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D710FD425CF3A7500E92D66 /* InputBarAccessoryView.framework */,
+				2D710FD625CF3A7500E92D66 /* MessageInputBar.framework */,
+				2D710FD825CF3A7500E92D66 /* MessageKit.framework */,
+				2D710FDA25CF3A7500E92D66 /* MessageKit.bundle */,
+				2D710FDC25CF3A7500E92D66 /* Pods_projet_ppm.framework */,
+				2D710FDE25CF3A7500E92D66 /* Scaledrone.framework */,
+				2D710FE025CF3A7500E92D66 /* Starscream.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2DE0E10C25C4C21E00FC49E9 /* Score */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +270,7 @@
 		2DFD100725AF8AA40041E21B = {
 			isa = PBXGroup;
 			children = (
+				2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */,
 				2DFD101225AF8AA40041E21B /* projet-ppm */,
 				2DFD101125AF8AA40041E21B /* Products */,
 				2D3C929725BB8495001A0538 /* Frameworks */,
@@ -283,12 +353,70 @@
 			mainGroup = 2DFD100725AF8AA40041E21B;
 			productRefGroup = 2DFD101125AF8AA40041E21B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2D710FCA25CF3A7500E92D66 /* Products */;
+					ProjectRef = 2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				2DFD100F25AF8AA40041E21B /* projet-ppm */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2D710FD425CF3A7500E92D66 /* InputBarAccessoryView.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = InputBarAccessoryView.framework;
+			remoteRef = 2D710FD325CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2D710FD625CF3A7500E92D66 /* MessageInputBar.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MessageInputBar.framework;
+			remoteRef = 2D710FD525CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2D710FD825CF3A7500E92D66 /* MessageKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MessageKit.framework;
+			remoteRef = 2D710FD725CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2D710FDA25CF3A7500E92D66 /* MessageKit.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MessageKit.bundle;
+			remoteRef = 2D710FD925CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2D710FDC25CF3A7500E92D66 /* Pods_projet_ppm.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Pods_projet_ppm.framework;
+			remoteRef = 2D710FDB25CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2D710FDE25CF3A7500E92D66 /* Scaledrone.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Scaledrone.framework;
+			remoteRef = 2D710FDD25CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2D710FE025CF3A7500E92D66 /* Starscream.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Starscream.framework;
+			remoteRef = 2D710FDF25CF3A7500E92D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2DFD100E25AF8AA40041E21B /* Resources */ = {
@@ -375,6 +503,7 @@
 				2DFD102E25AF8E940041E21B /* GameView.swift in Sources */,
 				D89C5F6525C73584009FC05E /* ChatService.swift in Sources */,
 				2DEFE5AC25C10903009E61C2 /* MotionManager.swift in Sources */,
+				2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */,
 				2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */,
 				D89C5F6B25C735A6009FC05E /* MessageModel.swift in Sources */,
 				2D3F64B925BA37A40061D108 /* 3DRoadModel.swift in Sources */,

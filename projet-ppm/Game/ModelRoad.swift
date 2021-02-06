@@ -16,8 +16,6 @@ let _COIN_ = 0
 let _EMPTY_ = 1
     
 
-    
-    
 let coinx2 = 20
 let coinx5 = 21
 let magnet = 22
@@ -96,7 +94,6 @@ class Frame {
 
 
 class ModelRoad {
-    
     
     var iN : [CGFloat] = [CGFloat]()
     var iMin : Int

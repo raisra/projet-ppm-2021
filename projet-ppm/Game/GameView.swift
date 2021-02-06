@@ -9,10 +9,6 @@ import Foundation
 import UIKit
 
 
-let JUMP_DURATION : TimeInterval = 1.0
-let BLINK_DURATION : TimeInterval = 0.5
-let MOVE_DURATION : TimeInterval = 1.0
-let TRANSPARENCY_DURATION : TimeInterval = 3.0
 
 
 class GameView: UIView {

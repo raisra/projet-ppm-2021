@@ -11,34 +11,20 @@ import UIKit
 
 let gOvView = GameOverView(frame : UIScreen.main.bounds)
 
-let DISTANCE_OF_MAGNET = 5
-let TTL_POWER : TimeInterval = 5.0
-let COINS_ARE_ANIMATED = false
-let INITIAL_CHAR_POSITION : CGFloat = 1
-let BACK_GROUND_IMAGE = "aboveTheSky"
 
-let NB_ROWS : CGFloat = 10
-let NB_COLUMNS : CGFloat = 5
-
-let DURATION : TimeInterval = 4.4
-//the size of the uiview representing the character
-let sizeChar  = CGSize(width: 200, height: 450)
-
-//let names : [TypeOfElem: String] = [.straight:"straight", .bridge:"bridge", .empty: "empty", .passage: "passage", .tree: "tree"]
-let NAMES : [TypeOfObject: String] = [STRAIGHT:"pave", BRIDGE:"bridge", _EMPTY_: "pave", PASSAGE: "pave", TREE: "tree", TURN_RIGHT:"turnRight", TURNLEFT : "turnLeft"]
 
 
 //var sizeIm = CGSize(width: 400, height: 60)
 //let alpha : CGFloat = 75.96
 //let factor : CGFloat = 0.925
 
-var sizeIm = CGSize(width: 400, height: 100)
-let alpha : CGFloat = 75.96
-let factor : CGFloat = 309.96/398.52
+
 
 var SoundOnOff : Bool = true
 
-class GameViewController : UIViewController {
+class GameViewController : UIViewController, GestureManagerProtocol {
+    
+    
     
     // var mvc : MessageViewController
     /*let mvc = { () -> MessageViewController in
@@ -73,7 +59,9 @@ class GameViewController : UIViewController {
     lazy var welcomeV = WelcomeViewController()
 
     var gestureManager : GestureManager?
-    var motionManager : MotionManager?
+   
+    
+  //  var motionManager : MotionManager?
     
     
     var duration : TimeInterval?
@@ -127,31 +115,7 @@ class GameViewController : UIViewController {
         hv = HumanInterface(frame: UIScreen.main.bounds)
 
 
-        //Autres :
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapSauteAfunc))
-        tap.numberOfTapsRequired = 2
-        self.view.addGestureRecognizer(tap)
-        
-        let pressAcc = UILongPressGestureRecognizer( target: self, action: #selector(pressAccelerateFunc))
-        pressAcc.minimumPressDuration = 1.5
-        gv.addGestureRecognizer(pressAcc)
-        
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector ( swipeDirectionFunc(sender:)))
-        swipeLeft.direction = .left
-        
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector( swipeDirectionFunc(sender:)))
-        swipeRight.direction = .right
-        
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector( swipeDirectionFunc(sender:)))
-        swipeUp.direction = .up
-        
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector( swipeDirectionFunc(sender:)))
-        swipeDown.direction = .down
-        
-        self.view.addGestureRecognizer(swipeLeft)
-        self.view.addGestureRecognizer(swipeRight)
-        self.view.addGestureRecognizer(swipeUp)
-        self.view.addGestureRecognizer(swipeDown)
+       
         threeDRoadVC = ThreeDRoadViewController(names: NAMES,
                                                 duration: duration!,
                                                 model3D: modelRoad,
@@ -159,8 +123,10 @@ class GameViewController : UIViewController {
         
         addChild(threeDRoadVC)
         threeDRoadVC.didMove(toParent: self)
+        
         backGround.frame = UIScreen.main.bounds
         GameView.initView(backGround, BACK_GROUND_IMAGE)
+        
         view.addSubview(backGround)
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
@@ -170,13 +136,13 @@ class GameViewController : UIViewController {
 
         SoundOnOff = sView.soundON()
         
- //       gestureManager = GestureManager(forView: self.hv)
-//        motionManager = MotionManager()
+       
+        gestureManager = GestureManager(forView: self.hv)
+        gestureManager?.delegate = self
         
-        
-   //     gestureManager?.delegate = self
-   //     motionManager?.delegate = self
-        motionManager?.start()
+       // motionManager = MotionManager()
+//        motionManager?.delegate = self
+//        motionManager?.start()
         
         let chatVC = ChatViewController()
         chatVC.title = "Messagerie"
@@ -638,81 +604,10 @@ class GameViewController : UIViewController {
         }, completion: cb)
     }
     
-    var wantToTurnLeft : Bool = false
-    var wantToTurnRight  : Bool = false
-    var wantToJump : Bool = false
-    
-    @objc func jump() {
-        if !wantToJump {
-            timerJump = JUMP_DURATION
-            wantToJump = true
-            if (SoundOnOff){
-                soundManager.playEdgeSound()
-            }
-            gv.animationForJump()
-        }
-    }
-
-    @objc func tapSauteAfunc (){
-        //Pouvoir : devenir invisible pendant 3 secondes
-        //power_transparence()
-        gv.animationForTransparency()
-
-    }
+   
     
 
-    @objc func pressAccelerateFunc () {
-        print("accelerating")
-        self.gv.setSpeed(speed: 0.2)
-    }
-    
-    func rightmove(){
-        thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
-        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-
-        gv.character.center = s
-        print("hello from move right")
-        wantToTurnRight = true
-    }
-    
-    func leftmove (){
-        thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
-        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
-        print("hello from move left")
-        wantToTurnLeft = true
-    }
-    
-    func upmove (){
-        jump()
-
-    }
-    
-    func downmove(){
-        //Plus la même image donc je ne peux pas le faire...
-    }
-    
-
-    @objc func swipeDirectionFunc (sender : UISwipeGestureRecognizer){
-        if sender.direction == .right {
-            print("going right")
-            rightmove()
-        }
-        if sender.direction == .left {
-            print("going left")
-            leftmove()
-
-        }
-        if sender.direction == .up {
-            print("going up")
-            upmove()
-        }
-        if sender.direction == .down {
-            print("going down")
-            downmove()
-
-        }
-    }
+   
     
     func LevelDuration(){
         print("VALEUR IS" + sView.value)
@@ -745,4 +640,72 @@ class GameViewController : UIViewController {
             level = .Beginner
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*****************************************/
+    /**
+            LES MOUVEMENTS
+     
+     */
+
+    
+    
+    var wantToTurnLeft : Bool = false
+    var wantToTurnRight  : Bool = false
+    var wantToJump : Bool = false
+    
+    func moveUp () {
+        if !wantToJump {
+            timerJump = JUMP_DURATION
+            wantToJump = true
+            if (SoundOnOff){
+                soundManager.playEdgeSound()
+            }
+            gv.animationForJump()
+        }
+    }
+    
+    func tapeTwice() {
+        //Pouvoir : devenir invisible pendant 3 secondes
+        //power_transparence()
+        gv.animationForTransparency()
+    }
+    
+    func longTape() {
+        print("accelerating")
+        self.gv.setSpeed(speed: 0.2)
+    }
+
+    
+    func moveRight(){
+        thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
+        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+
+        gv.character.center = s
+        print("hello from move right")
+        wantToTurnRight = true
+    }
+    
+    func moveLeft (){
+        thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
+        let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        gv.character.center = s
+        print("hello from move left")
+        wantToTurnLeft = true
+    }
+
+    
+    func moveDown() {
+        
+    }
+    
+    
 }
