@@ -108,7 +108,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         //initialise la position du persinnage au mileu de l'ecran
         thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
         
-        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1 - 2 )
+        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1 )
         
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
