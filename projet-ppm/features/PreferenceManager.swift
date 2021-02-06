@@ -52,13 +52,13 @@ class PreferenceManager: NSObject {
         return standartDefault.data(forKey: key)
     }
     
-    func loadScorePreference(for key: String) -> [ScoreDataObject] {
-        var scores = [ScoreDataObject]()
+    func loadScorePreference(for key: String) -> [ScoreObject] {
+        var scores = [ScoreObject]()
         do {
             for scoreData in (standartDefault.array(forKey: key) as! [NSData]) {
                 let score =  try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(scoreData as Data)
                 if score != nil {
-                    scores.append(score! as! ScoreDataObject)
+                    scores.append(score! as! ScoreObject)
                 }
                 
             }
@@ -88,7 +88,7 @@ class PreferenceManager: NSObject {
         standartDefault.set(scores, forKey: key)
         standartDefault.synchronize()
     }
-    func savePreference(score: ScoreDataObject, for key: String){
+    func savePreference(score: ScoreObject, for key: String){
         do {
             let dataScore = try NSKeyedArchiver.archivedData(withRootObject: score, requiringSecureCoding: false)
             // load score data array
@@ -111,7 +111,7 @@ class PreferenceManager: NSObject {
         defaultPref.updateValue(true, forKey: PreferenceKeys.sound)
         defaultPref.updateValue(true, forKey: PreferenceKeys.gyroscope)
         defaultPref.updateValue("unknown", forKey: PreferenceKeys.name)
-        defaultPref.updateValue([ScoreDataObject](), forKey: PreferenceKeys.score)
+        defaultPref.updateValue([ScoreObject](), forKey: PreferenceKeys.score)
         
         standartDefault.register(defaults: defaultPref)
         standartDefault.synchronize()

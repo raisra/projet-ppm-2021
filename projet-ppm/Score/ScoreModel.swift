@@ -9,15 +9,16 @@ import UIKit
 
 class ScoreModel: NSObject {
 
-    fileprivate var scoreArray: [ScoreDataObject]?
+    fileprivate var scoreArray: [ScoreObject]?
     
     
-    init (scoreArray: [ScoreDataObject]) {
+    init (scoreArray: [ScoreObject]) {
         super.init()
         self.scoreArray = scoreArray
     }
     
-    func getScoreArray () -> [ScoreDataObject]?{
+    func getScoreArray () -> [ScoreObject]?{
         return self.scoreArray
     }
 }
+

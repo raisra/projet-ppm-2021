@@ -14,8 +14,10 @@
 		2D3F64BE25BA42480061D108 /* 3DRoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */; };
 		2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D50664125C0467D007EEAFF /* GestureManager.swift */; };
 		2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEA25CF41FB00E92D66 /* Config.swift */; };
+		2D710FF025CF53F000E92D66 /* scoreObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEF25CF53F000E92D66 /* scoreObject.swift */; };
+		2D710FF425CF56D200E92D66 /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */; };
+		2D710FF725CF56D800E92D66 /* ScoreTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */; };
 		2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */; };
-		2DE0E11225C4C21E00FC49E9 /* ScoreDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10E25C4C21E00FC49E9 /* ScoreDataObject.swift */; };
 		2DE0E11325C4C21E00FC49E9 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */; };
 		2DE0E11425C4C21E00FC49E9 /* ScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */; };
 		2DE0E11725C4C39400FC49E9 /* PreferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E11625C4C39400FC49E9 /* PreferenceManager.swift */; };
@@ -107,8 +109,10 @@
 		2D50664125C0467D007EEAFF /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		2D710FEA25CF41FB00E92D66 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		2D710FEF25CF53F000E92D66 /* scoreObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = scoreObject.swift; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/scoreObject.swift"; sourceTree = "<group>"; };
+		2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreTableViewCell.swift; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/ScoreTableViewCell.swift"; sourceTree = "<group>"; };
+		2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreTableViewCell.xib; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/ScoreTableViewCell.xib"; sourceTree = "<group>"; };
 		2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
-		2DE0E10E25C4C21E00FC49E9 /* ScoreDataObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreDataObject.swift; sourceTree = "<group>"; };
 		2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreModel.swift; sourceTree = "<group>"; };
 		2DE0E11625C4C39400FC49E9 /* PreferenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceManager.swift; sourceTree = "<group>"; };
@@ -236,10 +240,12 @@
 		2DE0E10C25C4C21E00FC49E9 /* Score */ = {
 			isa = PBXGroup;
 			children = (
-				2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */,
-				2DE0E10E25C4C21E00FC49E9 /* ScoreDataObject.swift */,
-				2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */,
+				2D710FEF25CF53F000E92D66 /* scoreObject.swift */,
 				2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */,
+				2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */,
+				2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */,
+				2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */,
+				2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */,
 			);
 			path = Score;
 			sourceTree = "<group>";
@@ -423,6 +429,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D710FF725CF56D800E92D66 /* ScoreTableViewCell.xib in Resources */,
 				2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */,
 				2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */,
 				2DEFE5B025C15A0B009E61C2 /* HumanInterface.storyboard in Resources */,
@@ -494,6 +501,7 @@
 				2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */,
 				2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */,
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
+				2D710FF025CF53F000E92D66 /* scoreObject.swift in Sources */,
 				D89C5F6825C7359D009FC05E /* ChatViewController.swift in Sources */,
 				2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */,
 				CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */,
@@ -502,12 +510,12 @@
 				2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */,
 				2DFD102E25AF8E940041E21B /* GameView.swift in Sources */,
 				D89C5F6525C73584009FC05E /* ChatService.swift in Sources */,
+				2D710FF425CF56D200E92D66 /* ScoreTableViewCell.swift in Sources */,
 				2DEFE5AC25C10903009E61C2 /* MotionManager.swift in Sources */,
 				2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */,
 				2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */,
 				D89C5F6B25C735A6009FC05E /* MessageModel.swift in Sources */,
 				2D3F64B925BA37A40061D108 /* 3DRoadModel.swift in Sources */,
-				2DE0E11225C4C21E00FC49E9 /* ScoreDataObject.swift in Sources */,
 				2D3F64BE25BA42480061D108 /* 3DRoadViewController.swift in Sources */,
 				2DEFE59925C0C17A009E61C2 /* SoundManager.swift in Sources */,
 			);

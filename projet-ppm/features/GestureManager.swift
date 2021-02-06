@@ -23,6 +23,19 @@ protocol GestureManagerProtocol {
 }
 
 
+extension GestureManagerProtocol {
+    func moveRight(){}
+
+    func moveLeft() {}
+
+    func moveUp() {}
+    
+    func moveDown() {}
+    
+    func tapeTwice() {}
+    
+    func longTape() {}
+}
 
 
 class GestureManager  {

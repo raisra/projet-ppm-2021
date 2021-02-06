@@ -9,7 +9,7 @@ import UIKit
 
 let sView = SettingsView(frame : UIScreen.main.bounds)
 let wView = WelcomeView(frame : UIScreen.main.bounds)
-
+let chatViewController = ChatViewController()
 
 class WelcomeViewController: UIViewController{
     
@@ -49,7 +49,7 @@ class WelcomeViewController: UIViewController{
     }
     
     
-    @objc func settingsChoices() {
+    @objc func settingsButtonSelector() {
         print( "trying" )
         sView.isHidden = false
         wView.isHidden = true
@@ -63,10 +63,17 @@ class WelcomeViewController: UIViewController{
         let scoreController = ScoreViewController()
         scoreController.modalTransitionStyle = .coverVertical
         scoreController.modalPresentationStyle = .fullScreen
-        self.present(scoreController, animated: true, completion: {
-            
-        })
+        self.present(scoreController, animated: true, completion: nil)
     }
+    
+    
+    
+
+    @objc func chatButtonSelector() {
+        chatViewController.modalPresentationStyle = .fullScreen
+        self.present(chatViewController, animated: true, completion: nil)
+    }
+        
     
     
 }

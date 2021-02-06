@@ -708,4 +708,14 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     }
     
     
+    // Enregistre un SCORE
+    func saveScore(score : Int) {
+        let currentDate = Date()
+        let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)!
+        let scoreDataObject = ScoreObject(score: score, date: currentDate, name: name)
+        let pref = PreferenceManager.sharedInstance
+        pref.savePreference(score: scoreDataObject, for: PreferenceKeys.score)
+    }
+    
+    
 }

@@ -12,50 +12,113 @@ import UIKit
 class WelcomeView : UIView{
     
 
-    let title = UILabel()
-    let playButton = UIButton()
-    let settings = UIButton()
     
+    let playButton = UIButton()
+    let settingsButton = UIButton()
+    let scoreButton : UIButton = UIButton()
+    let chatButton : UIButton = UIButton()
     
     override init(frame: CGRect) {
+    
         super.init(frame: frame)
-        
         self.backgroundColor = .white
-        title.text = "Jeu de course"
-        title.textAlignment = .center
-        
-       // playButton.setTitle("Play", for: .normal)
+      
         playButton.setImage(UIImage(named: "playButton"), for: .normal)
-        playButton.setTitleColor(.black, for: .normal)
         playButton.addTarget(self.superview, action: #selector(WelcomeViewController.startGame), for: .touchUpInside)
-        
-      //  levels.setTitle("Levels", for: .normal) //A changer par une image § Jihane
-        settings.setImage(UIImage(named: "settings"), for: .normal)
-        settings.setTitleColor(.black, for: .normal)
-        settings.addTarget(self.superview, action: #selector(WelcomeViewController.settingsChoices), for: .touchUpInside)
-
-        addSubview(title)
         addSubview(playButton)
-        addSubview(settings)
+        
+       
+        settingsButton.setImage(UIImage(named: "settings"), for: .normal)
+        settingsButton.addTarget(self.superview, action: #selector(WelcomeViewController.settingsButtonSelector), for: .touchUpInside)
+        
+        
+        self.initialiseButton(button: chatButton,
+                              title: "chat",
+                              sel: #selector(WelcomeViewController.chatButtonSelector))
+        
+        
+        
+    
+        self.initialiseButton(button: scoreButton,
+                              title: "scores",
+                              sel: #selector(WelcomeViewController.scoreButtonSelector))
+        
+        
+        
+        addSubview(playButton)
+        addSubview(settingsButton)
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func initialiseButton(button: UIButton, title:String, sel:Selector) {
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .cyan
+        
+        button.titleLabel?.shadowOffset = CGSize(width: 0, height: 1)
+        button.setTitleShadowColor(.black, for: .normal)
+        button.setTitleShadowColor(.clear, for: .highlighted)
+        
+        if button.isKind(of: UIButton.self) {
+            button.setTitleColor(.gray, for: .disabled)          // for enabled state
+            button.setTitleShadowColor(.clear, for: .disabled)   // for enabled state
+        }
+        let fontMarker = UIFont(name: "Marker Felt Wide", size: 25)
+        let fontAcadamy = UIFont(name: "Academy Engraved LET", size: 25)
+        let fontBold = UIFont.boldSystemFont(ofSize: 25)
+        button.titleLabel?.font =  fontMarker
+ 
+        button.addTarget(self.superview, action: sel, for: .touchUpInside)
+        addSubview(button)
+    }
    
     
-    override func draw(_ rect: CGRect) {
         
-        let h = rect.height
-        let w = rect.width
-        
-        title.frame = CGRect(x: w/2-50, y: h/2, width: 100, height: 30)
-        
-        playButton.frame = CGRect(x: w/2-100, y: h/2-50, width: 200, height: 100)
-        
-        settings.frame = CGRect(x: w/2-100, y: h/2+100, width: 200, height: 100)
+    func drawButton(button: UIButton, below aboveButton :UIButton, offset:CGFloat = 10.0) {
+        let (width, height):(CGFloat, CGFloat) = (130.0, 50.0)
+        button.frame    = CGRect(x: 0, y: 0, width: width, height: height)
+        button.center   = CGPoint(x: self.center.x,
+                                  y: aboveButton.center.y + height + offset)
+        self.addShadow(vue: button)
     }
+    
+    
+    func addShadow(vue: UIView,
+                        _ offset:CGSize = CGSize(width: 0, height: 2),
+                        _ opacity: Float = 0.5,
+                        _ isBborder: Bool = true)
+    {
         
+        vue.layer.borderWidth = isBborder ? 1 : 0
+        vue.layer.cornerRadius = 5
+        vue.layer.shadowPath = UIBezierPath(rect: vue.bounds).cgPath
+        vue.layer.shadowRadius = 2
+        vue.layer.shadowOffset = .init(width: offset.width, height: offset.height)
+        vue.layer.shadowOpacity = opacity
+    }
+   
+    
+
+    
+    override func draw(_ rect: CGRect) {
+       
+        //print (rect.debugDescription)
+        //print (self.bounds.debugDescription)
+        //playButton.backgroundColor = .systemGreen
+        playButton.frame    = CGRect(x: 0, y: 0, width: 130, height: 46)
+        playButton.center   = self.center
+        playButton.center.y = rect.height * 1 / 3
+        
+        
+        self.drawButton(button: scoreButton, below: playButton)
+        self.drawButton(button: settingsButton, below: scoreButton)
+        self.drawButton(button: chatButton, below: settingsButton)
+        
+    }
+    
     
 }
