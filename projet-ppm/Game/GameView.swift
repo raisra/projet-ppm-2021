@@ -153,13 +153,12 @@ class GameView: UIView {
     func setSpeed(speed: TimeInterval)  {
         self.speed = speed
         character.animationDuration = speed
-        //TODO changer la vitesse du ciel
     }
     
     
-    func startAnimation(){
-        character.startAnimating()
-    }
+//    func startAnimation(){
+//        character.startAnimating()
+//    }
     
     
     func stopAnimation(){
@@ -176,6 +175,17 @@ class GameView: UIView {
     }
     
   
+    func startTheGame(){
+        character.isHidden = false
+        objectsView.isHidden = false
+        character.startAnimating()
+    }
+
+    func stopTheGame(){
+        character.isHidden = true
+        objectsView.isHidden = true
+        character.stopAnimating()
+    }
     
 }
 

@@ -13,7 +13,6 @@ import InputBarAccessoryView
 
 class ChatViewController: MessagesViewController, MessagesDataSource {
  
-    static let sharedInstance = ChatViewController()
     //let currentUser = Sender(senderId: "self", displayName: "Supriya")
     //let otherUser = Sender(senderId: "other", displayName: "Bob")
     var messages = [Message]()

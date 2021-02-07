@@ -1,24 +1,38 @@
 //
-//  HumanInterface.swift
+//  HumanInterfaceController.swift
 //  projet-ppm
 //
-//  Description : Boutton pause, score, message, calcul du score.
+//  Created by ramzi on 07/02/2021.
 //
 
 import Foundation
 import UIKit
 
+public extension UIView
+{
+    static func loadFromXib<T>(withOwner: Any? = nil, options: [UINib.OptionsKey : Any]? = nil) -> T where T: UIView
+    {
+        let bundle = Bundle(for: self)
+        let nib = UINib(nibName: "\(self)", bundle: bundle)
 
-class HumanInterface: UIView {
+        guard let view = nib.instantiate(withOwner: withOwner, options: options).first as? T else {
+            fatalError("Could not load view from nib file.")
+        }
+        return view
+    }
+}
+
+
+class UserInterfaceView : UIView {
     
-    let messageButton = UIButton()
-    let scoreLabel = UILabel()
     
-    let pauseButton = UIButton()
-    let counterView = UIImageView()
+    @IBOutlet weak var messageButton: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var startButton: UIButton!
     
-    let startButton = UIButton()
-    
+    var counterView : UIImageView
+
     //nombre de pieces réscoltées
     var score : Int = 0
     
@@ -31,67 +45,36 @@ class HumanInterface: UIView {
     var powerAnchor : CGPoint = CGPoint(x: 0, y: 200)
     let sizeOfPowerIcons : CGSize  = CGSize(width: 10, height: 10)
     
+
+    let nibName = "UserInterfaceView"
     
-    /**
-        bouton pour simuler le deplacement du character
-     */
-    
-    static func setButton(title: String, posx: CGFloat, posy : CGFloat) -> UIButton {
-        let b = UIButton()
-        b.frame = CGRect(x: posx, y: posy, width: 50, height: 50)
-        b.setTitle(title, for: .normal)
-        b.setTitleColor(.black, for: .normal)
-        
-        return b
-    }
-    
+    var view : UserInterfaceView?
     
     override init(frame: CGRect) {
+        
+        counterView = UIImageView()
+        view  = UserInterfaceView.loadFromXib()
+        
         super.init(frame: frame)
+        
+
+        pauseButton = view!.pauseButton
+        startButton = view!.startButton
+        messageButton = view!.messageButton
+        scoreLabel = view!.scoreLabel
+        
         pauseButton.isHidden = true
-        pauseButton.setImage(UIImage(named: "pauseButton"), for: .normal)
-        pauseButton.addTarget(self.superview,
-                              action: #selector(GameViewController.pauseGame),
-                              for: .touchUpInside)
-        
         startButton.isHidden = true
-        startButton.setImage(UIImage(named: "startButton"), for: .normal)
-        startButton.addTarget(self.superview,
-                              action: #selector(GameViewController.startGame),
-                              for: .touchUpInside)
-        
-        
-        scoreLabel.text = "0"
-        scoreLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
-        scoreLabel.textColor = .black
-        
-        messageButton.setImage(UIImage(named: "message"), for: .normal)
-        messageButton.addTarget(self.superview, action: #selector(GameViewController.seeMessage), for: .touchUpInside)
         messageButton.isHidden = true
-        
-        
-        addSubview(pauseButton)
+        scoreLabel.text = "Score: 0"
+ 
+        addSubview(view!)
         addSubview(counterView)
-        addSubview(scoreLabel)
-        addSubview(messageButton)
-        addSubview(startButton)
-        
-        
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    
-    override func draw(_ rect: CGRect) {
-        pauseButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
-        startButton.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
-        counterView.frame = CGRect(x: w/2-50, y: h/2-50, width: 100, height: 100)
-   
-        scoreLabel.frame = CGRect(x: w-100, y: 30, width: 100, height: 100)
-        messageButton.frame = CGRect(x: 100, y: 30, width: 100, height: 100)
+        counterView = UIImageView()
+        super.init(coder: coder)
     }
     
     
@@ -170,5 +153,46 @@ class HumanInterface: UIView {
           powerAnchor.y -= (sizeOfPowerIcons.height * CGFloat(nbPower))
           nbPower = 0
       }
+    
+    
+    
+    
+    
+    func startTheGame(){
+        scoreLabel.isHidden = false
+        messageButton.isHidden = false
+        counterView.isHidden = false
+
+        startButton.isHidden = true
+        pauseButton.isHidden = false
+    }
+
+    func stopTheGame(){
+        scoreLabel.isHidden = true
+        startButton.isHidden = true
+        messageButton.isHidden = true
+        counterView.isHidden = true
+
+        startButton.isHidden = false
+        pauseButton.isHidden = true
+    }
+    
+    
+    
+    
+    @IBAction func startTheGame (sender : UIButton) {
+        let gvc = self.next as! GameViewController
+        gvc.startTheGame()
+    }
+
+    @IBAction func stopTheGame (sender : UIButton) {
+        let gvc = self.next as! GameViewController
+        gvc.stoptheGame()
+    }
+    
+    @IBAction func readMessage (sender : UIButton) {
+        let gvc = self.next as! GameViewController
+        gvc.readMessage()
+    }
     
 }

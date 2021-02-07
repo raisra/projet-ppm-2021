@@ -11,6 +11,18 @@ let settingView = SettingsView(frame : UIScreen.main.bounds)
 let welcomView = WelcomeView(frame : UIScreen.main.bounds)
 
 
+
+let mvcNavVC : UINavigationController = {
+    let chatVC = ChatViewController()
+    chatVC.title = "Messagerie"
+    
+    var nv = UINavigationController(rootViewController: chatVC)
+    nv.modalTransitionStyle = .flipHorizontal
+    nv.modalPresentationStyle = .fullScreen
+    
+    return nv
+}()
+
 class WelcomeViewController: UIViewController{
     
     static let sharedInstance = WelcomeViewController();
@@ -71,8 +83,7 @@ class WelcomeViewController: UIViewController{
     
 
     @objc func chatButtonSelector() {
-        ChatViewController.sharedInstance.modalPresentationStyle = .fullScreen
-        self.present(ChatViewController.sharedInstance, animated: true, completion: nil)
+        self.present(mvcNavVC, animated: true, completion: nil)
     }
         
     

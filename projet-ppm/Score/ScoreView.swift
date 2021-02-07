@@ -20,21 +20,21 @@ class ScoreView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .init(red: 240, green: 240, blue: 140, alpha: 1)
-        self.tableView = UITableView(frame: frame, style: .plain)
-        self.tableView!.layoutMargins = .zero // sert a rien :/
-        self.tableView!.separatorStyle = .none
-        self.tableView!.tableFooterView = footerViewLabel
+        backgroundColor = .init(red: 240, green: 240, blue: 140, alpha: 1)
+        tableView = UITableView(frame: frame, style: .plain)
+        tableView!.layoutMargins = .zero // sert a rien :/
+        tableView!.separatorStyle = .none
+        tableView!.tableFooterView = footerViewLabel
         footerViewLabel.text = "Empty Score"
         footerViewLabel.textAlignment = .center
         footerViewLabel.backgroundColor = .systemGreen
-        self.addSubview(self.tableView!)
-
-        self.addSubview(self.topSubView)
-        self.addSubview(self.bottomSubView)
+        addSubview(tableView!)
+        addSubview(backButton)
+        addSubview(topSubView)
+        addSubview(bottomSubView)
         
         backButton.setImage(closeButtonImage, for: .normal)
-        topSubView.addSubview(backButton)
+        
     }
     
     required init?(coder: NSCoder) {

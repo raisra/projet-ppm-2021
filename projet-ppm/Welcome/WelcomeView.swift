@@ -10,9 +10,7 @@ import Foundation
 
 import UIKit
 class WelcomeView : UIView{
-    
 
-    
     let playButton = UIButton()
     let settingsButton = UIButton()
     let scoreButton : UIButton = UIButton()
@@ -37,8 +35,6 @@ class WelcomeView : UIView{
                               sel: #selector(WelcomeViewController.chatButtonSelector))
         
         
-        
-    
         self.initialiseButton(button: scoreButton,
                               title: "scores",
                               sel: #selector(WelcomeViewController.scoreButtonSelector))

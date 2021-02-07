@@ -39,7 +39,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     var timer : Timer?
     var gv : GameView!
-    var hv : HumanInterface!
+    var userInterfaceView : UserInterfaceView!
     var modelRoad : ThreeDRoadModel!
     var threeDRoadVC : ThreeDRoadViewController!
     
@@ -110,7 +110,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, centerBottom: posOfCharacter , sizeOfChar: sizeChar)
-        hv = HumanInterface(frame: UIScreen.main.bounds)
+        userInterfaceView = UserInterfaceView()
 
 
        
@@ -128,34 +128,30 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         view.addSubview(backGround)
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
-        view.addSubview(hv)
+        view.addSubview(userInterfaceView)
         view.addSubview(gOvView)
 
 
         SoundOnOff = settingView.soundON()
         
        
-        gestureManager = GestureManager(forView: self.hv)
+        gestureManager = GestureManager(forView: self.userInterfaceView)
         gestureManager?.delegate = self
         
        // motionManager = MotionManager()
 //        motionManager?.delegate = self
 //        motionManager?.start()
         
-        let chatVC = ChatViewController.sharedInstance
-        chatVC.title = "Messagerie"
-        mvcNavVC = UINavigationController(rootViewController: chatVC)
-        mvcNavVC?.modalTransitionStyle = .flipHorizontal
-        mvcNavVC?.modalPresentationStyle = .fullScreen
+      
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         //init des vues
         //init du character
-        hv.animationForNumber(imageName: 1) {
-            self.startGame()
+        userInterfaceView.animationForNumber(imageName: 1) {
             self.threeDRoadVC.startTheGame()
+            self.startTheGame()
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -172,74 +168,53 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func startTheGame(){
+    
+  
+    
+    func startTheGame() {
         print("start the game")
         
-        //soundManager.playGameSound()
-
-        gv.showCharacter()
-        gv.startAnimation()
-        gOvView.isHidden = true
-        hv.pauseButton.isHidden = true
-        hv.messageButton.isHidden = false
-        hv.startButton.isHidden = true
-
-        timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+        gameIsStoped = false;
+        soundManager.playGameSound()
         
-        gameIsStoped = false
+        gv.startTheGame();
+        userInterfaceView.startTheGame();
+      
+        gOvView.isHidden = true
+        timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
     }
     
-    @objc func restartTheGame(){
-        startGame()
-        gameIsStoped = false
-        hv.pauseButton.isHidden = true
-        gv.objectsView.isHidden = false
+     func startTheGame(sender: UIButton){
+       startTheGame()
     }
     
-    @objc func startGame() {
-        startTheGame()
-    }
-    
-    
-    @objc func pauseGame() {
-        //TODO SAUVEGARDER LE niveau et la valeur du timer pr elancer le timer a la meme frequence
-        if(!gameIsStoped){
-            gv.stopAnimation()
-            timer?.invalidate()
-            timer=nil
-            gameIsStoped = true
-            //gv.viewHandlingCoins.isHidden = true
-            //hv.pauseButton.isHidden = false
+
+         
+    @objc func stoptheGame() {
+        
+            gameIsStoped = true;
             soundManager.stopGameSound()
-            soundManager.playGameOverSound()
-            gOvView.isHidden = false
-//            self.view.isHidden = true
-            view.bringSubviewToFront(gOvView)
             
-            print("it's over")
-        }
-        else {
-            //restart the game
-            startGame()
-            gameIsStoped = false
-            hv.pauseButton.isHidden = true
-            gv.objectsView.isHidden = false
+            gv.stopTheGame();
+            userInterfaceView.stopTheGame();
             
-        }
+            
+            timer?.invalidate()
+            timer = nil
     }
     
     
     
     //display the message view
-    @objc func seeMessage(){
-        print("click on message button")
+    @objc func readMessage(){
+       
         present(mvcNavVC!, animated: true, completion: nil)
     }
     
     
     override func viewDidDisappear(_ animated: Bool) {
         print("gae vew will deseapper")
-        pauseGame()
+        stoptheGame()
     }
     
     /**
@@ -262,7 +237,6 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                 animated = COINS_ARE_ANIMATED
                 name = "coin"
                 newObject = UIImageView()
-                  
                 break
                 
             case magnet :
@@ -356,7 +330,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                     soundManager.playEndSound()
                 }
                 //TODO ICI AFFICHER LE SCORE
-                pauseGame()
+                startTheGame()
                 print("The Game is becoming Harder")
             
                 //arreter l'a imation du personnage
@@ -375,7 +349,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             //le personnage s'est cogné deux fois d'affiler
             print("on a perdu")
             
-            self.pauseGame()
+            stoptheGame()
             return
         }
         
@@ -454,21 +428,21 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             if (SoundOnOff){
                 soundManager.playCollisionSound()
             }
-            hv.addScore(1)
-            p = hv.scoreLabel.center
+            userInterfaceView.addScore(1)
+            p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
             
         case coinx2:
             //le personnage attrape une piece double
-            hv.addScore(2)
-            p = hv.scoreLabel.center
+            userInterfaceView.addScore(2)
+            p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
             
         case coinx5:
-            hv.addScore(5)
-            p = hv.scoreLabel.center
+            userInterfaceView.addScore(5)
+            p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
         //TODO FACTORISER LE CODE PRECEDENT
@@ -478,14 +452,14 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         case magnet:
             //le personnage attrape un aimant
             //l'icone de l'aimant est déplacée au point de coordonnées p
-            p = hv.powerAnchor
+            p = userInterfaceView.powerAnchor
             print("aimant s'en enclenché \(TTL_POWER)")
             
             //a la fin de l'animation, ajout de l'icone du pouvoir à l'emplacement réservé dans HumanInterface
             cb = {(Bool) in
                 //declenchement du timer pendant 10s
                 self.TTL.append((magnet, TTL_POWER))
-                self.hv.addPower(powerView: obj.view!, duration: TTL_POWER)
+                self.userInterfaceView.addPower(powerView: obj.view!, duration: TTL_POWER)
                 print("add the power now")
             }
             
@@ -709,7 +683,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
            
             modelRoad.reset()
             soundManager.stopGameSound()
-            hv.resetPower()
+            userInterfaceView.resetPower()
      
             //effacer toutes les pieces et pouvoir etc
             //relancer le timer
@@ -740,6 +714,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
            // scoreViewController.isModalInPresentation = true
            // self.present(score, animated: true, completion: nil)
             
+        
+        //soundManager.playGameOverSound()
+        gOvView.isHidden = false
+        view.bringSubviewToFront(gOvView)
         }
     
     

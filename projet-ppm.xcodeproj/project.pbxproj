@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D3B946F25B975B300750421 /* HumanInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3B946E25B975B300750421 /* HumanInterface.swift */; };
 		2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3C83FF25B3816B009394F2 /* ModelRoad.swift */; };
 		2D3C929925BB8495001A0538 /* libswiftNetwork.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3C929825BB8495001A0538 /* libswiftNetwork.tbd */; };
 		2D3F64B925BA37A40061D108 /* 3DRoadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */; };
@@ -17,6 +16,8 @@
 		2D710FF025CF53F000E92D66 /* scoreObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEF25CF53F000E92D66 /* scoreObject.swift */; };
 		2D710FF425CF56D200E92D66 /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */; };
 		2D710FF725CF56D800E92D66 /* ScoreTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */; };
+		2D71100E25CF8EDA00E92D66 /* UserInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D71100D25CF8EDA00E92D66 /* UserInterfaceController.swift */; };
+		2D71101125CF8F8200E92D66 /* UserInterfaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */; };
 		2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */; };
 		2DE0E11325C4C21E00FC49E9 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */; };
 		2DE0E11425C4C21E00FC49E9 /* ScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */; };
@@ -27,7 +28,6 @@
 		2DEFE5A825C0C376009E61C2 /* son.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DEFE5A425C0C376009E61C2 /* son.mp3 */; };
 		2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2DEFE5A525C0C376009E61C2 /* son-etoile.mp3 */; };
 		2DEFE5AC25C10903009E61C2 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEFE5AB25C10903009E61C2 /* MotionManager.swift */; };
-		2DEFE5B025C15A0B009E61C2 /* HumanInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DEFE5AF25C15A0B009E61C2 /* HumanInterface.storyboard */; };
 		2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD101325AF8AA40041E21B /* AppDelegate.swift */; };
 		2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD101525AF8AA40041E21B /* SceneDelegate.swift */; };
 		2DFD101825AF8AA40041E21B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD101725AF8AA40041E21B /* WelcomeViewController.swift */; };
@@ -101,7 +101,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2D3B946E25B975B300750421 /* HumanInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanInterface.swift; sourceTree = "<group>"; };
 		2D3C83FF25B3816B009394F2 /* ModelRoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRoad.swift; sourceTree = "<group>"; };
 		2D3C929825BB8495001A0538 /* libswiftNetwork.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftNetwork.tbd; path = usr/lib/swift/libswiftNetwork.tbd; sourceTree = SDKROOT; };
 		2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadModel.swift; sourceTree = "<group>"; };
@@ -112,6 +111,8 @@
 		2D710FEF25CF53F000E92D66 /* scoreObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = scoreObject.swift; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/scoreObject.swift"; sourceTree = "<group>"; };
 		2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreTableViewCell.swift; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/ScoreTableViewCell.swift"; sourceTree = "<group>"; };
 		2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreTableViewCell.xib; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/ScoreTableViewCell.xib"; sourceTree = "<group>"; };
+		2D71100D25CF8EDA00E92D66 /* UserInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterfaceController.swift; sourceTree = "<group>"; };
+		2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInterfaceView.xib; sourceTree = "<group>"; };
 		2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreModel.swift; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		2DEFE5A425C0C376009E61C2 /* son.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = son.mp3; sourceTree = "<group>"; };
 		2DEFE5A525C0C376009E61C2 /* son-etoile.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "son-etoile.mp3"; sourceTree = "<group>"; };
 		2DEFE5AB25C10903009E61C2 /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
-		2DEFE5AF25C15A0B009E61C2 /* HumanInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HumanInterface.storyboard; sourceTree = "<group>"; };
 		2DFD101025AF8AA40041E21B /* projet-ppm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "projet-ppm.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DFD101325AF8AA40041E21B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2DFD101525AF8AA40041E21B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -173,12 +173,13 @@
 			isa = PBXGroup;
 			children = (
 				2D3F64BC25BA42290061D108 /* 3DRoad */,
-				2D3B946E25B975B300750421 /* HumanInterface.swift */,
+				2D71100D25CF8EDA00E92D66 /* UserInterfaceController.swift */,
 				2DFD102D25AF8E940041E21B /* GameView.swift */,
 				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
 				2D3C83FF25B3816B009394F2 /* ModelRoad.swift */,
 				CCB4F29425C5FB450036D25E /* GameOverView.swift */,
 				2D710FEA25CF41FB00E92D66 /* Config.swift */,
+				2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -303,7 +304,6 @@
 				2D3B946A25B9736700750421 /* Messagerie */,
 				2D3B946825B9732800750421 /* Game */,
 				2DFD101925AF8AA40041E21B /* Main.storyboard */,
-				2DEFE5AF25C15A0B009E61C2 /* HumanInterface.storyboard */,
 				2DFD101E25AF8AA40041E21B /* LaunchScreen.storyboard */,
 				2DFD102125AF8AA40041E21B /* Info.plist */,
 				2DFD101C25AF8AA40041E21B /* Assets.xcassets */,
@@ -432,10 +432,10 @@
 				2D710FF725CF56D800E92D66 /* ScoreTableViewCell.xib in Resources */,
 				2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */,
 				2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */,
-				2DEFE5B025C15A0B009E61C2 /* HumanInterface.storyboard in Resources */,
 				2DFD102025AF8AA40041E21B /* LaunchScreen.storyboard in Resources */,
 				2DEFE5A725C0C376009E61C2 /* midnight-ride-01a.mp3 in Resources */,
 				2DEFE5A825C0C376009E61C2 /* son.mp3 in Resources */,
+				2D71101125CF8F8200E92D66 /* UserInterfaceView.xib in Resources */,
 				CCB4F29825C609FC0036D25E /* gameover.wav in Resources */,
 				2DFD101D25AF8AA40041E21B /* Assets.xcassets in Resources */,
 				2DFD101B25AF8AA40041E21B /* Main.storyboard in Resources */,
@@ -497,7 +497,7 @@
 				2DE0E11325C4C21E00FC49E9 /* ScoreView.swift in Sources */,
 				2DFD101425AF8AA40041E21B /* AppDelegate.swift in Sources */,
 				2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */,
-				2D3B946F25B975B300750421 /* HumanInterface.swift in Sources */,
+				2D71100E25CF8EDA00E92D66 /* UserInterfaceController.swift in Sources */,
 				2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */,
 				2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */,
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
