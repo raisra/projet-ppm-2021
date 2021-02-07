@@ -77,6 +77,11 @@ class UserInterfaceView : UIView {
         super.init(coder: coder)
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        alpha = 0
+    }
     
     
     func getScore()->Int {

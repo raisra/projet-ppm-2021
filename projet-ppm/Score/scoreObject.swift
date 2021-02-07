@@ -10,9 +10,9 @@ import UIKit
 class ScoreObject: NSObject, NSCoding {
 
     
-    var score : Int     = 0
-    var date  : Date  = Date()
-    var name  : String  = ""
+    var score : Int = 0
+    var date  : Date = Date()
+    var name  : String = ""
     
 
     

@@ -12,10 +12,10 @@
 		2D3F64B925BA37A40061D108 /* 3DRoadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */; };
 		2D3F64BE25BA42480061D108 /* 3DRoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */; };
 		2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D50664125C0467D007EEAFF /* GestureManager.swift */; };
+		2D669DE725CFFC930013037E /* scoreObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D669DE625CFFC930013037E /* scoreObject.swift */; };
+		2D669DEB25CFFC9F0013037E /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D669DE925CFFC9F0013037E /* ScoreTableViewCell.swift */; };
+		2D669DEC25CFFC9F0013037E /* ScoreTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D669DEA25CFFC9F0013037E /* ScoreTableViewCell.xib */; };
 		2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEA25CF41FB00E92D66 /* Config.swift */; };
-		2D710FF025CF53F000E92D66 /* scoreObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEF25CF53F000E92D66 /* scoreObject.swift */; };
-		2D710FF425CF56D200E92D66 /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */; };
-		2D710FF725CF56D800E92D66 /* ScoreTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */; };
 		2D71100E25CF8EDA00E92D66 /* UserInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D71100D25CF8EDA00E92D66 /* UserInterfaceController.swift */; };
 		2D71101125CF8F8200E92D66 /* UserInterfaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */; };
 		2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */; };
@@ -106,11 +106,11 @@
 		2D3F64B825BA37A40061D108 /* 3DRoadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadModel.swift; sourceTree = "<group>"; };
 		2D3F64BD25BA42480061D108 /* 3DRoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DRoadViewController.swift; sourceTree = "<group>"; };
 		2D50664125C0467D007EEAFF /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
+		2D669DE625CFFC930013037E /* scoreObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = scoreObject.swift; sourceTree = "<group>"; };
+		2D669DE925CFFC9F0013037E /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreTableViewCell.swift; sourceTree = "<group>"; };
+		2D669DEA25CFFC9F0013037E /* ScoreTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScoreTableViewCell.xib; sourceTree = "<group>"; };
 		2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		2D710FEA25CF41FB00E92D66 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
-		2D710FEF25CF53F000E92D66 /* scoreObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = scoreObject.swift; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/scoreObject.swift"; sourceTree = "<group>"; };
-		2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreTableViewCell.swift; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/ScoreTableViewCell.swift"; sourceTree = "<group>"; };
-		2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ScoreTableViewCell.xib; path = "../../../../Downloads/projet-ppm-maher/projet-ppm-maher/score/ScoreTableViewCell.xib"; sourceTree = "<group>"; };
 		2D71100D25CF8EDA00E92D66 /* UserInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterfaceController.swift; sourceTree = "<group>"; };
 		2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInterfaceView.xib; sourceTree = "<group>"; };
 		2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
@@ -241,12 +241,12 @@
 		2DE0E10C25C4C21E00FC49E9 /* Score */ = {
 			isa = PBXGroup;
 			children = (
-				2D710FEF25CF53F000E92D66 /* scoreObject.swift */,
 				2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */,
+				2D669DE625CFFC930013037E /* scoreObject.swift */,
 				2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */,
 				2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */,
-				2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */,
-				2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */,
+				2D669DE925CFFC9F0013037E /* ScoreTableViewCell.swift */,
+				2D669DEA25CFFC9F0013037E /* ScoreTableViewCell.xib */,
 			);
 			path = Score;
 			sourceTree = "<group>";
@@ -429,7 +429,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D710FF725CF56D800E92D66 /* ScoreTableViewCell.xib in Resources */,
+				2D669DEC25CFFC9F0013037E /* ScoreTableViewCell.xib in Resources */,
 				2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */,
 				2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */,
 				2DFD102025AF8AA40041E21B /* LaunchScreen.storyboard in Resources */,
@@ -501,16 +501,16 @@
 				2D3C840025B3816B009394F2 /* ModelRoad.swift in Sources */,
 				2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */,
 				2DFD101625AF8AA40041E21B /* SceneDelegate.swift in Sources */,
-				2D710FF025CF53F000E92D66 /* scoreObject.swift in Sources */,
 				D89C5F6825C7359D009FC05E /* ChatViewController.swift in Sources */,
 				2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */,
 				CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */,
+				2D669DE725CFFC930013037E /* scoreObject.swift in Sources */,
 				CCB4F29525C5FB450036D25E /* GameOverView.swift in Sources */,
 				2DFD102A25AF8B1B0041E21B /* WelcomeView.swift in Sources */,
 				2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */,
 				2DFD102E25AF8E940041E21B /* GameView.swift in Sources */,
 				D89C5F6525C73584009FC05E /* ChatService.swift in Sources */,
-				2D710FF425CF56D200E92D66 /* ScoreTableViewCell.swift in Sources */,
+				2D669DEB25CFFC9F0013037E /* ScoreTableViewCell.swift in Sources */,
 				2DEFE5AC25C10903009E61C2 /* MotionManager.swift in Sources */,
 				2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */,
 				2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */,
