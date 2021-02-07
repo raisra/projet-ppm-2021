@@ -23,11 +23,12 @@ let mvcNavVC : UINavigationController = {
     return nv
 }()
 
+
 class WelcomeViewController: UIViewController{
     
     static let sharedInstance = WelcomeViewController()
     var welcomeView : WelcomeView?
-    var  settingView : SettingsView?
+    
     
     
     override func viewDidLoad() {
@@ -36,10 +37,10 @@ class WelcomeViewController: UIViewController{
       //  self.isModalInPresentation = true
        // self.view = WelcomeView(frame: UIScreen.main.bounds)
         
-        welcomeView = WelcomeView(frame : UIScreen.main.bounds)
+        //welcomeView = WelcomeView(frame : UIScreen.main.bounds)
         settingView = SettingsView(frame : UIScreen.main.bounds)
         
-        self.view.addSubview(welcomeView!)
+       // self.view.addSubview(welcomeView!)
         self.view.addSubview(settingView!)
         settingView!.isHidden = true
     }

@@ -19,7 +19,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="message"/>
                     <connections>
-                        <action selector="readMessageWithSender:" destination="-1" eventType="touchUpInside" id="UDR-45-kEj"/>
+                        <action selector="readMessageWithSender:" destination="-1" eventType="touchUpInside" id="Io5-Rp-164"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJT-65-fQE">

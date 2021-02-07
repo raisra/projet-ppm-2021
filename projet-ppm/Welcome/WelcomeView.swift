@@ -27,22 +27,22 @@ class WelcomeView : UIView{
    
        
     required init?(coder: NSCoder) {
-            super.init(coder: coder)
-        }
+        super.init(coder: coder)
+    }
     
 
     override init(frame: CGRect) {
     
-        view  = WelcomeView.loadFromXib(withOwner: WelcomeViewController.self)
         super.init(frame: frame)
+        view = Bundle.main.loadNibNamed(nibName, owner: self, options: nil)?.first as! WelcomeView
         view?.frame = self.bounds
-
+        
         playButton = view!.playButton
         settingsButton = view!.settingsButton
         chatButton = view!.chatButton
         scoreButton = view!.scoreButton
         
-      
+        
         addSubview(view!)
     }
     
