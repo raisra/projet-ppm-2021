@@ -169,9 +169,9 @@ class UserInterfaceView : UIView {
     }
 
     func stopTheGame(){
-        scoreLabel.isHidden = true
+       // scoreLabel.isHidden = true
         startButton.isHidden = true
-        messageButton.isHidden = true
+       // messageButton.isHidden = true
         counterView.isHidden = true
 
         startButton.isHidden = false

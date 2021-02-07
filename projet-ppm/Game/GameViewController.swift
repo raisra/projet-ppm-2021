@@ -35,7 +35,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         return mvc
     }()*/
-    var mvcNavVC: UINavigationController?
+    
     
     var timer : Timer?
     var gv : GameView!
@@ -206,8 +206,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     //display the message view
     @objc func readMessage(){
-       
-        present(mvcNavVC!, animated: true, completion: nil)
+        present(mvcNavVC, animated: true, completion: nil)
     }
     
     
@@ -728,17 +727,15 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     @IBAction func startTheGame (sender : UIButton) {
-        
         startTheGame()
     }
 
     @IBAction func stopTheGame (sender : UIButton) {
-       
         stoptheGame()
     }
     
     @IBAction func readMessage (sender : UIButton) {
-       
+        stoptheGame()
         readMessage()
     }
     
