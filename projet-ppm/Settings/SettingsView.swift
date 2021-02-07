@@ -10,41 +10,30 @@ import UIKit
 
 class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
      
-    private var picker =  UIPickerView()
+    @IBOutlet private var picker : UIPickerView!
     private var pickerData =  ["Beginner", "Medium", "Hard", "Extreme"]
-    private let textField = UITextField()
-    private let soundOnOff = UISwitch()
-    private let sound = UILabel()
-    private let done  = UIButton()
+    @IBOutlet private var textField : UITextField!
+    @IBOutlet private var soundOnOff : UISwitch!
+    @IBOutlet private var sound : UILabel!
+    @IBOutlet private var done  : UIButton!
     var value : String = ""
     let h = UIScreen.main.bounds.height
     let w = UIScreen.main.bounds.width
+    @IBOutlet private var nameControllerLabel : UILabel!
     
 
-    override init (frame: CGRect){
-        super.init(frame: frame)
-        self.backgroundColor = .white
+    override func awakeFromNib() {
+        super.awakeFromNib()
 
         // picker.delegate = self as UIPickerViewDelegate
         //picker.datasourcer = self as UIPickerViewDataSource
         self.picker.delegate = self
         self.picker.dataSource = self
-        self.textField.inputView = picker
-        picker.center = self.center
-        self.addSubview(picker)
-        
-        done.setTitle("done", for: [])
-        done.setTitleColor(UIColor.black, for: [])
-        done.addTarget(self.superview, action: #selector(buttondisplay), for: .touchUpInside )
         
         
         sound.text = "Sound :  "
         sound.font = UIFont.boldSystemFont(ofSize: 18.0)
         sound.textColor = .black
-        
-        self.addSubview(sound)
-        self.addSubview(soundOnOff)
-        self.addSubview(done)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -64,10 +53,6 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         choiceLevel(level : level)
         print (level)
     }
- 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
         
     func getValue (index: Int) -> String {
         return pickerData[index]
@@ -81,20 +66,19 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
 
     
     override func draw(_ rect: CGRect) {
-        picker.frame = CGRect(x: w/2-150, y: h/2-150, width: 300, height: 300)
-        done.frame = CGRect(x: w/2+50, y: h/2-250, width: 100, height: 100)
-        soundOnOff.frame = CGRect(x: w/2 + 20, y: h/2-115, width: 100, height: 100)
-        sound.frame = CGRect(x: w/2 - 50, y: h/2-150, width: 100, height: 100)
+        picker.frame = CGRect(x: w/2-150, y: h/2-150,
+                              width: 300, height: 300)
+        
+        done.frame = CGRect(x: rect.maxX - 20 - 50 ,y: 20,
+                            width: 50, height: 50)
+        
+        soundOnOff.frame = CGRect(x: w/2 + 20, y: h/2-115,
+                                  width: 100, height: 100)
+        
+        sound.frame = CGRect(x: w/2 - 50, y: h/2-150,
+                             width: 100, height: 100)
 
-    }
-    
-    @objc func soundON() -> Bool{
-        return soundOnOff.isOn
-    }
-    
-    @objc func buttondisplay(){
-     //   settingView?.isHidden = true
-      //  welcomView?.isHidden = false
     }
         
 }
+
