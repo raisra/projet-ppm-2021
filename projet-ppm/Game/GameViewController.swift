@@ -146,6 +146,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     }
     
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         //init des vues
         //init du character
@@ -184,10 +186,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
     }
     
-     func startTheGame(sender: UIButton){
-       startTheGame()
-    }
-    
+   
 
          
     @objc func stoptheGame() {
@@ -720,5 +719,27 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         view.bringSubviewToFront(gOvView)
         }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    @IBAction func startTheGame (sender : UIButton) {
+        
+        startTheGame()
+    }
+
+    @IBAction func stopTheGame (sender : UIButton) {
+       
+        stoptheGame()
+    }
+    
+    @IBAction func readMessage (sender : UIButton) {
+       
+        readMessage()
+    }
     
 }

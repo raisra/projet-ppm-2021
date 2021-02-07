@@ -181,19 +181,5 @@ class UserInterfaceView : UIView {
     
     
     
-    @IBAction func startTheGame (sender : UIButton) {
-        let gvc = self.next as! GameViewController
-        gvc.startTheGame()
-    }
-
-    @IBAction func stopTheGame (sender : UIButton) {
-        let gvc = self.next as! GameViewController
-        gvc.stoptheGame()
-    }
-    
-    @IBAction func readMessage (sender : UIButton) {
-        let gvc = self.next as! GameViewController
-        gvc.readMessage()
-    }
     
 }
