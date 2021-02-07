@@ -76,9 +76,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         LevelDuration()
         //init du model 3D
         
-        let r = sizeIm.height/sizeIm.width
-        sizeIm.width = UIScreen.main.bounds.width
-        sizeIm.height = sizeIm.width * r
+        
         
         
         //le paraemetre à metter dans Model

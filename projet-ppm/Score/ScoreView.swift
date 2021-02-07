@@ -18,7 +18,7 @@ class ScoreView: UIView {
         super.init(frame: frame)
         self.backgroundColor = .init(red: 240, green: 240, blue: 140, alpha: 1)
         self.tableView = UITableView(frame: frame, style: .plain)
-        self.tableView!.backgroundColor = UIColor(patternImage: UIImage(named: "bluejeans.png")!)
+        self.tableView!.backgroundColor = .white
         self.tableView!.layoutMargins = .zero // sert a rien :/
         self.tableView!.separatorStyle = .none
         self.addSubview(self.tableView!)

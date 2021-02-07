@@ -23,16 +23,11 @@ class PreferenceManager: NSObject {
     }
 
     
-    func initialisePreferenceData () -> Bool {
+    func initialisePreferenceData (){
         self.savePreferenceDefault()
         let i = self.loadIntPreference(for: "numberOfLaunchApp") + 1
         self.savePreference(int: i, for: "numberOfLaunchApp")
         let _ = self.getUserDefaultPath()
-        if  i == 1 {
-            return true
-        }else{
-            return false
-        }
     }
 
     
