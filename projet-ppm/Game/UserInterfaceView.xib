@@ -10,26 +10,29 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="cba-uU-oBk" customClass="UserInterfaceView" customModule="projet_ppm" customModuleProvider="target">
+        <view contentMode="scaleAspectFill" id="cba-uU-oBk" customClass="UserInterfaceView" customModule="projet_ppm" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3F-hK-Nhy">
+                <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3F-hK-Nhy">
                     <rect key="frame" x="20" y="44" width="106" height="62"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" backgroundImage="message"/>
                     <connections>
                         <action selector="readMessageWithSender:" destination="cba-uU-oBk" eventType="touchUpInside" id="ezj-ob-lKX"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJT-65-fQE">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJT-65-fQE">
                     <rect key="frame" x="161" y="400" width="93" height="97"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Button" image="startButton"/>
                     <connections>
                         <action selector="startTheGameWithSender:" destination="cba-uU-oBk" eventType="touchUpInside" id="LNy-3M-5S9"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vcg-UM-P4c">
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vcg-UM-P4c">
                     <rect key="frame" x="304" y="776" width="90" height="86"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <state key="normal" title="Button" image="pauseButton"/>
                     <connections>
                         <action selector="stopTheGameWithSender:" destination="cba-uU-oBk" eventType="touchUpInside" id="qg5-Al-6g2"/>
@@ -37,7 +40,7 @@
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUd-z7-evx">
                     <rect key="frame" x="329" y="55" width="65" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -45,20 +48,6 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="j2B-Ky-G3P"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <constraints>
-                <constraint firstItem="Vcg-UM-P4c" firstAttribute="bottom" secondItem="j2B-Ky-G3P" secondAttribute="bottom" id="2qd-qA-dZW"/>
-                <constraint firstItem="kJT-65-fQE" firstAttribute="leading" secondItem="j2B-Ky-G3P" secondAttribute="leading" constant="161" id="4zE-0T-m8w"/>
-                <constraint firstItem="j2B-Ky-G3P" firstAttribute="trailing" secondItem="h3F-hK-Nhy" secondAttribute="trailing" constant="288" id="7Z9-vo-cSQ"/>
-                <constraint firstItem="Vcg-UM-P4c" firstAttribute="top" secondItem="j2B-Ky-G3P" secondAttribute="top" constant="714" id="7au-XR-Hhj"/>
-                <constraint firstItem="j2B-Ky-G3P" firstAttribute="bottom" secondItem="h3F-hK-Nhy" secondAttribute="bottom" constant="756" id="GJP-bf-Whu"/>
-                <constraint firstItem="h3F-hK-Nhy" firstAttribute="top" secondItem="j2B-Ky-G3P" secondAttribute="top" id="IQp-PT-4M7"/>
-                <constraint firstItem="h3F-hK-Nhy" firstAttribute="leading" secondItem="j2B-Ky-G3P" secondAttribute="leading" constant="20" id="NNB-KP-B8o"/>
-                <constraint firstItem="kJT-65-fQE" firstAttribute="top" secondItem="j2B-Ky-G3P" secondAttribute="top" constant="356" id="myH-Zk-ef9"/>
-                <constraint firstItem="j2B-Ky-G3P" firstAttribute="trailing" secondItem="Vcg-UM-P4c" secondAttribute="trailing" constant="20" id="vsF-RA-hMB"/>
-                <constraint firstItem="Vcg-UM-P4c" firstAttribute="leading" secondItem="j2B-Ky-G3P" secondAttribute="leading" constant="288" id="x0Z-bD-89y"/>
-                <constraint firstItem="j2B-Ky-G3P" firstAttribute="trailing" secondItem="kJT-65-fQE" secondAttribute="trailing" constant="160" id="xVC-zj-OeB"/>
-                <constraint firstItem="j2B-Ky-G3P" firstAttribute="bottom" secondItem="kJT-65-fQE" secondAttribute="bottom" constant="365" id="zXn-Ug-MAJ"/>
-            </constraints>
             <connections>
                 <outlet property="messageButton" destination="h3F-hK-Nhy" id="fng-d6-SuN"/>
                 <outlet property="pauseButton" destination="Vcg-UM-P4c" id="0cN-JN-yBl"/>

@@ -54,9 +54,9 @@ class UserInterfaceView : UIView {
         
         counterView = UIImageView()
         view  = UserInterfaceView.loadFromXib()
-        view?.bounds = frame
-        super.init(frame: frame)
         
+        super.init(frame: frame)
+        view?.frame = self.bounds
 
         pauseButton = view!.pauseButton
         startButton = view!.startButton
@@ -76,8 +76,8 @@ class UserInterfaceView : UIView {
         counterView = UIImageView()
         super.init(coder: coder)
     }
-    
 
+    
     
     
     func getScore()->Int {
