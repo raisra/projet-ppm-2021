@@ -69,7 +69,12 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     
-    
+    var gameOverImg : UIImageView = {
+        let img =  UIImageView(image: UIImage(named: "gameover"))
+        img.frame = UIScreen.main.bounds
+        
+        return img
+    }()
     
     //dictionnaire contenant le Time to live de chaque pouvoir qui a été enclenché
     var TTL: [(TypeOfObject, TimeInterval)] = [(TypeOfObject, TimeInterval)]()
@@ -170,6 +175,9 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         //        motionManager?.start()
         
         
+        
+        view.addSubview(gameOverImg)
+        gameOverImg.isHidden = true
     }
     
     
@@ -633,7 +641,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
 //    // Enregistre un SCORE
 //    func saveScore(score : Int) {
-//        
+//
 //        let currentDate = Date()
 //        let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)!
 //        let scoreDataObject = ScoreObject(score: score, date: currentDate, name: name)
@@ -641,22 +649,25 @@ class GameViewController : UIViewController, GestureManagerProtocol {
 //        pref.savePreference(score: scoreDataObject, for: PreferenceKeys.score)
 //        print("enregitrement d'un score : " + score.description)
 //    }
-//    
+//
     
-    func gameOver() {
+    func gameOverCb(_ : Bool) {
+        
+        
+        gameOverImg.isHidden = true
+        
         
         let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)
         let score = ScoreObject(score: userInterfaceView.getScore(), date: Date(), name: name! )
         PreferenceManager.sharedInstance.savePreference(score: score, for: PreferenceKeys.score)
         print("enregitrement d'un score : " + score.description)
         
-        gv.stopAnimation()
-        timer?.invalidate()
-        timer=nil
+        
+       
         gameIsStoped = true
         
         modelRoad.reset()
-        soundManager.stopGameSound()
+        
         userInterfaceView.resetPower()
         
         //effacer toutes les pieces et pouvoir etc
@@ -672,7 +683,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         threeDRoadVC.stopCoins = false
         
         
-        self.timer?.invalidate()
+        
         duration = DURATION
         threeDRoadVC.setDuration(duration!)
         
@@ -690,6 +701,25 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         
         //soundManager.playGameOverSound()
+    }
+    
+    
+    func gameOver() {
+        gv.stopAnimation()
+        soundManager.stopGameSound()
+        timer?.invalidate()
+        timer=nil
+        gameOverImg.isHidden = false
+        self.gameOverImg.frame.origin.y = -1000
+        
+        UIView.animate( withDuration: 5 , animations : {
+            self.gameOverImg.frame.origin.y = 0
+        } ,
+        completion: gameOverCb);
+
+       
+        
+       
         
     }
     
