@@ -8,13 +8,6 @@
 import Foundation
 import UIKit
 
-enum Level: Int {
-    case Beginner=0
-    case Medium=1
-    case Hard=2
-    case Extreme=3
-}
-
 
 
 
@@ -47,18 +40,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         self.names = names
         self.duration = duration
         
-        switch settingView!.value {
-        case "Beginner" :
-            level = .Beginner
-        case "Medium" :
-            level = .Medium
-        case "Hard" :
-            level = .Hard
-        case "Extreme" :
-            level = .Extreme
-        default :
-            level = .Beginner
-        }
+        level = SettingsViewController.sharedInstance.getLevel()
         nbElements = 0
         
         self.model3D = model3D

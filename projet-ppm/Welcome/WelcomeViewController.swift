@@ -10,7 +10,8 @@ import UIKit
 
 
 
-var  settingView : SettingsView?
+
+
 
 let mvcNavVC : UINavigationController = {
     let chatVC = ChatViewController()
@@ -33,16 +34,6 @@ class WelcomeViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-      //  self.isModalInPresentation = true
-       // self.view = WelcomeView(frame: UIScreen.main.bounds)
-        
-        //welcomeView = WelcomeView(frame : UIScreen.main.bounds)
-        settingView = SettingsView(frame : UIScreen.main.bounds)
-        
-       // self.view.addSubview(welcomeView!)
-        self.view.addSubview(settingView!)
-        settingView!.isHidden = true
     }
     
     
@@ -70,11 +61,15 @@ class WelcomeViewController: UIViewController{
     
     
     @IBAction  func settingsButtonSelector() {
-        print( "trying" )
-        settingView?.isHidden = false
-        welcomeView?.isHidden = true
-       
-        view.bringSubviewToFront(settingView!)
+      
+        let svc = SettingsViewController.sharedInstance
+        svc.modalTransitionStyle = .flipHorizontal
+        svc.modalPresentationStyle = .fullScreen
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            svc.modalPresentationStyle = .formSheet
+        }
+        self.present(svc, animated: true, completion: nil)
     }
     
     
@@ -83,6 +78,9 @@ class WelcomeViewController: UIViewController{
         let scoreController = ScoreViewController.sharedInstance
         scoreController.modalTransitionStyle = .coverVertical
         scoreController.modalPresentationStyle = .fullScreen
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            scoreController.modalPresentationStyle = .formSheet
+        }
         self.present(scoreController, animated: true, completion: nil)
     }
     

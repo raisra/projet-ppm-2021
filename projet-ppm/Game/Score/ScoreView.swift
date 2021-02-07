@@ -64,8 +64,8 @@ class ScoreView: UIView {
         footerViewLabel.frame = CGRect(origin: .zero,
                                        size: tableView!.frame.size)
         
-        backButton.frame = CGRect (origin: CGPoint(x: 15, y: 15),
-                                   size: closeButtonImage?.size ?? .zero)
+        backButton.frame = CGRect (origin: CGPoint(x: rect.width - 15 - 30, y: 15),
+                                   size: CGSize(width: 30, height: 30))
     }
     
     

@@ -19,7 +19,6 @@
 		2D669DFA25D053EC0013037E /* PauseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D669DF925D053EC0013037E /* PauseViewController.storyboard */; };
 		2D669DFF25D065190013037E /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D669DFE25D065190013037E /* SettingsView.xib */; };
 		2D669E0325D065210013037E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D669E0125D065210013037E /* SettingsViewController.swift */; };
-		2D669E0925D065970013037E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D669E0825D065970013037E /* SettingsView.swift */; };
 		2D669E2925D06B7E0013037E /* PreferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D669E2825D06B7E0013037E /* PreferenceManager.swift */; };
 		2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEA25CF41FB00E92D66 /* Config.swift */; };
 		2D71100E25CF8EDA00E92D66 /* UserInterfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D71100D25CF8EDA00E92D66 /* UserInterfaceView.swift */; };
@@ -117,7 +116,6 @@
 		2D669DF925D053EC0013037E /* PauseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PauseViewController.storyboard; sourceTree = "<group>"; };
 		2D669DFE25D065190013037E /* SettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
 		2D669E0125D065210013037E /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		2D669E0825D065970013037E /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2D669E2825D06B7E0013037E /* PreferenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceManager.swift; sourceTree = "<group>"; };
 		2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		2D710FEA25CF41FB00E92D66 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -246,7 +244,6 @@
 			isa = PBXGroup;
 			children = (
 				2D669DFE25D065190013037E /* SettingsView.xib */,
-				2D669E0825D065970013037E /* SettingsView.swift */,
 				2D669E0125D065210013037E /* SettingsViewController.swift */,
 			);
 			path = Settings;
@@ -543,7 +540,6 @@
 				2D669DEB25CFFC9F0013037E /* ScoreTableViewCell.swift in Sources */,
 				2DEFE5AC25C10903009E61C2 /* MotionManager.swift in Sources */,
 				2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */,
-				2D669E0925D065970013037E /* SettingsView.swift in Sources */,
 				2DE0E11125C4C21E00FC49E9 /* ScoreViewController.swift in Sources */,
 				2D669E0325D065210013037E /* SettingsViewController.swift in Sources */,
 				D89C5F6B25C735A6009FC05E /* MessageModel.swift in Sources */,

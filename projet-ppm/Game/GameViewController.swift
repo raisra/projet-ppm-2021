@@ -20,7 +20,8 @@ import UIKit
 
 
 
-var SoundOnOff : Bool = true
+
+
 
 class GameViewController : UIViewController, GestureManagerProtocol {
     
@@ -66,6 +67,29 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     var duration : TimeInterval?
     
+    
+    
+    
+    
+    //dictionnaire contenant le Time to live de chaque pouvoir qui a été enclenché
+    var TTL: [(TypeOfObject, TimeInterval)] = [(TypeOfObject, TimeInterval)]()
+    
+    /**
+     cette fonction créé  un objet
+     vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
+     */
+    var nbOfTurn : Int = 0
+    var level : Level = .Beginner
+    
+    
+    let MALUS_DURATION :TimeInterval = 2.0
+    var malus : Bool = false //indique si le personnage s'est cogné
+    
+    var timerJump : TimeInterval = 0.0
+    var timerBlink: TimeInterval = 0.0
+    
+    
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,7 +97,9 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     override func viewDidLoad() {
         print ("the Game view did load")
-        LevelDuration()
+        level = SettingsViewController.sharedInstance.getLevel()
+        duration = SettingsViewController.sharedInstance.getLevelDuration()
+        
         //init du model 3D
         
         
@@ -133,7 +159,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
        
 
 
-        SoundOnOff = settingView!.soundON()
+       
         
        
         gestureManager = GestureManager(forView: self.userInterfaceView)
@@ -281,22 +307,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     
-    //dictionnaire contenant le Time to live de chaque pouvoir qui a été enclenché
-    var TTL: [(TypeOfObject, TimeInterval)] = [(TypeOfObject, TimeInterval)]()
-    
-    /**
-     cette fonction créé  un objet
-     vérifie si des pouvoirs sont en cours d'execution et met à jour leur timers respectifs
-     */
-    var nbOfTurn : Int = 0
-    var level : Level = .Beginner
-    
-    
-    let MALUS_DURATION :TimeInterval = 2.0
-    var malus : Bool = false //indique si le personnage s'est cogné
-    
-    var timerJump : TimeInterval = 0.0
-    var timerBlink: TimeInterval = 0.0
+
     
     @objc func updateView() {
 
@@ -327,9 +338,9 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             //le joueur a perdu
                 print("l'utilisateur va perdre")
             
-                if (SoundOnOff){
-                    soundManager.playEndSound()
-                }
+                
+                soundManager.playEndSound()
+               
                 //TODO ICI AFFICHER LE SCORE
                 startTheGame()
                 print("The Game is becoming Harder")
@@ -359,7 +370,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                 nbOfTurn += 1
                 
                 //level = Level(rawValue: Int(nbOfTurn/10)) ?? .Hard
-                typeOfLevel()
+                
                 print("The Game is becoming Harder")
                 threeDRoadVC.turn(level: level)
                 wantToTurnLeft = false
@@ -378,9 +389,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         if( t == TREE && !wantToJump) {
             print("Le personnage se cogne sur un arbre")
-            if (SoundOnOff){
-                soundManager.playCollisionSound()
-            }
+            
+            soundManager.playCollisionSound()
             
             malus = true
             gv.animateBlink()
@@ -427,9 +437,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         case _COIN_:
             //le personnage attrape une piece
-            if (SoundOnOff){
-                soundManager.playCollisionSound()
-            }
+            soundManager.playCollisionSound()
+    
             userInterfaceView.addScore(1)
             p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
@@ -567,38 +576,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
 
    
-    
-    func LevelDuration(){
-        print("VALEUR IS" + settingView!.value)
-        switch  settingView!.value {
-        case "Beginner" :
-            duration = 0.6
-        case "Medium" :
-            duration = 0.4
-        case "Hard" :
-            duration = 0.3
-        case "Extreme" :
-            duration = 0.2
-        default :
-            duration = 0.6
-        }
 
-     }
-    
-    func typeOfLevel(){
-        switch  settingView!.value {
-        case "Beginner" :
-            level = .Beginner
-        case "Medium" :
-            level = .Medium
-        case "Hard" :
-            level = .Hard
-        case "Extreme" :
-            level = .Extreme
-        default :
-            level = .Beginner
-        }
-    }
     
     
     
@@ -625,9 +603,9 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         if !wantToJump {
             timerJump = JUMP_DURATION
             wantToJump = true
-            if (SoundOnOff){
-                soundManager.playEdgeSound()
-            }
+            
+            soundManager.playEdgeSound()
+            
             gv.animationForJump()
         }
     }

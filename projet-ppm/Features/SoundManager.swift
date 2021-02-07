@@ -98,9 +98,18 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         gameSound!.currentTime = 0
     }
     func playEndSound () {
-        endSound!.play()
+        let soundOnOff = SettingsViewController.sharedInstance.soundOn()
+        if soundOnOff {
+            endSound!.play()
+        }
+        
     }
     func playCollisionSound () {
+        let soundOnOff = SettingsViewController.sharedInstance.soundOn()
+        if !soundOnOff {
+            return
+        }
+        
         if collisionSound!.isPlaying {
             collisionSound!.stop()
             collisionSound!.currentTime = 0.0
@@ -109,7 +118,11 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         collisionSound!.play()
     }
     func playEdgeSound () {
-        edgeSound!.play()
+        let soundOnOff = SettingsViewController.sharedInstance.soundOn()
+        if soundOnOff {
+            edgeSound!.play()
+        }
+        
     }
     
     func playGameOverSound () {
