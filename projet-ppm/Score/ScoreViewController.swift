@@ -9,7 +9,7 @@ import UIKit
 
 class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    static let sharedInstance = ScoreViewController();
+    static let sharedInstance = ScoreViewController()
     
     var gesture: GestureManager?
     let scoreModel = ScoreModel(scoreArray: PreferenceManager.sharedInstance.loadScorePreference(for: PreferenceKeys.score))
@@ -28,10 +28,7 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if self.presentingViewController != nil {
-            self.scoreView.topSubView.backgroundColor = self.presentingViewController?.view.backgroundColor
-            self.scoreView.bottomSubView.backgroundColor = self.presentingViewController?.view.backgroundColor
-        }
+        super.viewWillAppear(animated)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

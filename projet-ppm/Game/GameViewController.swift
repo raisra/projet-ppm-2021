@@ -110,7 +110,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, centerBottom: posOfCharacter , sizeOfChar: sizeChar)
-        userInterfaceView = UserInterfaceView()
+        userInterfaceView = UserInterfaceView(frame: UIScreen.main.bounds)
 
 
        

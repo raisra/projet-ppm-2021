@@ -11,8 +11,7 @@ class ScoreView: UIView {
 
     
     var tableView : UITableView?
-    let topSubView = UIView()
-    let bottomSubView = UIView()
+    let topSubView = UILabel()
     let footerViewLabel = UILabel()
     let closeButtonImage = UIImage(named: "closeButton")
     let backButton = UIButton(frame: .zero)
@@ -20,21 +19,30 @@ class ScoreView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .init(red: 240, green: 240, blue: 140, alpha: 1)
-        tableView = UITableView(frame: frame, style: .plain)
-        tableView!.layoutMargins = .zero // sert a rien :/
-        tableView!.separatorStyle = .none
-        tableView!.tableFooterView = footerViewLabel
+        self.backgroundColor = .init(red: 240, green: 240, blue: 140, alpha: 1)
+        self.tableView = UITableView(frame: frame, style: .plain)
+        self.tableView!.backgroundColor = .gray
+        self.tableView!.layoutMargins = .zero // sert a rien :/
+        //self.tableView!.separatorStyle = .none
+        self.tableView!.tableFooterView = footerViewLabel
         footerViewLabel.text = "Empty Score"
         footerViewLabel.textAlignment = .center
         footerViewLabel.backgroundColor = .systemGreen
-        addSubview(tableView!)
-        addSubview(backButton)
-        addSubview(topSubView)
-        addSubview(bottomSubView)
+        self.addSubview(self.tableView!)
+        
+        
+        topSubView.backgroundColor = .lightGray
+        topSubView.text = "     Scores"
+        topSubView.font = UIFont.boldSystemFont(ofSize: 35)
+        topSubView.textAlignment = .left
+        topSubView.layer.borderWidth = 1
+        topSubView.layer.borderColor = UIColor.black.cgColor
+        
+        self.addSubview(self.topSubView)
+        
         
         backButton.setImage(closeButtonImage, for: .normal)
-        
+        addSubview(backButton)
     }
     
     required init?(coder: NSCoder) {
@@ -45,16 +53,19 @@ class ScoreView: UIView {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         // Drawing code
-        self.tableView?.frame = CGRect(x: 0, y: rect.height/6, width: rect.width,height: rect.height * 4/6)
-        self.topSubView.frame.size = CGSize(width: tableView!.frame.width, height: tableView!.frame.minY)
-        self.bottomSubView.frame.origin = CGPoint(x: tableView!.frame.minX, y: tableView!.frame.maxY)
-        self.bottomSubView.frame.size = CGSize(width: tableView!.frame.width,height: rect.height - tableView!.frame.maxY)
-       
-        bottomSubView.layer.cornerRadius = 0
+        self.tableView?.frame = CGRect(x: 0, y: rect.height/6,
+                                       width: rect.width,
+                                       height: rect.height * 5/6)
         
-        footerViewLabel.frame = CGRect(origin: .zero,  size: tableView!.frame.size)
+        self.topSubView.frame.origin.x = -1
+        self.topSubView.frame.size = CGSize(width: tableView!.frame.width + 2,
+                                            height: tableView!.frame.minY)
         
-        backButton.frame = CGRect (origin: CGPoint(x: 15, y: 15), size: closeButtonImage?.size ?? .zero)
+        footerViewLabel.frame = CGRect(origin: .zero,
+                                       size: tableView!.frame.size)
+        
+        backButton.frame = CGRect (origin: CGPoint(x: 15, y: 15),
+                                   size: closeButtonImage?.size ?? .zero)
     }
     
     
