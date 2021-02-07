@@ -29,13 +29,13 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     static let sharedInstance = GameViewController();
     // var mvc : MessageViewController
     /*let mvc = { () -> MessageViewController in
-        let mvc = MessageViewController()
-        
-        mvc.modalTransitionStyle = .flipHorizontal
-        mvc.modalPresentationStyle = .fullScreen
-        
-        return mvc
-    }()*/
+     let mvc = MessageViewController()
+     
+     mvc.modalTransitionStyle = .flipHorizontal
+     mvc.modalPresentationStyle = .fullScreen
+     
+     return mvc
+     }()*/
     
     
     var timer : Timer?
@@ -50,19 +50,19 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     var thePosition :(Int, Int) = (0,0)
     
     
-//    //set of coins
-//    var coins: Set<UIImageView> = Set<UIImageView>()
+    //    //set of coins
+    //    var coins: Set<UIImageView> = Set<UIImageView>()
     
     let backGround : UIImageView = UIImageView()
     
     
     lazy var soundManager = SoundManager()
     
-
-    var gestureManager : GestureManager?
-   
     
-  //  var motionManager : MotionManager?
+    var gestureManager : GestureManager?
+    
+    
+    //  var motionManager : MotionManager?
     
     
     var duration : TimeInterval?
@@ -137,9 +137,9 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         gv = GameView(frame: UIScreen.main.bounds, s: duration!, centerBottom: posOfCharacter , sizeOfChar: sizeChar)
         userInterfaceView = UserInterfaceView(frame: UIScreen.main.bounds)
-
-
-       
+        
+        
+        
         threeDRoadVC = ThreeDRoadViewController(names: NAMES,
                                                 duration: duration!,
                                                 model3D: modelRoad,
@@ -156,20 +156,20 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(userInterfaceView)
-       
-
-
-       
         
-       
+        
+        
+        
+        
+        
         gestureManager = GestureManager(forView: self.userInterfaceView)
         gestureManager?.delegate = self
         
-       // motionManager = MotionManager()
-//        motionManager?.delegate = self
-//        motionManager?.start()
+        // motionManager = MotionManager()
+        //        motionManager?.delegate = self
+        //        motionManager?.start()
         
-      
+        
     }
     
     
@@ -184,10 +184,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         print(#function)
         super.viewWillDisappear(animated)
         
-      //  self.gestureManager?.removeGesture(from: self.gv)
-      //  self.motionManager?.stop()
-      //  self.motionManager?.stop()
-
+        //  self.gestureManager?.removeGesture(from: self.gv)
+        //  self.motionManager?.stop()
+        //  self.motionManager?.stop()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -195,10 +195,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     }
     
     
-  
+    
     
     func startTheGame() {
-    
+        
         print("start  the game")
         gameIsStoped = false;
         userInterfaceView.showCounter()
@@ -210,25 +210,25 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             self.gv.startTheGame();
             self.timer = Timer.scheduledTimer(timeInterval:  self.duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
         }
-       
+        
     }
     
-   
-
-         
+    
+    
+    
     @objc func stoptheGame() {
         
-            gameIsStoped = true;
-            userInterfaceView.stopTheGame();
+        gameIsStoped = true;
+        userInterfaceView.stopTheGame();
         
-            soundManager.stopGameSound()
-          //  threeDRoadVC.stopTheGame()
-            gv.stopTheGame();
-            timer?.invalidate()
-            timer = nil
+        soundManager.stopGameSound()
+        //  threeDRoadVC.stopTheGame()
+        gv.stopTheGame();
+        timer?.invalidate()
+        timer = nil
         
-          //  let svc = PauseViewController()
-           // present(svc, animated: true, completion: nil)
+       // let svc = PauseViewController()
+       // present(svc, animated: true, completion: nil)
     }
     
     
@@ -307,10 +307,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     
-
+    
     
     @objc func updateView() {
-
+        
         //on véerifie si le personnage a sauté
         if wantToJump {
             timerJump -= duration!
@@ -336,55 +336,41 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         let t = modelRoad.getElemAtIndex(Int(INITIAL_CHAR_POSITION))?.type
         if (t == TURNLEFT && !wantToTurnLeft) || (t == TURN_RIGHT && !wantToTurnRight) {
             //le joueur a perdu
-                print("l'utilisateur va perdre")
-            
-                
-                soundManager.playEndSound()
-               
-                //TODO ICI AFFICHER LE SCORE
-                startTheGame()
-                print("The Game is becoming Harder")
-            
-                //arreter l'a imation du personnage
-                //TODO RELA?CER LE JEU
-                //effacer toutes les pieces et pouvoir etc
-                //relancer le timer
-                //remettre la duration des controller à la valeur initiale
-            
-                //stopGenerating coins à false
-              
-                return
+            print("l'utilisateur va perdre")
+            soundManager.playEndSound()
+            gameOver()
+            return
         }
         
         
         if( t == TREE && !wantToJump && malus ){
             //le personnage s'est cogné deux fois d'affiler
             print("on a perdu")
-            
             stoptheGame()
+            gameOver()
             return
         }
         
         if (t == TURNLEFT && wantToTurnLeft) || (t == TURN_RIGHT && wantToTurnRight){
             
-                nbOfTurn += 1
-                
-                //level = Level(rawValue: Int(nbOfTurn/10)) ?? .Hard
-                
-                print("The Game is becoming Harder")
-                threeDRoadVC.turn(level: level)
-                wantToTurnLeft = false
-                wantToTurnRight = false
-                
-                //on invalide le timer et on en rreceer un autre plus rapide
-                self.timer?.invalidate()
-                duration = duration! * 0.95
-                threeDRoadVC.setDuration(duration!)
-                
-                self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+            nbOfTurn += 1
             
-                return
-            }
+            //level = Level(rawValue: Int(nbOfTurn/10)) ?? .Hard
+            
+            print("The Game is becoming Harder")
+            threeDRoadVC.turn(level: level)
+            wantToTurnLeft = false
+            wantToTurnRight = false
+            
+            //on invalide le timer et on en rreceer un autre plus rapide
+            self.timer?.invalidate()
+            duration = duration! * 0.95
+            threeDRoadVC.setDuration(duration!)
+            
+            self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+            
+            return
+        }
         
         
         if( t == TREE && !wantToJump) {
@@ -396,7 +382,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             gv.animateBlink()
             timerBlink = BLINK_DURATION
         }
- 
+        
         
         
         let lastElemType = modelRoad.getLastElem()?.type
@@ -409,7 +395,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         modelRoad.movedown()
         
         threeDRoadVC.createRoad(level: level)
-      
+        
         //vérifie s'il y a des pouvoirs en cours d'execution
         //met à jour le timer
         handlePower()
@@ -438,7 +424,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         case _COIN_:
             //le personnage attrape une piece
             soundManager.playCollisionSound()
-    
+            
             userInterfaceView.addScore(1)
             p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
@@ -517,7 +503,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                 //attirer les pieces situé dans le voisinage
                 //on commence par retirer les pieces concernées du chemin
                 
-
+                
                 for i in 0..<modelRoad.nColumns {
                     for neighborhood in 1 ... DISTANCE_OF_MAGNET {
                         //on tente de retirer les pieces situées dans le voisinage du personnage
@@ -557,7 +543,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         }
         
     }
-           
+    
     /**
      deplacement de l'image obj vers le point de coordonnées point.
      */
@@ -572,11 +558,11 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         }, completion: cb)
     }
     
-   
     
-
-   
-
+    
+    
+    
+    
     
     
     
@@ -589,10 +575,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     /*****************************************/
     /**
-            LES MOUVEMENTS
+     LES MOUVEMENTS
      
      */
-
+    
     
     
     var wantToTurnLeft : Bool = false
@@ -620,12 +606,12 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         print("accelerating")
         self.gv.setSpeed(speed: 0.2)
     }
-
+    
     
     func moveRight(){
         thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-
+        
         gv.setCharPosition(s)
         print("hello from move right")
         wantToTurnRight = true
@@ -638,79 +624,91 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         print("hello from move left")
         wantToTurnLeft = true
     }
-
+    
     
     func moveDown() {
         
     }
     
     
-    // Enregistre un SCORE
-    func saveScore(score : Int) {
-        let currentDate = Date()
-        let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)!
-        let scoreDataObject = ScoreObject(score: score, date: currentDate, name: name)
-        let pref = PreferenceManager.sharedInstance
-        pref.savePreference(score: scoreDataObject, for: PreferenceKeys.score)
+//    // Enregistre un SCORE
+//    func saveScore(score : Int) {
+//        
+//        let currentDate = Date()
+//        let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)!
+//        let scoreDataObject = ScoreObject(score: score, date: currentDate, name: name)
+//        let pref = PreferenceManager.sharedInstance
+//        pref.savePreference(score: scoreDataObject, for: PreferenceKeys.score)
+//        print("enregitrement d'un score : " + score.description)
+//    }
+//    
+    
+    func gameOver() {
+        
+        let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)
+        let score = ScoreObject(score: userInterfaceView.getScore(), date: Date(), name: name! )
+        PreferenceManager.sharedInstance.savePreference(score: score, for: PreferenceKeys.score)
+        print("enregitrement d'un score : " + score.description)
+        
+        gv.stopAnimation()
+        timer?.invalidate()
+        timer=nil
+        gameIsStoped = true
+        
+        modelRoad.reset()
+        soundManager.stopGameSound()
+        userInterfaceView.resetPower()
+        
+        //effacer toutes les pieces et pouvoir etc
+        //relancer le timer
+        //remettre la duration des controller à la valeur initiale
+        
+        
+        wantToTurnLeft = false
+        wantToTurnRight = false
+        wantToJump = false
+        
+        threeDRoadVC.goingToTurn = false
+        threeDRoadVC.stopCoins = false
+        
+        
+        self.timer?.invalidate()
+        duration = DURATION
+        threeDRoadVC.setDuration(duration!)
+        
+        //scoreViewController.reference(int: hv.getScore(), for key:"scores")
+        thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
+        
+        let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+        
+        gv.hideCharacter()
+        
+        // viewWillAppear(true)
+        //scoreViewController.modalTransitionStyle = .coverVertical
+        // scoreViewController.isModalInPresentation = true
+        // self.present(score, animated: true, completion: nil)
+        
+        
+        //soundManager.playGameOverSound()
+        
     }
     
     
-    func gameOver() {
-            gv.stopAnimation()
-            timer?.invalidate()
-            timer=nil
-            gameIsStoped = true
-           
-            modelRoad.reset()
-            soundManager.stopGameSound()
-            userInterfaceView.resetPower()
-     
-            //effacer toutes les pieces et pouvoir etc
-            //relancer le timer
-            //remettre la duration des controller à la valeur initiale
-        
-            
-            wantToTurnLeft = false
-            wantToTurnRight = false
-            wantToJump = false
-            
-            threeDRoadVC.goingToTurn = false
-            threeDRoadVC.stopCoins = false
-                
-                
-            self.timer?.invalidate()
-            duration = DURATION
-            threeDRoadVC.setDuration(duration!)
-            
-            //scoreViewController.reference(int: hv.getScore(), for key:"scores")
-            thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
-            
-            let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-            
-            gv.hideCharacter()
-            
-           // viewWillAppear(true)
-            //scoreViewController.modalTransitionStyle = .coverVertical
-           // scoreViewController.isModalInPresentation = true
-           // self.present(score, animated: true, completion: nil)
-            
-        
-        //soundManager.playGameOverSound()
-       
-        }
     
     
     
     
     
-    
-    
+    @IBAction func backToMenu(_ sender: Any) {
+        stoptheGame()
+        dismiss(animated: true, completion: nil)
+    }
     
     
     @IBAction func startTheGame (sender : UIButton) {
         startTheGame()
     }
-
+    
     @IBAction func stopTheGame (sender : UIButton) {
         stoptheGame()
     }

@@ -47,21 +47,33 @@ class PauseViewController: UIViewController {
     let h = UIScreen.main.bounds.height
     let w = UIScreen.main.bounds.width
     
+    
+    var  pauseViewController : PauseViewController?
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         
         let storyboard = UIStoryboard(name: "PauseViewController", bundle: nil)
-        let pauseViewController = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as!PauseViewController
+        pauseViewController = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as!PauseViewController
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        addChild(pauseViewController)
-        didMove(toParent: self)
-        
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func viewDidLoad() {
+        
+        
+        addChild(pauseViewController!)
+        
+       // view.addSubview(pauseViewController!.view)
+        pauseViewController!.didMove(toParent: self)
     }
+    
+    required init?(coder: NSCoder) {   
+        super.init(coder: coder)
+      
+    }
+    
+  
     
 
     

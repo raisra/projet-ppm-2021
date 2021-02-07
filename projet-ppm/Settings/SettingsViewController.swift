@@ -53,6 +53,8 @@ class SettingsViewController: UIViewController
         let currentName = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)
         textField.text = currentName == "unknown" ? "" : currentName
         
+        soundOnOff.isOn = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
+        
         self.picker.delegate = self
         self.picker.dataSource = self
         

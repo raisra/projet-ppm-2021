@@ -82,8 +82,12 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     
     func playGameSound () {
-        gameSound!.play()
-        gameSound!.volume = 0.3
+        let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
+        if soundOnOff {
+            gameSound!.play()
+            gameSound!.volume = 0.3
+        }
+        
     }
     @objc func stopGameSound() {
         print(#function)
@@ -99,9 +103,10 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     func playEndSound () {
         let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
-        if soundOnOff {
+        if !soundOnOff {
             endSound!.play()
         }
+       
         
     }
     func playCollisionSound () {

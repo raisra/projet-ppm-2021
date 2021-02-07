@@ -12,8 +12,7 @@
         <!--Pause View Controller-->
         <scene sceneID="6IL-Zo-Gwr">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="57S-eQ-IFV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController id="TI8-eK-xOM" customClass="PauseViewController" customModule="projet_ppm" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PauseViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TI8-eK-xOM" customClass="PauseViewController" customModule="projet_ppm" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="G4m-ZY-t0o">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -51,7 +50,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="aqn-S8-Y0O"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
                     </view>
                     <connections>
                         <outlet property="mainMenuButton" destination="7fr-QA-0wg" id="ykX-cD-Mu9"/>
@@ -60,6 +59,7 @@
                         <outlet property="scoreView" destination="xNX-Cq-gMJ" id="eIt-5s-yjF"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="57S-eQ-IFV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-149.27536231884059" y="112.5"/>
         </scene>
@@ -70,6 +70,7 @@
                     <view key="view" contentMode="scaleToFill" id="Yda-XA-owD">
                         <rect key="frame" x="0.0" y="0.0" width="240" height="438"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="KGl-O2-3i9"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
@@ -82,6 +83,9 @@
         <image name="restart" width="46" height="47"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
