@@ -27,7 +27,7 @@ class ScoreView: UIView {
         self.tableView!.tableFooterView = footerViewLabel
         footerViewLabel.text = "Empty Score"
         footerViewLabel.textAlignment = .center
-        footerViewLabel.backgroundColor = .systemGreen
+        footerViewLabel.backgroundColor = .lightGray
         self.addSubview(self.tableView!)
         
         

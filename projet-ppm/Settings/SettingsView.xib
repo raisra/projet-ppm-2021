@@ -42,7 +42,7 @@
                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nhf-Qb-TWd">
                     <rect key="frame" x="209" y="204" width="51" height="31"/>
                     <connections>
-                        <action selector="switchSound:" destination="-1" eventType="touchDown" id="ddz-yB-Yua"/>
+                        <action selector="switchSound:" destination="-1" eventType="touchUpInside" id="Kg3-dJ-l6g"/>
                     </connections>
                 </switch>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="tape your name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cvw-zy-7hW">

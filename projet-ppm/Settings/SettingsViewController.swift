@@ -67,7 +67,8 @@ class SettingsViewController: UIViewController
     }
     
     @IBAction func switchSound (_ sender: UISwitch) {
-       
+        let soundSwitch = sender as UISwitch
+        PreferenceManager.sharedInstance.savePreference(bool: soundSwitch.isOn , for: PreferenceKeys.sound)
     }
     
     func soundOn() ->Bool {

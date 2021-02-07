@@ -110,6 +110,7 @@ class PreferenceManager: NSObject {
 //            var scores = [Data]()
 //            scores.append(dataScore)
 //            defaultPref.updateValue(scores, forKey: PreferenceKeys.score)
+        defaultPref.updateValue([ScoreObject](), forKey: PreferenceKeys.score)
             
             standartDefault.register(defaults: defaultPref)
             standartDefault.synchronize()

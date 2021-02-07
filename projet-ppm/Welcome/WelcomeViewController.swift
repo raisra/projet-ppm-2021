@@ -29,7 +29,7 @@ class WelcomeViewController: UIViewController{
     
     static let sharedInstance = WelcomeViewController()
     var welcomeView : WelcomeView?
-    
+    let svc = SettingsViewController.sharedInstance
     
     
     override func viewDidLoad() {
@@ -62,7 +62,7 @@ class WelcomeViewController: UIViewController{
     
     @IBAction  func settingsButtonSelector() {
       
-        let svc = SettingsViewController.sharedInstance
+        
         svc.modalTransitionStyle = .flipHorizontal
         svc.modalPresentationStyle = .fullScreen
         
