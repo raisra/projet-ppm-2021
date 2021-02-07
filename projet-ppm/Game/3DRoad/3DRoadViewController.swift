@@ -65,6 +65,9 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         
         super.init(nibName: nil, bundle: nil)
         self.view.frame = UIScreen.main.bounds
+        
+        
+        initRoads()
     }
 
   
@@ -104,13 +107,14 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
      ajouter les à la vue principale
      commencer les animations
      */
-    func startTheGame(){
+    func initRoads(){
         model3D.deleteAllRoad()
         for _ in 0..<N {
             createRoad(withType: STRAIGHT, level: level)
         }
     }
     
+ 
     
     func stopGeneratingCoins()-> Bool{
         return stopCoins

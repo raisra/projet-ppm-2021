@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-let gOvView = GameOverView(frame : UIScreen.main.bounds)
+
 
 
 
@@ -119,6 +119,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                                                 model3D: modelRoad,
                                                 N: Int(NB_ROWS))
         
+        
         addChild(threeDRoadVC)
         threeDRoadVC.didMove(toParent: self)
         
@@ -129,7 +130,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         view.addSubview(threeDRoadVC.view)
         view.addSubview(gv)
         view.addSubview(userInterfaceView)
-        view.addSubview(gOvView)
+       
 
 
         SoundOnOff = settingView!.soundON()
@@ -151,10 +152,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     override func viewWillAppear(_ animated: Bool) {
         //init des vues
         //init du character
-        userInterfaceView.animationForNumber(imageName: 1) {
-            self.threeDRoadVC.startTheGame()
-            self.startTheGame()
-        }
+        self.startTheGame()
     }
     override func viewWillDisappear(_ animated: Bool) {
         print(#function)
@@ -174,16 +172,19 @@ class GameViewController : UIViewController, GestureManagerProtocol {
   
     
     func startTheGame() {
-        print("start the game")
-        
+    
+        print("start  the game")
         gameIsStoped = false;
-        soundManager.playGameSound()
+        userInterfaceView.showCounter()
         
-        gv.startTheGame();
-        userInterfaceView.startTheGame();
-      
-        gOvView.isHidden = true
-        timer = Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+        userInterfaceView.animationForNumber(imageName: 1) {
+            self.soundManager.playGameSound()
+            self.userInterfaceView.hideCounter()
+            self.userInterfaceView.startTheGame();
+            self.gv.startTheGame();
+            self.timer = Timer.scheduledTimer(timeInterval:  self.duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
+        }
+       
     }
     
    
@@ -192,14 +193,16 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     @objc func stoptheGame() {
         
             gameIsStoped = true;
-            soundManager.stopGameSound()
-            
-            gv.stopTheGame();
             userInterfaceView.stopTheGame();
-            
-            
+        
+            soundManager.stopGameSound()
+          //  threeDRoadVC.stopTheGame()
+            gv.stopTheGame();
             timer?.invalidate()
             timer = nil
+        
+          //  let svc = PauseViewController()
+           // present(svc, animated: true, completion: nil)
     }
     
     
@@ -392,6 +395,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             createObject()
         }
         
+        print("MOVE DOWN")
         modelRoad.movedown()
         
         threeDRoadVC.createRoad(level: level)
@@ -714,8 +718,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             
         
         //soundManager.playGameOverSound()
-        gOvView.isHidden = false
-        view.bringSubviewToFront(gOvView)
+       
         }
     
     

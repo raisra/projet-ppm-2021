@@ -19,11 +19,11 @@ class PreferenceManager: NSObject {
     
     private override init() {
         super.init()
-        
+        self.initialisePreferenceData()
     }
 
     
-    func initialisePreferenceData (){
+    fileprivate func initialisePreferenceData (){
         self.savePreferenceDefault()
         let i = self.loadIntPreference(for: "numberOfLaunchApp") + 1
         self.savePreference(int: i, for: "numberOfLaunchApp")

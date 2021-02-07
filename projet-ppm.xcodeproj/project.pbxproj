@@ -16,6 +16,7 @@
 		2D669DEB25CFFC9F0013037E /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D669DE925CFFC9F0013037E /* ScoreTableViewCell.swift */; };
 		2D669DEC25CFFC9F0013037E /* ScoreTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D669DEA25CFFC9F0013037E /* ScoreTableViewCell.xib */; };
 		2D669DF025D00AA00013037E /* WelcomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D669DEF25D00AA00013037E /* WelcomeView.xib */; };
+		2D669DFA25D053EC0013037E /* PauseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D669DF925D053EC0013037E /* PauseViewController.storyboard */; };
 		2D710FEB25CF41FB00E92D66 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D710FEA25CF41FB00E92D66 /* Config.swift */; };
 		2D71100E25CF8EDA00E92D66 /* UserInterfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D71100D25CF8EDA00E92D66 /* UserInterfaceView.swift */; };
 		2D71101125CF8F8200E92D66 /* UserInterfaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */; };
@@ -41,7 +42,7 @@
 		2DFD103F25AFA9690041E21B /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD103E25AFA9690041E21B /* MessageViewController.swift */; };
 		2DFD104225AFA96F0041E21B /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DFD104125AFA96F0041E21B /* MessageView.swift */; };
 		6FEA59569CD306A2FC1089A2 /* Pods_projet_ppm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB47401B0EDB71A946128E58 /* Pods_projet_ppm.framework */; };
-		CCB4F29525C5FB450036D25E /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB4F29425C5FB450036D25E /* GameOverView.swift */; };
+		CCB4F29525C5FB450036D25E /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB4F29425C5FB450036D25E /* PauseViewController.swift */; };
 		CCB4F29825C609FC0036D25E /* gameover.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCB4F29725C609FC0036D25E /* gameover.wav */; };
 		CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE2A75425C483B000D1062D /* SettingsView.swift */; };
 		D89C5F6525C73584009FC05E /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89C5F6425C73584009FC05E /* ChatService.swift */; };
@@ -111,6 +112,7 @@
 		2D669DE925CFFC9F0013037E /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreTableViewCell.swift; sourceTree = "<group>"; };
 		2D669DEA25CFFC9F0013037E /* ScoreTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScoreTableViewCell.xib; sourceTree = "<group>"; };
 		2D669DEF25D00AA00013037E /* WelcomeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeView.xib; sourceTree = "<group>"; };
+		2D669DF925D053EC0013037E /* PauseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PauseViewController.storyboard; sourceTree = "<group>"; };
 		2D710FC925CF3A7500E92D66 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		2D710FEA25CF41FB00E92D66 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		2D71100D25CF8EDA00E92D66 /* UserInterfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterfaceView.swift; sourceTree = "<group>"; };
@@ -139,7 +141,7 @@
 		2DFD103E25AFA9690041E21B /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		2DFD104125AFA96F0041E21B /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		CB47401B0EDB71A946128E58 /* Pods_projet_ppm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_projet_ppm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CCB4F29425C5FB450036D25E /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		CCB4F29425C5FB450036D25E /* PauseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseViewController.swift; sourceTree = "<group>"; };
 		CCB4F29725C609FC0036D25E /* gameover.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gameover.wav; sourceTree = "<group>"; };
 		CCE2A75425C483B000D1062D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D89C5F6425C73584009FC05E /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
@@ -174,12 +176,13 @@
 		2D3B946825B9732800750421 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2DE0E10C25C4C21E00FC49E9 /* Score */,
+				2D669DF625D0529D0013037E /* GameOver */,
 				2D3F64BC25BA42290061D108 /* 3DRoad */,
 				2D71100D25CF8EDA00E92D66 /* UserInterfaceView.swift */,
 				2DFD102D25AF8E940041E21B /* GameView.swift */,
 				2DFD103025AF8FD60041E21B /* GameViewController.swift */,
 				2D3C83FF25B3816B009394F2 /* ModelRoad.swift */,
-				CCB4F29425C5FB450036D25E /* GameOverView.swift */,
 				2D710FEA25CF41FB00E92D66 /* Config.swift */,
 				2D71101025CF8F8200E92D66 /* UserInterfaceView.xib */,
 			);
@@ -227,6 +230,15 @@
 			path = 3DRoad;
 			sourceTree = "<group>";
 		};
+		2D669DF625D0529D0013037E /* GameOver */ = {
+			isa = PBXGroup;
+			children = (
+				CCB4F29425C5FB450036D25E /* PauseViewController.swift */,
+				2D669DF925D053EC0013037E /* PauseViewController.storyboard */,
+			);
+			path = GameOver;
+			sourceTree = "<group>";
+		};
 		2D710FCA25CF3A7500E92D66 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,7 +266,7 @@
 			path = Score;
 			sourceTree = "<group>";
 		};
-		2DEFE59B25C0C18D009E61C2 /* features */ = {
+		2DEFE59B25C0C18D009E61C2 /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				2D50664125C0467D007EEAFF /* GestureManager.swift */,
@@ -262,10 +274,10 @@
 				2DEFE5AB25C10903009E61C2 /* MotionManager.swift */,
 				2DE0E11625C4C39400FC49E9 /* PreferenceManager.swift */,
 			);
-			path = features;
+			path = Features;
 			sourceTree = "<group>";
 		};
-		2DEFE5A125C0C302009E61C2 /* sound */ = {
+		2DEFE5A125C0C302009E61C2 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
 				CCB4F29725C609FC0036D25E /* gameover.wav */,
@@ -274,7 +286,7 @@
 				2DEFE5A425C0C376009E61C2 /* son.mp3 */,
 				2DEFE5A225C0C376009E61C2 /* squeeze-toy-1.mp3 */,
 			);
-			path = sound;
+			path = Sound;
 			sourceTree = "<group>";
 		};
 		2DFD100725AF8AA40041E21B = {
@@ -299,10 +311,10 @@
 		2DFD101225AF8AA40041E21B /* projet-ppm */ = {
 			isa = PBXGroup;
 			children = (
-				2DE0E10C25C4C21E00FC49E9 /* Score */,
-				2DEFE59B25C0C18D009E61C2 /* features */,
 				2DFD101325AF8AA40041E21B /* AppDelegate.swift */,
 				2DFD101525AF8AA40041E21B /* SceneDelegate.swift */,
+				2DEFE5A125C0C302009E61C2 /* Sound */,
+				2DEFE59B25C0C18D009E61C2 /* Features */,
 				2D3B947925B976B100750421 /* Welcome */,
 				2D3B946A25B9736700750421 /* Messagerie */,
 				2D3B946825B9732800750421 /* Game */,
@@ -310,7 +322,6 @@
 				2DFD101E25AF8AA40041E21B /* LaunchScreen.storyboard */,
 				2DFD102125AF8AA40041E21B /* Info.plist */,
 				2DFD101C25AF8AA40041E21B /* Assets.xcassets */,
-				2DEFE5A125C0C302009E61C2 /* sound */,
 			);
 			path = "projet-ppm";
 			sourceTree = "<group>";
@@ -434,6 +445,7 @@
 			files = (
 				2D669DF025D00AA00013037E /* WelcomeView.xib in Resources */,
 				2D669DEC25CFFC9F0013037E /* ScoreTableViewCell.xib in Resources */,
+				2D669DFA25D053EC0013037E /* PauseViewController.storyboard in Resources */,
 				2DEFE5A925C0C376009E61C2 /* son-etoile.mp3 in Resources */,
 				2DEFE5A625C0C376009E61C2 /* squeeze-toy-1.mp3 in Resources */,
 				2DFD102025AF8AA40041E21B /* LaunchScreen.storyboard in Resources */,
@@ -509,7 +521,7 @@
 				2D50664225C0467D007EEAFF /* GestureManager.swift in Sources */,
 				CCE2A75525C483B000D1062D /* SettingsView.swift in Sources */,
 				2D669DE725CFFC930013037E /* scoreObject.swift in Sources */,
-				CCB4F29525C5FB450036D25E /* GameOverView.swift in Sources */,
+				CCB4F29525C5FB450036D25E /* PauseViewController.swift in Sources */,
 				2DFD102A25AF8B1B0041E21B /* WelcomeView.swift in Sources */,
 				2DFD103125AF8FD60041E21B /* GameViewController.swift in Sources */,
 				2DFD102E25AF8E940041E21B /* GameView.swift in Sources */,

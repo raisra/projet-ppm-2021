@@ -8,19 +8,7 @@
 import Foundation
 import UIKit
 
-public extension UIView
-{
-    static func loadFromXib<T>(withOwner: Any? = nil, options: [UINib.OptionsKey : Any]? = nil) -> T where T: UIView
-    {
-        let bundle = Bundle(for: self)
-        let nib = UINib(nibName: "\(self)", bundle: bundle)
 
-        guard let view = nib.instantiate(withOwner: withOwner, options: options).first as? T else {
-            fatalError("Could not load view from nib file.")
-        }
-        return view
-    }
-}
 
 
 class UserInterfaceView : UIView {
@@ -53,9 +41,10 @@ class UserInterfaceView : UIView {
     override init(frame: CGRect) {
         
         counterView = UIImageView()
-        view  = UserInterfaceView.loadFromXib()
+       
         
         super.init(frame: frame)
+        view = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as! UserInterfaceView
         view?.frame = self.bounds
 
         pauseButton = view!.pauseButton
@@ -162,7 +151,7 @@ class UserInterfaceView : UIView {
     func startTheGame(){
         scoreLabel.isHidden = false
         messageButton.isHidden = false
-        counterView.isHidden = false
+        
 
         startButton.isHidden = true
         pauseButton.isHidden = false
@@ -172,13 +161,22 @@ class UserInterfaceView : UIView {
        // scoreLabel.isHidden = true
         startButton.isHidden = true
        // messageButton.isHidden = true
-        counterView.isHidden = true
+        
 
         startButton.isHidden = false
         pauseButton.isHidden = true
     }
     
     
+    func showCounter() {
+        startButton.isHidden = true
+        counterView.isHidden = false
+    }
+    
+    func hideCounter() {
+        startButton.isHidden = false
+        counterView.isHidden = true
+    }
     
     
     

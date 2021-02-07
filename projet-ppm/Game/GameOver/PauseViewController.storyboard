@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Pause View Controller-->
+        <scene sceneID="6IL-Zo-Gwr">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="57S-eQ-IFV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController id="TI8-eK-xOM" customClass="PauseViewController" customModule="projet_ppm" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="G4m-ZY-t0o">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xNX-Cq-gMJ">
+                                <rect key="frame" x="87" y="133" width="240" height="438"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="n4q-Wp-k0S" kind="embed" id="GaT-xk-PzO"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fr-QA-0wg">
+                                <rect key="frame" x="157" y="629" width="101" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Menu principal"/>
+                                <connections>
+                                    <action selector="mainMenuSelector:" destination="TI8-eK-xOM" eventType="touchUpInside" id="YOB-5i-8Sb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHI-7d-Oap">
+                                <rect key="frame" x="180" y="687" width="55" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Resume"/>
+                                <connections>
+                                    <action selector="resumeSelector:" destination="TI8-eK-xOM" eventType="touchUpInside" id="mu2-Rr-G2a"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6p-fI-cdm">
+                                <rect key="frame" x="183" y="725" width="52" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Restart" image="restart"/>
+                                <connections>
+                                    <action selector="restartSelector:" destination="TI8-eK-xOM" eventType="touchUpInside" id="yra-5X-WKq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aqn-S8-Y0O"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="mainMenuButton" destination="7fr-QA-0wg" id="ykX-cD-Mu9"/>
+                        <outlet property="restartButton" destination="Z6p-fI-cdm" id="YjM-Yv-RzO"/>
+                        <outlet property="resumeButton" destination="LHI-7d-Oap" id="fOo-MN-8oe"/>
+                        <outlet property="scoreView" destination="xNX-Cq-gMJ" id="eIt-5s-yjF"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-149.27536231884059" y="112.5"/>
+        </scene>
+        <!--Score View Controller-->
+        <scene sceneID="Ywf-xa-Xp9">
+            <objects>
+                <viewController id="n4q-Wp-k0S" customClass="ScoreViewController" customModule="projet_ppm" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Yda-XA-owD">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="438"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g3v-Mz-Rg7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="842" y="188"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="restart" width="46" height="47"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

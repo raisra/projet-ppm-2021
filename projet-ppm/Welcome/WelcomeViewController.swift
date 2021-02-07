@@ -53,7 +53,7 @@ class WelcomeViewController: UIViewController{
         gvc.modalTransitionStyle = .flipHorizontal
         gvc.modalPresentationStyle = .fullScreen
         self.present(gvc , animated: true, completion: nil)
-        gOvView.isHidden = true
+       
 
     }
     
@@ -65,7 +65,7 @@ class WelcomeViewController: UIViewController{
         gvc.modalTransitionStyle = .flipHorizontal
         gvc.modalPresentationStyle = .fullScreen
         self.present(gvc , animated: true, completion: nil)
-        gOvView.isHidden = true
+       
     }
     
     
@@ -73,7 +73,7 @@ class WelcomeViewController: UIViewController{
         print( "trying" )
         settingView?.isHidden = false
         welcomeView?.isHidden = true
-        gOvView.isHidden = true
+       
         view.bringSubviewToFront(settingView!)
     }
     
