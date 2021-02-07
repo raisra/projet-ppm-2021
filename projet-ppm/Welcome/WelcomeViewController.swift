@@ -7,10 +7,10 @@
 
 import UIKit
 
-let settingView = SettingsView(frame : UIScreen.main.bounds)
-let welcomView = WelcomeView(frame : UIScreen.main.bounds)
 
 
+
+var  settingView : SettingsView?
 
 let mvcNavVC : UINavigationController = {
     let chatVC = ChatViewController()
@@ -25,7 +25,10 @@ let mvcNavVC : UINavigationController = {
 
 class WelcomeViewController: UIViewController{
     
-    static let sharedInstance = WelcomeViewController();
+    static let sharedInstance = WelcomeViewController()
+    var welcomeView : WelcomeView?
+    var  settingView : SettingsView?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +36,17 @@ class WelcomeViewController: UIViewController{
       //  self.isModalInPresentation = true
        // self.view = WelcomeView(frame: UIScreen.main.bounds)
         
-        self.view.addSubview(welcomView)
-        self.view.addSubview(settingView)
-        settingView.isHidden = true
+        welcomeView = WelcomeView(frame : UIScreen.main.bounds)
+        settingView = SettingsView(frame : UIScreen.main.bounds)
+        
+        self.view.addSubview(welcomeView!)
+        self.view.addSubview(settingView!)
+        settingView!.isHidden = true
     }
     
     
     
-    @objc func startGame() {
+    @IBAction  func startGame() {
         print("Start Game")
         let gvc = GameViewController.sharedInstance
         gvc.modalTransitionStyle = .flipHorizontal
@@ -62,17 +68,17 @@ class WelcomeViewController: UIViewController{
     }
     
     
-    @objc func settingsButtonSelector() {
+    @IBAction  func settingsButtonSelector() {
         print( "trying" )
-        settingView.isHidden = false
-        welcomView.isHidden = true
+        settingView?.isHidden = false
+        welcomeView?.isHidden = true
         gOvView.isHidden = true
-        view.bringSubviewToFront(settingView)
+        view.bringSubviewToFront(settingView!)
     }
     
     
     
-    @objc func scoreButtonSelector () {
+    @IBAction  func scoreButtonSelector () {
         let scoreController = ScoreViewController.sharedInstance
         scoreController.modalTransitionStyle = .coverVertical
         scoreController.modalPresentationStyle = .fullScreen
@@ -81,8 +87,7 @@ class WelcomeViewController: UIViewController{
     
     
     
-
-    @objc func chatButtonSelector() {
+@IBAction func chatButtonSelector() {
         self.present(mvcNavVC, animated: true, completion: nil)
     }
         

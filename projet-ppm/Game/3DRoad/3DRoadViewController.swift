@@ -47,7 +47,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         self.names = names
         self.duration = duration
         
-        switch settingView.value {
+        switch settingView!.value {
         case "Beginner" :
             level = .Beginner
         case "Medium" :

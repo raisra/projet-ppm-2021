@@ -132,7 +132,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         view.addSubview(gOvView)
 
 
-        SoundOnOff = settingView.soundON()
+        SoundOnOff = settingView!.soundON()
         
        
         gestureManager = GestureManager(forView: self.userInterfaceView)
@@ -565,8 +565,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
    
     
     func LevelDuration(){
-        print("VALEUR IS" + settingView.value)
-        switch  settingView.value {
+        print("VALEUR IS" + settingView!.value)
+        switch  settingView!.value {
         case "Beginner" :
             duration = 0.6
         case "Medium" :
@@ -582,7 +582,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
      }
     
     func typeOfLevel(){
-        switch  settingView.value {
+        switch  settingView!.value {
         case "Beginner" :
             level = .Beginner
         case "Medium" :
