@@ -165,4 +165,10 @@ class HumanInterface: UIView {
         
     }
     
+    
+    func resetPower() {
+          powerAnchor.y -= (sizeOfPowerIcons.height * CGFloat(nbPower))
+          nbPower = 0
+      }
+    
 }

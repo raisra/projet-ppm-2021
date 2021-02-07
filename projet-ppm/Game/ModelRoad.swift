@@ -438,6 +438,13 @@ class ModelRoad {
     }
     
     
+    func reset() {
+         for k in 0...nRows {
+             for i in 0..<nColumns {
+                 removeAndDelete(i:i , j : k, type: any)
+             }
+         }
+     }
     
     
     

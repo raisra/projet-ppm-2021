@@ -25,7 +25,7 @@ var SoundOnOff : Bool = true
 class GameViewController : UIViewController, GestureManagerProtocol {
     
     
-    
+    static let sharedInstance = GameViewController();
     // var mvc : MessageViewController
     /*let mvc = { () -> MessageViewController in
         let mvc = MessageViewController()
@@ -49,14 +49,14 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     var thePosition :(Int, Int) = (0,0)
     
     
-    //set of coins
-    var coins: Set<UIImageView> = Set<UIImageView>()
+//    //set of coins
+//    var coins: Set<UIImageView> = Set<UIImageView>()
     
     let backGround : UIImageView = UIImageView()
     
     
     lazy var soundManager = SoundManager()
-    lazy var welcomeV = WelcomeViewController()
+    
 
     var gestureManager : GestureManager?
    
@@ -104,12 +104,12 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         modelRoad = ThreeDRoadModel(param)
         
         //initialise la position du persinnage au mileu de l'ecran
-        thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
+        thePosition = ((Int)(NB_COLUMNS/2) , Int(NB_ROWS - INITIAL_CHAR_POSITION))
         
         let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1 )
         
         
-        gv = GameView(frame: UIScreen.main.bounds, s: duration!, position: posOfCharacter , sizeOfChar: sizeChar)
+        gv = GameView(frame: UIScreen.main.bounds, s: duration!, centerBottom: posOfCharacter , sizeOfChar: sizeChar)
         hv = HumanInterface(frame: UIScreen.main.bounds)
 
 
@@ -132,7 +132,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         view.addSubview(gOvView)
 
 
-        SoundOnOff = sView.soundON()
+        SoundOnOff = settingView.soundON()
         
        
         gestureManager = GestureManager(forView: self.hv)
@@ -142,7 +142,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
 //        motionManager?.delegate = self
 //        motionManager?.start()
         
-        let chatVC = ChatViewController()
+        let chatVC = ChatViewController.sharedInstance
         chatVC.title = "Messagerie"
         mvcNavVC = UINavigationController(rootViewController: chatVC)
         mvcNavVC?.modalTransitionStyle = .flipHorizontal
@@ -210,7 +210,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             gameIsStoped = true
             //gv.viewHandlingCoins.isHidden = true
             //hv.pauseButton.isHidden = false
-            soundManager.stopGameSoung()
+            soundManager.stopGameSound()
             soundManager.playGameOverSound()
             gOvView.isHidden = false
 //            self.view.isHidden = true
@@ -261,19 +261,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                 //le model a créé une piece
                 animated = COINS_ARE_ANIMATED
                 name = "coin"
-                if(coins.isEmpty){
-                    
-                    newObject = UIImageView()
-                    //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
-                    // print("\t\t------------create new coin \(s) \(d)--------------")
-                   
-                }
-                else{
-                    newObject = coins.popFirst()!
-                    
-                    //let s = String(UInt(bitPattern: ObjectIdentifier(newCoin)))
-                    //print("\t\t\t\t\t\t-----------reuse  coin \(s) \(coins.count)------------")
-                }
+                newObject = UIImageView()
+                  
                 break
                 
             case magnet :
@@ -335,9 +324,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     var timerBlink: TimeInterval = 0.0
     
     @objc func updateView() {
-        
-        
-        
+
         //on véerifie si le personnage a sauté
         if wantToJump {
             timerJump -= duration!
@@ -406,7 +393,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                 //on invalide le timer et on en rreceer un autre plus rapide
                 self.timer?.invalidate()
                 duration = duration! * 0.95
-                threeDRoadVC.updateDuration(duration!)
+                threeDRoadVC.setDuration(duration!)
                 
                 self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
             
@@ -418,16 +405,13 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             print("Le personnage se cogne sur un arbre")
             if (SoundOnOff){
                 soundManager.playCollisionSound()
-
             }
             
             malus = true
             gv.animateBlink()
             timerBlink = BLINK_DURATION
         }
-        
-        
-
+ 
         
         
         let lastElemType = modelRoad.getLastElem()?.type
@@ -448,11 +432,12 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         //tentative de suppression de l'objet situé devant le personnage
         //suppression de l'objet située 1 cases devant
         let obj : (type: TypeOfObject, view: UIImageView?)
-        obj = modelRoad.removeObject(i: thePosition.0, j: thePosition.1, type: any)
+        obj = modelRoad.removeObject(i: thePosition.0, j: thePosition.1  - 1 , type: any)
         
         //si aucun n'objet n'est devant le personnage rien à faire
         if (obj == (_EMPTY_, nil)){
-            return}
+            return
+        }
         else {
             
         }
@@ -562,7 +547,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                                            options: .curveEaseIn,
                                            cb : {_ in
                                             coin!.isHidden = true
-                                            self.coins.insert(coin!)
+                                            //self.coins.insert(coin!)
                                            }
                             )
                             
@@ -608,8 +593,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
    
     
     func LevelDuration(){
-        print("VALEUR IS" + sView.value)
-        switch  sView.value {
+        print("VALEUR IS" + settingView.value)
+        switch  settingView.value {
         case "Beginner" :
             duration = 0.6
         case "Medium" :
@@ -625,7 +610,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
      }
     
     func typeOfLevel(){
-        switch  sView.value {
+        switch  settingView.value {
         case "Beginner" :
             level = .Beginner
         case "Medium" :
@@ -687,7 +672,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         thePosition.0 = min(modelRoad.iMax , thePosition.0 + 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
 
-        gv.character.center = s
+        gv.setCharPosition(s)
         print("hello from move right")
         wantToTurnRight = true
     }
@@ -695,7 +680,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     func moveLeft (){
         thePosition.0 = max(modelRoad.iMin, thePosition.0 - 1)
         let s = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
-        gv.character.center = s
+        gv.setCharPosition(s)
         print("hello from move left")
         wantToTurnLeft = true
     }
@@ -714,6 +699,48 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         let pref = PreferenceManager.sharedInstance
         pref.savePreference(score: scoreDataObject, for: PreferenceKeys.score)
     }
+    
+    
+    func gameOver() {
+            gv.stopAnimation()
+            timer?.invalidate()
+            timer=nil
+            gameIsStoped = true
+           
+            modelRoad.reset()
+            soundManager.stopGameSound()
+            hv.resetPower()
+     
+            //effacer toutes les pieces et pouvoir etc
+            //relancer le timer
+            //remettre la duration des controller à la valeur initiale
+        
+            
+            wantToTurnLeft = false
+            wantToTurnRight = false
+            wantToJump = false
+            
+            threeDRoadVC.goingToTurn = false
+            threeDRoadVC.stopCoins = false
+                
+                
+            self.timer?.invalidate()
+            duration = DURATION
+            threeDRoadVC.setDuration(duration!)
+            
+            //scoreViewController.reference(int: hv.getScore(), for key:"scores")
+            thePosition = ((modelRoad.iMax + modelRoad.iMin)/2 , Int(NB_ROWS - INITIAL_CHAR_POSITION))
+            
+            let posOfCharacter = modelRoad.getCenter(i: thePosition.0, j: thePosition.1)
+            
+            gv.hideCharacter()
+            
+           // viewWillAppear(true)
+            //scoreViewController.modalTransitionStyle = .coverVertical
+           // scoreViewController.isModalInPresentation = true
+           // self.present(score, animated: true, completion: nil)
+            
+        }
     
     
 }

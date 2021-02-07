@@ -102,14 +102,18 @@ class PreferenceManager: NSObject {
     // alors il va chercher cette value/key dans le dictionnaire par default
     func savePreferenceDefault() {
         var defaultPref = [String:Any]()
-        defaultPref.updateValue(0, forKey: PreferenceKeys.launche)
-        defaultPref.updateValue(true, forKey: PreferenceKeys.sound)
-        defaultPref.updateValue(true, forKey: PreferenceKeys.gyroscope)
-        defaultPref.updateValue("unknown", forKey: PreferenceKeys.name)
-        defaultPref.updateValue([ScoreObject](), forKey: PreferenceKeys.score)
-        
-        standartDefault.register(defaults: defaultPref)
-        standartDefault.synchronize()
+            defaultPref.updateValue(0, forKey: PreferenceKeys.launche)
+            defaultPref.updateValue(true, forKey: PreferenceKeys.sound)
+            defaultPref.updateValue(true, forKey: PreferenceKeys.gyroscope)
+            defaultPref.updateValue("unknown", forKey: PreferenceKeys.name)
+            let score = ScoreObject(score: 50, date: Date(), name: "ramzi")
+            let dataScore = try! NSKeyedArchiver.archivedData(withRootObject: score, requiringSecureCoding: false)
+            var scores = [Data]()
+            scores.append(dataScore)
+            defaultPref.updateValue(scores, forKey: PreferenceKeys.score)
+            
+            standartDefault.register(defaults: defaultPref)
+            standartDefault.synchronize()
     }
     
 

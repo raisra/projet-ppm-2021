@@ -347,7 +347,7 @@ class ThreeDRoadModel : ModelRoad{
         for i in  0..<nColumns {
             let obj = getObj(i, nRows)
             if obj.getType() != _EMPTY_ {
-                    obj.view?.isHidden = true
+                obj.view?.isHidden = true
             }
         }
         
@@ -448,85 +448,16 @@ class ThreeDRoadModel : ModelRoad{
         }
         print("&&&&&&&&&&&&&&&&&&&&")
     }
+    
+    
+    
+    
+    
+    override func reset() {
+        super.reset()
+        nbElements = 0
+        duration = DURATION
+    }
+    
 }
 
-
-
-//
-//    //ajoute à la verticiale
-//   private func append(elem: Frame){
-//       // elem.setIndex(nbElements)
-//        let e = getLastElem()
-//        let f = computeFrame(lastElem: e)
-//        elem.setFrame(frame : f)
-//        let d = computeYTranslation(lastElem: e)
-//        elem.setYTranslation(d)
-//        let v = computeSpeed()
-//        elem.duration = v
-//        let s = computeSCale()
-//    elem.scaleH = s.scaleH
-//    elem.scaleW = s.scaleW
-//    print ( "data for index \(elem.index) : Time:\(elem.duration) TranslateY: \(elem.yTranslate) Scale: \(elem.scaleH) \(elem.scaleW) Y: \(elem.frame.origin.y)")
-//
-//    print ( "data for index \(elem.index) : Time:\(elem.duration) TranslateY: \(computeYTranslation(index: elem.index)) Scale: \(computeSCale(index: elem.index).scaleH) \(computeSCale(index: elem.index).scaleW) Y: \(computeFrame(index: elem.index).origin.y)")
-//
-//    print("--------------------------------------------")
-//        elementsToDisplay.append(elem)
-//        nbElements += 1
-//
-//   // print ( "Index \(elem.index):  posY : \(elem.frame.origin.y)")
-//    }
-    
-
-
-
-
-
-
-
-
-//    func computeFrame(lastElem : Frame?) -> CGRect {
-//
-//        var o : CGPoint
-//        var s : CGSize
-//        var res : CGRect
-//        let w = UIScreen.main.bounds.size.width
-//        let h = UIScreen.main.bounds.size.height
-//
-//        if lastElem == nil {
-//            o = CGPoint(x: (w-size0.width)/2.0, y: h-size0.height)
-//            s = size0
-//            return CGRect(origin: o, size: s)
-//        }
-//
-//        o = lastElem!.frame!.origin
-//        s = lastElem!.frame!.size
-//
-//        if lastElem == nil || !(lastElem?.type() == TypeOfObject.turnLeft || lastElem?.type() == TypeOfObject.turnRight) {
-//             res = CGRect( x: o.x + s.width*(1 - factor)/2.0
-//                           , y: o.y - factor*s.height
-//                           , width: s.width*factor
-//                           , height: s.height*factor
-//            )
-//        }
-//        else {
-//            //on a une rotation
-//            var x : CGFloat
-//            if lastElem!.type() == TypeOfObject.turnLeft {
-//                x =  o.x - s.width*factor
-//            }
-//            else {
-//                x = o.x + s.width
-//            }
-//
-//            res =  CGRect( x: x , y: o.y, width: s.width, height: s.height)
-//        }
-//
-//
-//        return res
-//    }
-    
-
-    
-
-    

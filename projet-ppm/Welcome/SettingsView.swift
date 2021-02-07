@@ -93,8 +93,8 @@ class SettingsView : UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     @objc func buttondisplay(){
-        sView.isHidden = true
-        wView.isHidden = false
+        settingView.isHidden = true
+        welcomView.isHidden = false
     }
         
 }

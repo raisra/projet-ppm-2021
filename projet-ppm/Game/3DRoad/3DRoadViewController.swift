@@ -47,7 +47,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         self.names = names
         self.duration = duration
         
-        switch sView.value {
+        switch settingView.value {
         case "Beginner" :
             level = .Beginner
         case "Medium" :
@@ -74,8 +74,9 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         fatalError("init(coder:) has not been implemented")
     }
     
+   
     
-    func updateDuration(_ d : TimeInterval){
+    func setDuration(_ d : TimeInterval){
         duration = d
     }
     

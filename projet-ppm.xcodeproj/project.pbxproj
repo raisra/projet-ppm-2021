@@ -242,8 +242,8 @@
 			children = (
 				2D710FEF25CF53F000E92D66 /* scoreObject.swift */,
 				2DE0E11025C4C21E00FC49E9 /* ScoreModel.swift */,
-				2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */,
 				2DE0E10D25C4C21E00FC49E9 /* ScoreViewController.swift */,
+				2DE0E10F25C4C21E00FC49E9 /* ScoreView.swift */,
 				2D710FF325CF56D200E92D66 /* ScoreTableViewCell.swift */,
 				2D710FF625CF56D800E92D66 /* ScoreTableViewCell.xib */,
 			);

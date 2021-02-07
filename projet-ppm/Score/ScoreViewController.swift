@@ -7,10 +7,11 @@
 
 import UIKit
 
-class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, GestureManagerProtocol {
+class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    static let sharedInstance = ScoreViewController();
     
-    
+    var gesture: GestureManager?
     let scoreModel = ScoreModel(scoreArray: PreferenceManager.sharedInstance.loadScorePreference(for: PreferenceKeys.score))
     let scoreView  = ScoreView(frame: .zero)
 
@@ -20,13 +21,10 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Do any additional setup after loading the view.
         self.scoreView.tableView?.delegate = self
         self.scoreView.tableView?.dataSource = self
+        self.scoreView.backButton.addTarget(self,
+                                            action: #selector(backMenu),
+                                            for: .touchUpInside)
         
-        
-        // gestion du geste vers le bas pour quiter
-        let gesture = GestureManager(forView: self.view)
-        gesture.delegate = self
-        
-        //self.scoreView.tableView?.tableFooterView = UIView(frame: .zero)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +42,9 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.scoreModel.getScoreArray()?.count ?? 0
+        let size = self.scoreModel.getScoreArray()?.count ?? 0
+        self.scoreView.footerViewLabel.isHidden = size > 0 ? true : false
+        return size
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,7 +81,8 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     
-    func moveUp() {
+    @objc func backMenu() {
         self.dismiss(animated: true, completion: nil)
     }
+    
 }

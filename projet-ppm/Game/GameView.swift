@@ -44,7 +44,7 @@ class GameView: UIView {
     var speed : TimeInterval
     
     
-     init(frame: CGRect, s: TimeInterval, position : CGPoint , sizeOfChar : CGSize) {
+     init(frame: CGRect, s: TimeInterval, centerBottom : CGPoint , sizeOfChar : CGSize) {
         self.speed = s
         super.init(frame: frame)
         roadImage.contentMode = .scaleToFill
@@ -57,7 +57,7 @@ class GameView: UIView {
         
         roadImage.frame = frame
         blurr.frame = frame
-        initPersonnage(position: position, size: sizeOfChar)
+        initPersonnage(centerBottom: centerBottom, sizeOfChar: sizeOfChar)
         
        
         addSubview(objectsView)
@@ -139,9 +139,13 @@ class GameView: UIView {
 
     }
     
-    private func initPersonnage(position : CGPoint , size : CGSize)  {
-        character.frame = CGRect(origin: CGPoint(), size: size)
-        character.center = position
+    public func setCharPosition(_ centerBottom : CGPoint){
+        character.center = CGPoint(x: centerBottom.x , y: centerBottom.y - character.frame.size.height/2)
+    }
+    
+    private func initPersonnage(centerBottom : CGPoint , sizeOfChar : CGSize)  {
+        character.frame = CGRect(origin: CGPoint(), size: sizeOfChar)
+        setCharPosition(centerBottom);
         character.isHidden = true
     }
     

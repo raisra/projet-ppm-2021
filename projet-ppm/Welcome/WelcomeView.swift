@@ -78,12 +78,15 @@ class WelcomeView : UIView{
    
     
         
-    func drawButton(button: UIButton, below aboveButton :UIButton, offset:CGFloat = 10.0) {
+    func drawButton(button: UIButton, below aboveButton :UIButton, offset:CGFloat = 10.0, shadow : Bool = true) {
         let (width, height):(CGFloat, CGFloat) = (130.0, 50.0)
         button.frame    = CGRect(x: 0, y: 0, width: width, height: height)
         button.center   = CGPoint(x: self.center.x,
                                   y: aboveButton.center.y + height + offset)
-        self.addShadow(vue: button)
+        if shadow {
+            self.addShadow(vue: button)
+        }
+       
     }
     
     
@@ -113,11 +116,9 @@ class WelcomeView : UIView{
         playButton.center   = self.center
         playButton.center.y = rect.height * 1 / 3
         
-        
-        self.drawButton(button: scoreButton, below: playButton)
-        self.drawButton(button: settingsButton, below: scoreButton)
-        self.drawButton(button: chatButton, below: settingsButton)
-        
+        self.drawButton(button: settingsButton, below: playButton, shadow: false)
+        self.drawButton(button: scoreButton, below: settingsButton)
+        self.drawButton(button: chatButton, below: scoreButton)
     }
     
     

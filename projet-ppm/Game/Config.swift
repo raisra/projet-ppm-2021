@@ -17,7 +17,7 @@ import UIKit
 let DISTANCE_OF_MAGNET = 5
 let TTL_POWER : TimeInterval = 5.0
 let COINS_ARE_ANIMATED = false
-let INITIAL_CHAR_POSITION : CGFloat = 1
+let INITIAL_CHAR_POSITION : CGFloat = 0
 let BACK_GROUND_IMAGE = "aboveTheSky"
 
 let NB_ROWS : CGFloat = 10
@@ -32,7 +32,7 @@ let NAMES : [TypeOfObject: String] = [STRAIGHT:"pave", BRIDGE:"bridge", _EMPTY_:
 
 
 let sizeIm = resizeAccordingToScreen(size : CGSize(width: 400, height: 100) , factor : 1)
-let sizeChar  = resizeAccordingToScreen (size : CGSize(width: 400, height: 900) , factor : 0.5)
+let sizeChar  = resizeAccordingToScreen (size : CGSize(width: 400, height: 900) , factor : 0.4)
 
 
 
