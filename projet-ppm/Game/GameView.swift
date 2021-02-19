@@ -25,21 +25,7 @@ class GameView: UIView {
     // la vue contenant tous les objets
     let objectsView : UIView = UIView()
     
-    //ajout de flou
-    let gradientLayer : CAGradientLayer = {
-
-        let initialColor : CGColor = UIColor.blue.cgColor
-        let fincalColor : CGColor = CGColor.init(red: 0, green: 0.2, blue: 0.7, alpha: 0)
-
-        let gradientLayer =  CAGradientLayer()
-        gradientLayer.type = .axial
-        gradientLayer.colors = [initialColor, fincalColor]
-        gradientLayer.locations = [0, 0.7]
-        gradientLayer.frame = UIScreen.main.bounds
-        
-
-        return gradientLayer
-    }()
+   
     
     var speed : TimeInterval
     
@@ -62,8 +48,6 @@ class GameView: UIView {
        
         addSubview(objectsView)
         addSubview(character)
-        
-        self.layer.addSublayer(gradientLayer)
     }
     
     required init?(coder: NSCoder) {
@@ -114,20 +98,20 @@ class GameView: UIView {
     }
     
     func animationForTransparency() {
-        UIView.animate(withDuration: TRANSPARENCY_DURATION, delay: 0, options: [.allowAnimatedContent] ) {
+        UIView.animate(withDuration: TRANSPARENCY_DURATION, delay: 0, options: [.allowAnimatedContent] , animations:  {
             self.character.alpha = 0.2
-        }completion: { (_) in
+        }, completion: { (_) in
             self.character.alpha = 1
-        }
+        })
     }
 
     
     func animateBlink() {
-        UIView.animate(withDuration: BLINK_DURATION, delay: 0, options: [.allowAnimatedContent, .autoreverse] ) {
+        UIView.animate(withDuration: BLINK_DURATION, delay: 0, options: [.allowAnimatedContent, .autoreverse] , animations:  {
             self.character.alpha = 0.5
-        } completion: { (_) in
+        },  completion: { (_) in
             self.character.alpha = 1
-        }
+        })
     }
     
     func animationMove(to position : CGPoint) {

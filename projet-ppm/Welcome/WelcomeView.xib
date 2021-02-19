@@ -2,10 +2,10 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
+        <deployment version="4144" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+      
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -59,7 +59,7 @@
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            
             <constraints>
                 <constraint firstItem="VoF-Kj-bIF" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="DGa-e8-raz"/>
                 <constraint firstItem="VoF-Kj-bIF" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="NM2-LD-k45"/>
@@ -83,8 +83,6 @@
         <image name="playButton" width="1949" height="698"/>
         <image name="settings" width="544" height="214"/>
         <image name="splash_screen" width="1536" height="2048"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+      
     </resources>
 </document>

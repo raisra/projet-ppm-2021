@@ -101,14 +101,14 @@ class ModelRoad {
     var nRows : Int
     var nColumns : Int
     
-    var D : CGFloat = 0
-    var d : CGFloat = 0
+    var D : CGFloat
+    var d : CGFloat
     
     var W : CGFloat
     var H : CGFloat
     
-    var bSize : CGFloat = 10.0
-    var fSize : CGFloat = 100.0
+    var bSize : CGFloat
+    var fSize : CGFloat
     
     var roadGrid : [Frame]
     
@@ -439,6 +439,10 @@ class ModelRoad {
     
     
     func reset() {
+        repeatCount = 0
+        prevRandomValue = [TypeOfObject](repeating: _EMPTY_, count: nColumns)//utiliser colonne au lieu de 3
+        prevR = 0
+        
          for k in 0...nRows {
              for i in 0..<nColumns {
                  removeAndDelete(i:i , j : k, type: any)

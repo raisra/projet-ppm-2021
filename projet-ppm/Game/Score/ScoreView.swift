@@ -32,7 +32,7 @@ class ScoreView: UIView {
         
         
         topSubView.backgroundColor = .lightGray
-        topSubView.text = "     Scores"
+        topSubView.text = "Scores"
         topSubView.font = UIFont.boldSystemFont(ofSize: 35)
         topSubView.textAlignment = .left
         topSubView.layer.borderWidth = 1
@@ -42,6 +42,7 @@ class ScoreView: UIView {
         
         
         backButton.setImage(closeButtonImage, for: .normal)
+        backButton.isHidden = true
         addSubview(backButton)
     }
     

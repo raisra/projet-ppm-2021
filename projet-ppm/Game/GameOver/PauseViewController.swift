@@ -12,70 +12,60 @@ import UIKit
 
 
 class PauseViewController: UIViewController {
-    
-    
 
-    
     @IBOutlet weak var mainMenuButton: UIButton!
     
     @IBOutlet weak var resumeButton: UIButton!
     
     @IBOutlet weak var restartButton: UIButton!
     
+    @IBOutlet weak var scoreView: UIView!
     
+
+    var  gameViewController : GameViewController?
     
+ 
+
     @IBAction func mainMenuSelector(_ sender: Any) {
-        present(WelcomeViewController.sharedInstance, animated: true, completion: nil)
+        
+        let alert = UIAlertController(title: "Voulez vous revenir au menu principal?", message: "Votre partie sera perdue", preferredStyle: .alert)
+        
+        
+        alert.addAction(UIAlertAction(title: "Non", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Oui", style: .default, handler:{ action in
+            self.dismiss(animated: false, completion: nil)
+            self.gameViewController?.reset()
+            self.gameViewController!.dismiss(animated: false, completion: nil)
+        }))
+            
+       
+        
+        self.present(alert, animated: true)
     }
     
     
     @IBAction func resumeSelector(_ sender: Any) {
-        present(GameViewController.sharedInstance, animated: true, completion: nil)
+        //revenir au jeu
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func restartSelector(_ sender: Any) {
-        present(GameViewController.sharedInstance, animated: true, completion: nil)
-    }
-    
-    @IBOutlet weak var scoreView: UIView!
-    
-    
-    
-    
-    let GameOver = UIImageView()
-    
-    let h = UIScreen.main.bounds.height
-    let w = UIScreen.main.bounds.width
-    
-    
-    var  pauseViewController : PauseViewController?
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        //revenir au jeu et faire un reset
         
-        let storyboard = UIStoryboard(name: "PauseViewController", bundle: nil)
-        pauseViewController = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as!PauseViewController
-        
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
-    }
-    
-    override func viewDidLoad() {
-        
-        
-        addChild(pauseViewController!)
-        
-       // view.addSubview(pauseViewController!.view)
-        pauseViewController!.didMove(toParent: self)
-    }
-    
-    required init?(coder: NSCoder) {   
-        super.init(coder: coder)
-      
+        dismiss(animated: true, completion: {
+            self.gameViewController!.reset()
+            self.gameViewController!.startTheGame()})
     }
     
   
-    
+    func showResumeButton(){
+        resumeButton.isHidden = false
+    }
 
+    func hideResumeButton(){
+        resumeButton.isHidden = true
+    }
     
 }
 

@@ -31,6 +31,10 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewWillAppear(animated)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hideCloseButton()
+    }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         self.view.setNeedsDisplay()
@@ -82,4 +86,11 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.dismiss(animated: true, completion: nil)
     }
     
+    func hideCloseButton() {
+        scoreView.backButton.isHidden = true
+    }
+    
+    func showCloseButton() {
+        scoreView.backButton.isHidden = false
+    }
 }

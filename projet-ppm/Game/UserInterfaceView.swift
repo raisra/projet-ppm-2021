@@ -18,7 +18,7 @@ class UserInterfaceView : UIView {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var startButton: UIButton!
-    @IBOutlet weak var backToMainButton: UIButton!
+
     
     var counterView : UIImageView
 
@@ -52,7 +52,7 @@ class UserInterfaceView : UIView {
         startButton = view!.startButton
         messageButton = view!.messageButton
         scoreLabel = view!.scoreLabel
-        backToMainButton = view!.backToMainButton
+   
         
         pauseButton.isHidden = true
         startButton.isHidden = true
@@ -141,11 +141,11 @@ class UserInterfaceView : UIView {
     }
     
     
-    func resetPower() {
-          powerAnchor.y -= (sizeOfPowerIcons.height * CGFloat(nbPower))
-          nbPower = 0
+    func reset() {
+        powerAnchor.y -= (sizeOfPowerIcons.height * CGFloat(nbPower))
+        nbPower = 0
         setScore(score: 0)
-      }
+    }
     
     
     

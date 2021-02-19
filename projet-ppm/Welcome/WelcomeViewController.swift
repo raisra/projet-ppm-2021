@@ -13,16 +13,16 @@ import UIKit
 
 
 
-let mvcNavVC : UINavigationController = {
-    let chatVC = ChatViewController()
-    chatVC.title = "Messagerie"
-    
-    var nv = UINavigationController(rootViewController: chatVC)
-    nv.modalTransitionStyle = .flipHorizontal
-    nv.modalPresentationStyle = .fullScreen
-    
-    return nv
-}()
+//let mvcNavVC : UINavigationController = {
+//  //  let chatVC = ChatViewController()
+//   // chatVC.title = "Messagerie"
+//    
+//   // var nv = UINavigationController(rootViewController: chatVC)
+//    nv.modalTransitionStyle = .flipHorizontal
+//    nv.modalPresentationStyle = .fullScreen
+//    
+//    return nv
+//}()
 
 
 class WelcomeViewController: UIViewController{
@@ -43,26 +43,19 @@ class WelcomeViewController: UIViewController{
         let gvc = GameViewController.sharedInstance
         gvc.modalTransitionStyle = .flipHorizontal
         gvc.modalPresentationStyle = .fullScreen
-        self.present(gvc , animated: true, completion: nil)
+        self.present(gvc , animated: true, completion: {
+            gvc.reset()
+            gvc.startTheGame()
+        })
        
 
     }
     
     
-    
-    @objc func RestartGame() {
-        print("ReStart Game")
-        let gvc = GameViewController.sharedInstance
-        gvc.modalTransitionStyle = .flipHorizontal
-        gvc.modalPresentationStyle = .fullScreen
-        self.present(gvc , animated: true, completion: nil)
-       
-    }
+
     
     
     @IBAction  func settingsButtonSelector() {
-      
-        
         svc.modalTransitionStyle = .flipHorizontal
         svc.modalPresentationStyle = .fullScreen
         
@@ -81,13 +74,14 @@ class WelcomeViewController: UIViewController{
         if UIDevice.current.userInterfaceIdiom == .pad {
             scoreController.modalPresentationStyle = .formSheet
         }
+        scoreController.showCloseButton()
         self.present(scoreController, animated: true, completion: nil)
     }
     
     
     
 @IBAction func chatButtonSelector() {
-        self.present(mvcNavVC, animated: true, completion: nil)
+       // self.present(mvcNavVC, animated: true, completion: nil)
     }
         
     
