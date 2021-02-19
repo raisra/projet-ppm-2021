@@ -681,7 +681,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         threeDRoadVC.goingToTurn = false
         threeDRoadVC.stopCoins = false
-        
+        threeDRoadVC.initRoads()
         
         
         duration = DURATION

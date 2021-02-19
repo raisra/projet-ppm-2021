@@ -89,13 +89,25 @@ class PreferenceManager: NSObject {
             var scores = standartDefault.array(forKey: PreferenceKeys.score) as! [NSData]
             
             scores.append(dataScore as NSData)
-            self.savePreference(scores: scores, for: key)
+            let scoresSorted = self.sortScore(scores: scores)
+            self.savePreference(scores: scoresSorted, for: key)
         }catch {
             print ("EXCEPTION CATCH : line " + String(#line), terminator: " from ")
         }
-
-        
     }
+    
+
+    fileprivate func sortData(data_1:NSData, data_2:NSData) -> Bool {
+        // decharchive data_1 en scoreDataObject
+        let score_1 = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data_1 as Data) as! ScoreObject
+        let score_2 = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data_2 as Data) as! ScoreObject
+        return score_1.score > score_2.score
+    }
+
+    fileprivate func sortScore(scores: [NSData]) -> [NSData]{
+        return scores.sorted(by: sortData)
+    }
+
     
     // n'enregistre par default, mais si userDefault load une value/key qui n'exite pas
     // alors il va chercher cette value/key dans le dictionnaire par default

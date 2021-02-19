@@ -144,6 +144,7 @@ class UserInterfaceView : UIView {
     func resetPower() {
           powerAnchor.y -= (sizeOfPowerIcons.height * CGFloat(nbPower))
           nbPower = 0
+        setScore(score: 0)
       }
     
     

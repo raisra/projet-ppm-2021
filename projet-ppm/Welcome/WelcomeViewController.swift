@@ -75,7 +75,7 @@ class WelcomeViewController: UIViewController{
     
     
     @IBAction  func scoreButtonSelector () {
-        let scoreController = ScoreViewController.sharedInstance
+        let scoreController = ScoreViewController()
         scoreController.modalTransitionStyle = .coverVertical
         scoreController.modalPresentationStyle = .fullScreen
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -91,5 +91,6 @@ class WelcomeViewController: UIViewController{
     }
         
     
+
     
 }
