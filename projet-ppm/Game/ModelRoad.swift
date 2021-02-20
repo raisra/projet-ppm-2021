@@ -43,7 +43,7 @@ class Frame {
     
     var yTranslate : CGFloat = 0.0
     var xTranslate : CGFloat = 0.0
-    var duration  :TimeInterval = 0.0
+    
     var scaleH : CGFloat = 0.0
     var scaleW : CGFloat = 0.0
     var index : Int = 0
@@ -107,7 +107,7 @@ class ModelRoad {
     var W : CGFloat
     var H : CGFloat
     
-    var bSize : CGFloat
+    
     var fSize : CGFloat
     
     var roadGrid : [Frame]
@@ -131,8 +131,7 @@ class ModelRoad {
         var W : CGFloat
         
         var D : CGFloat
-        var bSize : CGFloat
-        var fSize : CGFloat 
+        var sizeCoin : CGSize
         var useData: Bool = false
         
         var size0 : CGSize
@@ -152,8 +151,8 @@ class ModelRoad {
         
         self.D = p.D
         d = self.D/CGFloat(p.nColumns)
-        self.bSize = p.bSize
-        self.fSize = p.fSize
+       
+        self.fSize = p.sizeCoin.width
         
         let i0 = (p.W - p.D)/2.0
         for i_ in 0..<nColumns {
@@ -267,7 +266,7 @@ class ModelRoad {
     
     
     func G(_ k: CGFloat) -> CGFloat {
-        return  bSize + (fSize - bSize) * CGFloat(k)/CGFloat(nRows)
+        return  fSize * pow(factor, CGFloat(nRows) - k)
     }
     
 //    func getFrame(i: Int , j: Int) -> (CGSize, CGPoint) {
@@ -310,7 +309,7 @@ class ModelRoad {
                 
                 //TODO CE CODE NE DEVRAIT PAS ETRE DS LE MODEL
               
-                UIView.animate(withDuration: DURATION, delay: 0, options: .curveLinear, animations:  {
+                UIView.animate(withDuration: duration, delay: 0, options: .curveLinear, animations:  {
                     prevObj.view?.center = obj.center!
                     prevObj.view?.frame.size = obj.size!
                 }, completion: {_ in

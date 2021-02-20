@@ -47,9 +47,6 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         
         super.init(nibName: nil, bundle: nil)
         self.view.frame = UIScreen.main.bounds
-        
-        
-        initRoads()
     }
 
   
@@ -92,7 +89,8 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
     func initRoads(){
         model3D.deleteAllRoad()
         for _ in 0..<N {
-            createRoad(withType: STRAIGHT, level: level)
+            _ = createRoad(withType: STRAIGHT, level: level)
+          //  ThreeDRoadModel.startAnimation(elem: road)
         }
     }
     
@@ -104,7 +102,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
    
     
     //get called by the timer every duration
-    func createRoad(withType : TypeOfObject? = nil, level : Level){
+    func createRoad(withType : TypeOfObject? = nil, level : Level) -> Frame?{
 
         var t : TypeOfObject? = withType
         
@@ -123,7 +121,7 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
             getImages(t!)
         }
         
-        if buffer.isEmpty { return }
+        if buffer.isEmpty { return nil }
         //on vide le buffer
         let (view, type) = buffer[0]
         let frame = model3D.append(im: view, type: type)
@@ -133,11 +131,11 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
             view.frame = frame!.frame!
             self.view.addSubview(view)
             self.view.sendSubviewToBack(view)
-            model3D.initAnimation(elem: frame!)
-            model3D.startAnimation(elem: frame!)
-            
+          
             buffer.removeFirst()
         }
+        
+       return frame
     }
     
  
@@ -149,11 +147,13 @@ class ThreeDRoadViewController : UIViewController , CAAnimationDelegate{
         stopCoins = false
         
         for _ in 1...5 {
-            createRoad(withType: STRAIGHT, level: level)
+            let road = createRoad(withType: STRAIGHT, level: level)
+            ThreeDRoadModel.startAnimation(elem: road)
         }
         
         for _ in 1...N {
-            createRoad(level: level)
+            let road = createRoad(level: level)
+            ThreeDRoadModel.startAnimation(elem: road)
         }
     }
      

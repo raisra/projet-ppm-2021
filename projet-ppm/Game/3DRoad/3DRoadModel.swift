@@ -20,23 +20,20 @@ class ThreeDRoadModel : ModelRoad{
     override init(_ p: ModelRoad.Param) {
         super.init(p)
         
-        let scale : CGFloat = (p.fSize - p.bSize)/CGFloat(nRows)
         
         for k in 0...nRows {
             for i in iMin...iMax {
                 //
                 let f = self.getObj(i, k)
-                
-                let s = computeSpeed()
+        
                 let o = computeOpacity(index: nRows-k)
-                let sc = 1.0 + scale/( p.bSize + scale * CGFloat(k) )
+                let sc = computeSCale()
                 let x = computeXTranslation(i: i, j: k)
                 let y = computeYTranslation(i: i, j: k, factor: 1)
                 
-                f.duration = s
                 f.opacity = o
-                f.scaleH = sc
-                f.scaleW = sc
+                f.scaleH = sc.scaleH
+                f.scaleW = sc.scaleW
                 f.yTranslate = y
                 f.xTranslate = x
                 f.setType(_EMPTY_)
@@ -48,13 +45,11 @@ class ThreeDRoadModel : ModelRoad{
             let f = self.getObj(0, k)
             
             let fr = computeFrame(index: nRows-k)
-            let s = computeSpeed()
             let o = computeOpacity(index: nRows-k)
             let sc = computeSCale()
             let y = computeYTranslation(index: nRows - k)
             let size = computeSize(index: nRows - k)
             f.frame = fr
-            f.duration = s
             f.opacity = o
             f.scaleH = sc.scaleH
             f.scaleW = sc.scaleW
@@ -89,9 +84,7 @@ class ThreeDRoadModel : ModelRoad{
 //    }
     
     
-    func computeSpeed() -> TimeInterval {
-        return  duration
-    }
+ 
     
     func computeOpacity(index : Int) -> CGFloat {
 //        let i : CGFloat = CGFloat(index)
@@ -249,21 +242,19 @@ class ThreeDRoadModel : ModelRoad{
         }
     
         let obj = super.addObj(im, type: type, i: 0, j: nRows - nbElements)
-        startAnimation(elem: obj)
         nbElements += 1
     
         return obj
     }
     
     
-    func startAnimation(elem: Frame){
-        elem.view?.layer.add(elem.transformation!, forKey: "translationAndResize")
+    static func startAnimation(elem: Frame?){
+        elem?.view?.layer.add(elem!.transformation!, forKey: "translationAndResize")
     }
 
     
     
     func initAnimation(elem : Frame){
-        
         var center : CGPoint
         if elem.index_j == -1 {
             center = CGPoint(x:elem.frame!.midX, y:elem.frame!.midY )
@@ -290,11 +281,11 @@ class ThreeDRoadModel : ModelRoad{
 
         let transformGroup : CAAnimationGroup = CAAnimationGroup()
 
-        transformGroup.duration = CFTimeInterval(elem.duration)
+        transformGroup.duration = duration
         transformGroup.repeatCount = 1
         transformGroup.autoreverses = false
 
-       
+       print("DURARIONNNNN \(duration)")
         transformGroup.animations = [translateX, translateY, scaleX, scaleY]
         
         if elem.index >= Int(NB_ROWS) - 1 {
@@ -374,7 +365,7 @@ class ThreeDRoadModel : ModelRoad{
                     view?.center = obj.center!
                 }
                
-                startAnimation(elem: obj)
+                ThreeDRoadModel.startAnimation(elem: obj)
                 //view!.layer.addSublayer(viewToAnimate.layer)
                 
                 j -= 1
@@ -444,7 +435,7 @@ class ThreeDRoadModel : ModelRoad{
         }
         print("&&&&&&&&&&&&&&&&&&&&")
         for j in 0..<nbElements {
-            print("elem \(nRows - j): \(self.getObj(0, nRows - j).type)")
+            print("elem \(nRows - j): \(String(describing: self.getObj(0, nRows - j).type))")
         }
         print("&&&&&&&&&&&&&&&&&&&&")
     }
@@ -453,10 +444,10 @@ class ThreeDRoadModel : ModelRoad{
     
     
     
-    override func reset() {
+   func reset(duration: TimeInterval) {
         super.reset()
         nbElements = 0
-        duration = DURATION
+        self.duration = duration
     }
     
 }

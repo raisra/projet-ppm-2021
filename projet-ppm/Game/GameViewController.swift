@@ -127,7 +127,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                                                       W: UIScreen.main.bounds.width,
                                                       
                                                       D: D,
-                                                      bSize: 5, fSize:50,
+                                                      sizeCoin: sizeCoin,
                                                       useData: false,
                                                       size0: sizeIm,
                                                       factor: factor, duration: duration!)
@@ -189,8 +189,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        //init des vues
-        //init du character
+        gameOverImg.isHidden = true
     }
     override func viewWillDisappear(_ animated: Bool) {
         print(#function)
@@ -213,6 +212,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         print("start  the game")
         gameIsStoped = false;
+        gameOverImg.isHidden = true
         userInterfaceView.showCounter()
         
         userInterfaceView.animationForNumber(imageName: 1) {
@@ -233,7 +233,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         gameIsStoped = true;
         gestureManager?.delegate = nil
-
+        
         userInterfaceView.stopTheGame();
         
         soundManager.stopGameSound()
@@ -259,7 +259,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     /**
      genere aleatoirement un objet qur le parcours
      */
-    func createObject(){
+    func createObject() -> Frame?{
         //on commence par générer un objet grace au model
         let a = modelRoad.generateNewObject(level: 0)
         
@@ -312,9 +312,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             gv.objectsView.sendSubviewToBack(newObject!)
             //l'objet est ajouté au model
             let f = modelRoad.addObj(newObject!, type: type, i: colonne + modelRoad.iMin , j: 0)
-            modelRoad.initAnimation(elem: f)
-            modelRoad.startAnimation(elem: f)
+           
+           return f
         }
+        return nil
     }
     
     
@@ -349,7 +350,6 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         if (t == TURNLEFT && !wantToTurnLeft) || (t == TURN_RIGHT && !wantToTurnRight) {
             //le joueur a perdu
             print("l'utilisateur va perdre")
-            soundManager.playEndSound()
             gameOver()
             return
         }
@@ -367,10 +367,6 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             
             nbOfTurn += 1
             
-            //level = Level(rawValue: Int(nbOfTurn/10)) ?? .Hard
-            
-            print("The Game is becoming Harder")
-            threeDRoadVC.turn(level: level)
             wantToTurnLeft = false
             wantToTurnRight = false
             
@@ -378,6 +374,10 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             self.timer?.invalidate()
             duration = duration! * 0.95
             threeDRoadVC.setDuration(duration!)
+            modelRoad.reset(duration: duration!)
+            
+            print("The Game is becoming Harder")
+            threeDRoadVC.turn(level: level)
             
             self.timer =  Timer.scheduledTimer(timeInterval:  duration!, target: self, selector: #selector(self.updateView), userInfo: nil, repeats: true)
             
@@ -396,18 +396,18 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         }
         
         
-        
-        let lastElemType = modelRoad.getLastElem()?.type
-        if !threeDRoadVC.stopGeneratingCoins() && (lastElemType == STRAIGHT || lastElemType == BRIDGE){
-            print("create object over \(lastElemType)")
-            createObject()
-        }
-        
         print("MOVE DOWN")
         modelRoad.movedown()
         
-        threeDRoadVC.createRoad(level: level)
+        let lastElemType = modelRoad.getLastElem()?.type
+        if !threeDRoadVC.stopGeneratingCoins() && (lastElemType == STRAIGHT || lastElemType == BRIDGE){
+            print("create object over \(String(describing: lastElemType))")
+            let obj = createObject()
+            ThreeDRoadModel.startAnimation(elem: obj)
+        }
         
+        let road = threeDRoadVC.createRoad(level: level)
+        ThreeDRoadModel.startAnimation(elem: road)
         //vérifie s'il y a des pouvoirs en cours d'execution
         //met à jour le timer
         handlePower()
@@ -435,7 +435,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             
         case _COIN_:
             //le personnage attrape une piece
-            soundManager.playCollisionSound()
+            soundManager.playCoinSound()
             
             userInterfaceView.addScore(1)
             p = userInterfaceView.scoreLabel.center
@@ -444,12 +444,14 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             
         case coinx2:
             //le personnage attrape une piece double
+            soundManager.playPowerSound()
             userInterfaceView.addScore(2)
             p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
             break
             
         case coinx5:
+            soundManager.playPowerSound()
             userInterfaceView.addScore(5)
             p = userInterfaceView.scoreLabel.center
             cb = {(Bool) in  obj.view?.isHidden = true }
@@ -461,6 +463,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         case magnet:
             //le personnage attrape un aimant
             //l'icone de l'aimant est déplacée au point de coordonnées p
+            soundManager.playPowerSound()
             p = userInterfaceView.powerAnchor
             print("aimant s'en enclenché \(TTL_POWER)")
             
@@ -528,6 +531,8 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                                            options: .curveEaseIn,
                                            cb : {_ in
                                             coin!.isHidden = true
+                                            self.userInterfaceView.addScore(1)
+                                            self.soundManager.playCoinSound()
                                             //self.coins.insert(coin!)
                             }
                             )
@@ -557,7 +562,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     /**
      deplacement de l'image obj vers le point de coordonnées point.
      */
-    func moveObjToPoint(_ obj : UIImageView, point : CGPoint?, withDuration duration: TimeInterval = DURATION, options: UIView.AnimationOptions = [] , cb : ((Bool) ->())?){
+    func moveObjToPoint(_ obj : UIImageView, point : CGPoint?, withDuration duration: TimeInterval, options: UIView.AnimationOptions = [] , cb : ((Bool) ->())?){
         
         if(point == nil) {return}
         
@@ -570,7 +575,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     
-   
+    
     
     
     
@@ -592,7 +597,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             timerJump = JUMP_DURATION
             wantToJump = true
             
-            soundManager.playEdgeSound()
+            soundManager.playJumpSound()
             
             gv.animationForJump()
         }
@@ -631,8 +636,9 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     func moveDown() {
         
     }
-
+    
     func reset() {
+        
         modelRoad.reset()
         userInterfaceView.reset()
         
@@ -644,7 +650,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         threeDRoadVC.stopCoins = false
         threeDRoadVC.initRoads()
         
-        duration = DURATION
+        duration = SettingsViewController.sharedInstance.getLevelDuration()
         threeDRoadVC.setDuration(duration!)
         
         thePosition = ((Int)(NB_COLUMNS/2) , Int(NB_ROWS - INITIAL_CHAR_POSITION))
@@ -669,12 +675,13 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     func gameOver() {
+         stoptheGame()
         gv.stopAnimation()
         timer?.invalidate()
         timer=nil
         gameOverImg.isHidden = false
         gameOverImg.frame.origin.y = -gameOverImg.frame.height
-        
+        soundManager.stopGameSound()
         soundManager.playGameOverSound()
         
         UIView.animate( withDuration: 3 , animations : {
@@ -686,12 +693,16 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     func gameOverCb(_ : Bool) {
         let name = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)
-        let score = ScoreObject(score: userInterfaceView.getScore(), date: Date(), name: name! )
-        PreferenceManager.sharedInstance.savePreference(score: score, for: PreferenceKeys.score)
-        print("enregitrement d'un score : " + score.description)
+        let s = userInterfaceView.getScore()
+        if s > 0 {
+            let score = ScoreObject(score: s, date: Date(), name: name! )
+            PreferenceManager.sharedInstance.savePreference(score: score, for: PreferenceKeys.score)
+            print("enregitrement d'un score : " + score.description)
+        }
         
+       
         reset()
-        stoptheGame()
+       
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             pauseViewController.modalPresentationStyle = .formSheet
@@ -699,7 +710,6 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         
         present(pauseViewController, animated: true, completion: {
             self.pauseViewController.hideResumeButton()
-            self.gameOverImg.isHidden = true
         })
     }
     
@@ -729,6 +739,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     @IBAction func readMessage (sender : UIButton) {
+        userInterfaceView.showStartButton()
         stoptheGame()
         readMessage()
     }

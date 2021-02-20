@@ -34,7 +34,7 @@ class WelcomeView : UIView{
     override init(frame: CGRect) {
     
         super.init(frame: frame)
-        view = Bundle.main.loadNibNamed(nibName, owner: self, options: nil)?.first as! WelcomeView
+        view = Bundle.main.loadNibNamed(nibName, owner: self, options: nil)?.first as? WelcomeView
         view?.frame = self.bounds
         
         playButton = view!.playButton

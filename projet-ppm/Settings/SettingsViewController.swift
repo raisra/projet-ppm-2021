@@ -37,17 +37,10 @@ class SettingsViewController: UIViewController
     @IBOutlet private var soundOnOff : UISwitch!
     @IBOutlet private var sound : UILabel!
     @IBOutlet private var done  : UIButton!
- 
-    let h = UIScreen.main.bounds.height
-    let w = UIScreen.main.bounds.width
+
     @IBOutlet private var nameControllerLabel : UILabel!
     
-    
-    override  func awakeFromNib() {
-        print ("----")
-    }
- 
-    
+
     
     override func viewDidLoad() {
         let currentName = PreferenceManager.sharedInstance.loadStringPreference(for: PreferenceKeys.name)
@@ -124,21 +117,19 @@ class SettingsViewController: UIViewController
     
     
     func getLevelDuration() -> TimeInterval{
-        let levell : Level = SettingsViewController.sharedInstance.getLevel()
+        let levell  = getLevel()
         var duration : TimeInterval
         
        
         switch  levell {
         case .Beginner :
-            duration = 0.6
-        case .Medium :
             duration = 0.4
+        case .Medium :
+            duration = 0.35
         case .Hard :
             duration = 0.3
         case .Extreme :
             duration = 0.2
-        default :
-            duration = 0.6
         }
         
         return duration

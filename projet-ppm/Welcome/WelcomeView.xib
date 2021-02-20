@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment version="4144" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-      
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash_screen" translatesAutoresizingMaskIntoConstraints="NO" id="VoF-Kj-bIF">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                    <rect key="frame" x="0.0" y="20" width="414" height="716"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H6g-s8-bXd">
                     <rect key="frame" x="150" y="499" width="114" height="46"/>
@@ -58,8 +59,6 @@
                     </connections>
                 </button>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            
             <constraints>
                 <constraint firstItem="VoF-Kj-bIF" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="DGa-e8-raz"/>
                 <constraint firstItem="VoF-Kj-bIF" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="NM2-LD-k45"/>
@@ -69,6 +68,7 @@
                 <constraint firstItem="VoF-Kj-bIF" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="yi8-gc-3h5"/>
                 <constraint firstItem="VoF-Kj-bIF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ynR-Dv-aTN"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="chatButton" destination="C6G-KY-EsY" id="bbT-59-fnl"/>
                 <outlet property="playButton" destination="ZCw-H2-YZw" id="KVa-YK-Qcu"/>
@@ -83,6 +83,5 @@
         <image name="playButton" width="1949" height="698"/>
         <image name="settings" width="544" height="214"/>
         <image name="splash_screen" width="1536" height="2048"/>
-      
     </resources>
 </document>

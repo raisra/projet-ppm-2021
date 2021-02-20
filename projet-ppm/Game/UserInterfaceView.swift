@@ -45,7 +45,7 @@ class UserInterfaceView : UIView {
        
         
         super.init(frame: frame)
-        view = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as! UserInterfaceView
+        view = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? UserInterfaceView
         view?.frame = self.bounds
 
         pauseButton = view!.pauseButton
@@ -161,12 +161,9 @@ class UserInterfaceView : UIView {
     }
 
     func stopTheGame(){
-       // scoreLabel.isHidden = true
-        startButton.isHidden = true
-       // messageButton.isHidden = true
+        scoreLabel.isHidden = true
+        messageButton.isHidden = true
         
-
-        startButton.isHidden = false
         pauseButton.isHidden = true
     }
     
@@ -181,6 +178,11 @@ class UserInterfaceView : UIView {
         counterView.isHidden = true
     }
     
+    func showStartButton() {
+          startButton.isHidden = false
+    }
     
-    
+    func hideStartButton() {
+        startButton.isHidden = true
+    }
 }

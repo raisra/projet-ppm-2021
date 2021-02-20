@@ -14,9 +14,9 @@ import AVFoundation
 class SoundManager: NSObject, AVAudioPlayerDelegate {
     
     fileprivate var gameSound : AVAudioPlayer?
-    fileprivate var collisionSound : AVAudioPlayer?
-    fileprivate var endSound : AVAudioPlayer?
-    fileprivate var edgeSound : AVAudioPlayer?
+    fileprivate var coinSound : AVAudioPlayer?
+    fileprivate var powerSound : AVAudioPlayer?
+    fileprivate var jumpSound : AVAudioPlayer?
     fileprivate var gameOverSound : AVAudioPlayer?
     
     override init () {
@@ -25,38 +25,38 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     
     func initialisation () {
-        var path = Bundle.main.path(forResource: "son-etoile", ofType: "mp3")
+        var path = Bundle.main.path(forResource: "powerSound", ofType: "mp3")
         var url = URL (fileURLWithPath: path!)
         do {
-            endSound = try AVAudioPlayer (contentsOf: url)
-            endSound!.delegate = self
-            endSound!.prepareToPlay()
-            print ("initialisation du son \"\(endSound!.url!.lastPathComponent)\"")
+            powerSound = try AVAudioPlayer (contentsOf: url)
+            powerSound!.delegate = self
+            powerSound!.prepareToPlay()
+            print ("initialisation du son \"\(powerSound!.url!.lastPathComponent)\"")
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
        
-        path = Bundle.main.path(forResource: "son", ofType: "mp3")
+        path = Bundle.main.path(forResource: "jumpSound", ofType: "mp3")
         url = URL (fileURLWithPath: path!)
         do {
-            edgeSound = try AVAudioPlayer (contentsOf: url)
-            edgeSound!.delegate = self
-            edgeSound!.prepareToPlay()
+            jumpSound = try AVAudioPlayer (contentsOf: url)
+            jumpSound!.delegate = self
+            jumpSound!.prepareToPlay()
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
 
-        path = Bundle.main.path(forResource: "squeeze-toy-1", ofType: "mp3")
+        path = Bundle.main.path(forResource: "coinSound", ofType: "mp3")
         url = URL (fileURLWithPath: path!)
         do {
-            collisionSound = try AVAudioPlayer (contentsOf: url)
-            collisionSound!.delegate = self
-            collisionSound!.prepareToPlay()
+            coinSound = try AVAudioPlayer (contentsOf: url)
+            coinSound!.delegate = self
+            coinSound!.prepareToPlay()
         }catch let erreur {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
 
-        path = Bundle.main.path(forResource: "midnight-ride-01a", ofType: "mp3")
+        path = Bundle.main.path(forResource: "gameSound", ofType: "mp3")
         url = URL (fileURLWithPath: path!)
         do {
             gameSound = try AVAudioPlayer (contentsOf: url)
@@ -68,7 +68,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
             print ("***** ERROR : \(erreur.localizedDescription)")
         }
     
-        path = Bundle.main.path(forResource: "gameover", ofType: "wav")
+        path = Bundle.main.path(forResource: "gameOverSound", ofType: "wav")
         url = URL (fileURLWithPath: path!)
         do {
             gameOverSound = try AVAudioPlayer (contentsOf: url)
@@ -101,10 +101,10 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
         gameSound!.stop()
         gameSound!.currentTime = 0
     }
-    func playEndSound () {
+    func playPowerSound () {
         let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
-        if !soundOnOff {
-            endSound!.play()
+        if soundOnOff {
+            powerSound!.play()
         }
        
         
@@ -112,31 +112,32 @@ class SoundManager: NSObject, AVAudioPlayerDelegate {
     func playCollisionSound () {
         
         let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
-        if !soundOnOff {
-            return
+        if soundOnOff {
+            coinSound!.play()
         }
-        
-        if collisionSound!.isPlaying {
-            collisionSound!.stop()
-            collisionSound!.currentTime = 0.0
-        }
-        
-        collisionSound!.play()
     }
-    func playEdgeSound () {
+    
+    
+    func playCoinSound () {
+        
         let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
         if soundOnOff {
-            edgeSound!.play()
+            coinSound!.play()
         }
-        
+    }
+    
+    func playJumpSound () {
+        let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
+        if soundOnOff {
+            jumpSound!.play()
+        }
     }
     
     func playGameOverSound () {
-        if gameOverSound!.isPlaying {
-            gameOverSound!.stop()
-            gameOverSound!.currentTime = 0.0
+        let soundOnOff = PreferenceManager.sharedInstance.loadBoolPreference(for: PreferenceKeys.sound)!
+        if soundOnOff {
+            gameOverSound!.play()
         }
-        gameOverSound!.play()
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {

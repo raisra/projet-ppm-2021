@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:projet-ppm.xcodeproj">
+      location = "group:/Users/ramzi/Documents/projet-ppm-2021-xcode-10.3/PPM-GR-4.xcodeproj">
    </FileRef>
 </Workspace>

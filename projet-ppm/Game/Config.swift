@@ -23,7 +23,7 @@ let BACK_GROUND_IMAGE = "aboveTheSky"
 let NB_ROWS : CGFloat = 10
 let NB_COLUMNS : CGFloat = 5
 
-let DURATION : TimeInterval = 0.5
+
 //the size of the uiview representing the character
 
 
@@ -34,7 +34,7 @@ let NAMES : [TypeOfObject: String] = [STRAIGHT:"pave", BRIDGE:"bridge", _EMPTY_:
 let sizeIm = resizeAccordingToScreen(size : CGSize(width: 400, height: 100) , factor : 1)
 let sizeChar  = resizeAccordingToScreen (size : CGSize(width: 400, height: 900) , factor : 0.4)
 
-
+let sizeCoin = resizeAccordingToScreen (size : CGSize(width: 100, height: 100) , factor : 1.0/6.0)
 
 let alpha : CGFloat = 75.96
 let factor : CGFloat = 309.96/398.52

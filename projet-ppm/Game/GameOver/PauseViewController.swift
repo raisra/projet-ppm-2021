@@ -47,6 +47,8 @@ class PauseViewController: UIViewController {
     
     @IBAction func resumeSelector(_ sender: Any) {
         //revenir au jeu
+        gameViewController?.userInterfaceView.showStartButton()
+        gameViewController?.gameOverImg.isHidden = true
         dismiss(animated: true, completion: nil)
     }
     
