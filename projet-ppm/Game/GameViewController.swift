@@ -518,7 +518,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
                 
                 
                 for i in 0..<modelRoad.nColumns {
-                    for neighborhood in 1 ... min(DISTANCE_OF_MAGNET, Int(NB_ROWS)-thePosition.1+1) {
+                    for neighborhood in 1 ... DISTANCE_OF_MAGNET {
                         //on tente de retirer les pieces situées dans le voisinage du personnage
                         let coin = modelRoad.removeObject(i: i, j: thePosition.1 - neighborhood, type: _COIN_).view
                         
