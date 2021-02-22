@@ -20,5 +20,9 @@ class ScoreModel: NSObject {
     func getScoreArray () -> [ScoreObject]?{
         return self.scoreArray
     }
+    
+    func addScore(score: ScoreObject){
+        scoreArray?.append(score)
+    }
 }
 

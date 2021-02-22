@@ -12,7 +12,7 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
     static let sharedInstance = ScoreViewController()
     
     var gesture: GestureManager?
-    let scoreModel = ScoreModel(scoreArray: PreferenceManager.sharedInstance.loadScorePreference(for: PreferenceKeys.score))
+    var scoreModel = ScoreModel(scoreArray: PreferenceManager.sharedInstance.loadScorePreference(for: PreferenceKeys.score))
     let scoreView  = ScoreView(frame: .zero)
 
     override func viewDidLoad() {
@@ -92,5 +92,10 @@ class ScoreViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func showCloseButton() {
         scoreView.backButton.isHidden = false
+    }
+    
+    func addScore(score : ScoreObject) {
+        PreferenceManager.sharedInstance.savePreference(score: score, for: PreferenceKeys.score)
+        scoreModel.addScore(score: score)
     }
 }

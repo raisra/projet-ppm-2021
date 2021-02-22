@@ -10,17 +10,9 @@ import UIKit
 
 
 
-
-
-
-
 //var sizeIm = CGSize(width: 400, height: 60)
 //let alpha : CGFloat = 75.96
 //let factor : CGFloat = 0.925
-
-
-
-
 
 
 class GameViewController : UIViewController, GestureManagerProtocol {
@@ -109,15 +101,15 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     func initTheGame(){
+    
+    }
+    
+    override func viewDidLoad() {
         print ("the Game view did load")
         level = SettingsViewController.sharedInstance.getLevel()
         duration = SettingsViewController.sharedInstance.getLevelDuration()
         
         //init du model 3D
-        
-        //le paraemetre à metter dans Model
-        print( sizeIm.height)
-        
         
         let D : CGFloat = sizeIm.width * pow(factor, NB_ROWS)
         
@@ -181,15 +173,16 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         pauseViewController.gameViewController = self
     }
     
-    override func viewDidLoad() {
-        //  initTheGame()
-    }
-    
     
     
     
     override func viewWillAppear(_ animated: Bool) {
         gameOverImg.isHidden = true
+        
+        level = SettingsViewController.sharedInstance.getLevel()
+        duration = SettingsViewController.sharedInstance.getLevelDuration()
+        
+        modelRoad.reset(duration: duration!)
     }
     override func viewWillDisappear(_ animated: Bool) {
         print(#function)
@@ -230,7 +223,6 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     
     
     @objc func stoptheGame() {
-        
         gameIsStoped = true;
         gestureManager?.delegate = nil
         
@@ -458,8 +450,6 @@ class GameViewController : UIViewController, GestureManagerProtocol {
             break
             //TODO FACTORISER LE CODE PRECEDENT
             
-            
-            
         case magnet:
             //le personnage attrape un aimant
             //l'icone de l'aimant est déplacée au point de coordonnées p
@@ -574,20 +564,13 @@ class GameViewController : UIViewController, GestureManagerProtocol {
     }
     
     
-    
-    
-    
-    
-    
+
     
     /*****************************************/
     /**
      LES MOUVEMENTS
      
      */
-    
-    
-    
     var wantToTurnLeft : Bool = false
     var wantToTurnRight  : Bool = false
     var wantToJump : Bool = false
@@ -696,8 +679,7 @@ class GameViewController : UIViewController, GestureManagerProtocol {
         let s = userInterfaceView.getScore()
         if s > 0 {
             let score = ScoreObject(score: s, date: Date(), name: name! )
-            PreferenceManager.sharedInstance.savePreference(score: score, for: PreferenceKeys.score)
-            print("enregitrement d'un score : " + score.description)
+            ScoreViewController.sharedInstance.addScore(score: score)
         }
         
        

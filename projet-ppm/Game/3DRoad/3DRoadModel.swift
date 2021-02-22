@@ -448,6 +448,14 @@ class ThreeDRoadModel : ModelRoad{
         super.reset()
         nbElements = 0
         self.duration = duration
+    
+        for k in 0...nRows {
+            for i in 0..<nColumns {
+                let f = self.getObj(i, k)
+                initAnimation(elem: f)
+            }
+        }
+   
     }
     
 }
